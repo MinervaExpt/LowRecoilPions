@@ -950,10 +950,10 @@ std::function<double(const CVUniverse&, const MichelEvent&, const int)> true_ang
    sideband_studies.push_back(new PerMichelVarVecFSPart(permichel_range, "permichel_pirange_npi", "mm", nbinsrange, rangebins, error_bands));
    sideband_studies.push_back(new PerMichelVarVecFSPart(permichel_tpi,"permichel_tpi_npi", "MeV", nbinstpi, tpibins, error_bands));
    sideband_studies.push_back(new PerMichel2DVarbin(permichel_tpi, permichel_range, tpiconfig, rangeconfig, error_bands));
-   sideband_studies.push_back(new PerMichel2DVar(permichel_tpi, permichel_range, tpi_config, pirange_config, error_bands));
+   //sideband_studies.push_back(new PerMichel2DVar(permichel_tpi, permichel_range, tpi_config, pirange_config, error_bands));
 
    studies.push_back(new PerMichel2DVarbin(permichel_tpi, permichel_range, tpiconfig, rangeconfig, error_bands));
-   studies.push_back(new PerMichel2DVar(permichel_tpi, permichel_range, tpi_config, pirange_config, error_bands));
+   //studies.push_back(new PerMichel2DVar(permichel_tpi, permichel_range, tpi_config, pirange_config, error_bands));
    
    std::function<double(const CVUniverse&, const MichelEvent&)> best_pionrange = [](const CVUniverse& univ, const MichelEvent& evt)
                                  {
@@ -1081,11 +1081,11 @@ std::function<double(const CVUniverse&, const MichelEvent&)> lowesttpi = [](cons
    //studies.push_back(new PerMichelEventVarByGENIELabel(best_pionrange_truegood_clus, "best_pionrange_truegood_clus",  "mm", 100, 0.0, 2000.0, error_bands));
    //studies.push_back(new PerMichelEventVarByGENIELabel(best_pionrange_truebad_clus, "best_pionrange_truebad_clus",  "mm", 100, 0.0, 2000.0, error_bands));
    
-   studies.push_back(new PerMichelEvent2DVarbin(best_tpi, best_pionrange, etpiconfig, erangeconfig, error_bands));
-   studies.push_back(new PerMichelEvent2DVarbin(best_tpi, getq3, etpiconfig, q3config, error_bands));
-   studies.push_back(new PerMichelEvent2DVarbin(best_pionrange, getq3, erangeconfig, q3config, error_bands));
-   studies.push_back(new PerMichelEvent2DVarbin(best_tpi, getpT, etpiconfig, pTconfig, error_bands));
-   studies.push_back(new PerMichelEvent2DVarbin(best_pionrange, getpT, erangeconfig, pTconfig, error_bands));
+   //studies.push_back(new PerMichelEvent2DVarbin(best_tpi, best_pionrange, etpiconfig, erangeconfig, error_bands));
+   //studies.push_back(new PerMichelEvent2DVarbin(best_tpi, getq3, etpiconfig, q3config, error_bands));
+   //studies.push_back(new PerMichelEvent2DVarbin(best_pionrange, getq3, erangeconfig, q3config, error_bands));
+   //studies.push_back(new PerMichelEvent2DVarbin(best_tpi, getpT, etpiconfig, pTconfig, error_bands));
+   //studies.push_back(new PerMichelEvent2DVarbin(best_pionrange, getpT, erangeconfig, pTconfig, error_bands));
 
    //sideband_studies.push_back(new PerMichelEvent2DVarbin(best_tpi, best_pionrange, etpiconfig, erangeconfig, error_bands));
    //sideband_studies.push_back(new PerMichelEvent2DVarbin(best_tpi, getq3, etpiconfig, q3config, error_bands));
@@ -1123,8 +1123,8 @@ std::function<double(const CVUniverse&, const MichelEvent&)> lowesttpi = [](cons
   //data_studies.push_back(new PerMichelVarByGENIELabel(pion_angle_range3, "pion_angle_range3", "cos(#theta)", 21, -1.0, 1., data_error_bands));
   //data_studies.push_back(new PerMichelVarByGENIELabel(pion_angle_range4, "pion_angle_range4", "cos(#theta)", 21, -1.0, 1., data_error_bands)); 
   //data_studies.push_back(new PerMichelVarVec(permichel_range,"permichel_pirange", "mm",nbinsrange, rangebins, data_error_bands));
-  data_studies.push_back(new PerMichelEvent2DVarbin(best_pionrange, getq3, erangeconfig, q3config, data_error_bands));
-  data_studies.push_back(new PerMichelEvent2DVarbin(best_pionrange, getpT, erangeconfig, pTconfig, data_error_bands));
+  //data_studies.push_back(new PerMichelEvent2DVarbin(best_pionrange, getq3, erangeconfig, q3config, data_error_bands));
+  //data_studies.push_back(new PerMichelEvent2DVarbin(best_pionrange, getpT, erangeconfig, pTconfig, data_error_bands));
  
 
   //data_sidebands.push_back(new PerMichelEventVarByGENIELabel(best_pionrange, "best_pionrange", "mm", 100, 0.0, 2000.0, data_error_bands));

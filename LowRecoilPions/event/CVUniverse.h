@@ -15,7 +15,7 @@
 #define CVUNIVERSE_H
 
 #include <iostream>
-
+#include <chrono>
 #include "PlotUtils/MinervaUniverse.h"
 //#include "event/Cluster.h"
 class CVUniverse : public PlotUtils::MinervaUniverse {
@@ -178,11 +178,12 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
   //      so that we get the right neutrino energy in an inclusive sample.  So,
   //      this function could be correcting for neutron energy which Eavail should
   //      not do.
-  
+  /*
   double GetEavailCorr() const {
        return GetEAvailable();
   }  
 
+  
   virtual double GetEavail() const {
     //if (GetEAvailable() > 1500.) PrintArachneLink(); 
     return GetEAvailable();
@@ -212,6 +213,7 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
     return eavail;
   }  
 
+  
   virtual double GetEHad() const {
      return GetCalRecoilE();
   }
@@ -250,7 +252,7 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
      }
     return calE_corrected;
   } 
-
+  */
 
   virtual double Recoq3pTdiff() const{
      double q3 = Getq3();
@@ -283,7 +285,7 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
      return 1.70*(ecal+hcal+tracker);
     
   }
-  */
+  
   virtual double GetRecoilESumPi() const {
      double ecal = GetDouble("blob_recoil_E_ecal");
      double hcal = GetDouble("blob_recoil_E_hcal");
@@ -291,7 +293,7 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
      double od = GetDouble("blob_recoil_E_od");
      return (ecal+hcal+tracker)/pow(10,3); //Get these in GeV
   }
-
+  */
   virtual double GetQ2Reco() const{
     //double q2reco = GetDouble("MasterAnaDev_Q2_Inclusive")/pow(10,6);
     
@@ -455,6 +457,7 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
 
  }
 
+ /*
  virtual double GetTrueWexp() const {
     double  W = pow(M_p, 2.0) -  GetTrueQ2MeV() +
              2.0 * (M_p)*GetTrueEHad();
@@ -471,7 +474,7 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
     return W/1000.;
   }
 
- 
+ */
 
  
  virtual double GetTrueIntVtxX() const {return GetVecElem("mc_vtx", 0);}
@@ -748,6 +751,7 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
  {
     double mufuzz = 0;
     int nfuzz = GetInt("muon_fuzz_per_plane_r80_planeIDs_sz");
+    if (nfuzz == 0) return 0.0;
     for (int i =0; i < nfuzz; i++){
 	int planeID = GetVecElem("muon_fuzz_per_plane_r80_planeIDs", i);
 	double fuzze = GetVecElem("muon_fuzz_per_plane_r80_energies", i);
@@ -761,6 +765,7 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
  {
     double mufuzz = 0;
     int nfuzz = GetInt("muon_fuzz_per_plane_r80_planeIDs_sz");
+    if (nfuzz == 0) return 0.0;
     for (int i =0; i < nfuzz; i++){
         int planeID = GetVecElem("muon_fuzz_per_plane_r80_planeIDs", i);
         double fuzze = GetVecElem("muon_fuzz_per_plane_r80_energies", i);
@@ -845,9 +850,9 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
         else if (pdg == 22) Eavail += energy; // photons
         else if (pdg == 311) Eavail += energy - 497.611/2.0; // K0 ???? - Kaon rest mass / 2
         else if (abs(pdg) == 321) Eavail += energy - 497.611/2.0; // Kaon+ Kinetic Energy  divide by Kmass/2 
-        else if (pdg == 221) Eavail += energy; //Adding etas
-	else if (pdg == 3222) Eavail += energy - 1115.683; // mass of Lambda 
-	else if (pdg == 3122) Eavail += energy - 1189.37 ; // mass of Sigma
+        //else if (pdg == 221) Eavail += energy; //Adding etas
+	//else if (pdg == 3222) Eavail += energy - 1115.683; // mass of Lambda 
+	//else if (pdg == 3122) Eavail += energy - 1189.37 ; // mass of Sigma
         	
         //else if (abs(pdg) !=  2112) Eavail += energy; //Adding anything else except neutrons.  
        

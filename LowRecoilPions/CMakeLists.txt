@@ -70,13 +70,13 @@ add_subdirectory(util)
 #add_subdirectory(systematics)
 
 #Build main executables
-add_executable(runEventLoop runEventLoop.cpp)
-target_link_libraries(runEventLoop ${ROOT_LIBRARIES} util MAT MAT-MINERvA) #event cuts studies systematics)
-install(TARGETS runEventLoop DESTINATION bin)
+#add_executable(runEventLoop runEventLoop.cpp)
+#target_link_libraries(runEventLoop ${ROOT_LIBRARIES} util MAT MAT-MINERvA) #event cuts studies systematics)
+#install(TARGETS runEventLoop DESTINATION bin)
 
-add_executable(michelEventLoop michelEventLoop.cpp)
-target_link_libraries(michelEventLoop ${ROOT_LIBRARIES} util MAT MAT-MINERvA) #event cuts studies systematics)
-install(TARGETS michelEventLoop DESTINATION bin)
+#add_executable(studies2DEventLoop studies2DEventLoop.cpp)
+#target_link_libraries(studies2DEventLoop ${ROOT_LIBRARIES} util MAT MAT-MINERvA) #event cuts studies systematics)
+#install(TARGETS studies2DEventLoop DESTINATION bin)
 
 add_executable(studiesEventLoop studiesEventLoop.cpp)
 target_link_libraries(studiesEventLoop ${ROOT_LIBRARIES} util MAT MAT-MINERvA) #event cuts studies systematics)

@@ -119,6 +119,27 @@ enum ErrorCodes
 #include <iostream>
 #include <cstdlib> //getenv()
 
+
+std::vector<std::vector<CVUniverse*>> groupCompatibleUniverses(const std::map<std::string, std::vector<CVUniverse*>> bands)
+{
+   std::vector<std::vector<CVUniverse*>> groupedUnivs;
+   std::vector<CVUniverse*> vertical;
+   for(const auto& band: bands)
+   {
+     if(band.first == "cv") vertical.insert(vertical.begin(), band.second.begin(), band.second.end());
+     else
+     {
+       for(const auto univ: band.second)
+       {
+         if(univ->IsVerticalOnly()) vertical.push_back(univ);
+         else groupedUnivs.push_back(std::vector<CVUniverse*>{univ});
+       }
+     }
+   }
+   groupedUnivs.insert(groupedUnivs.begin(), vertical);
+   return groupedUnivs;
+}
+
 //==============================================================================
 // Loop and Fill
 //==============================================================================
@@ -136,9 +157,9 @@ void LoopAndFillEventSelection(
 {
   assert(!error_bands["cv"].empty() && "\"cv\" error band is empty!  Can't set Model weight.");
   auto& cvUniv = error_bands["cv"].front();
-
+  
   std::cout << "Starting MC reco loop...\n";
-  const int nEntries = 5000;// chain->GetEntries(); // TODO: July 10 CHANGE BACK TO GETENTRIES
+  const int nEntries = chain->GetEntries(); // TODO: July 10 CHANGE BACK TO GETENTRIES
   for (int i=0; i < nEntries; ++i)
   {
     if(i%1000==0) std::cout << i << " / " << nEntries << "\r" << std::flush;
@@ -154,6 +175,7 @@ void LoopAndFillEventSelection(
     for (auto band : error_bands)
     {
       std::vector<CVUniverse*> error_band_universes = band.second;
+        
       for (auto universe : error_band_universes)
       {
         // Tell the Event which entry in the TChain it's looking at
@@ -172,7 +194,11 @@ void LoopAndFillEventSelection(
             //std::cout << "Universe Name: " << universe->ShortName() << " Weight is : " << weight2 << std::endl; 
             
             for(auto& study: studies) study->SelectedSignal(*universe, myevent, weight2);
-            	
+            const bool isSignal = michelcuts.isSignal(*universe, weight2);
+            if(!isSignal){
+               for(auto& study: studies) study->BackgroundSelected(*universe, myevent, weight2);
+	    }
+         	
         } // If event passes PreCuts
       } // End band's universe loop
     } // End Band loop
@@ -193,13 +219,13 @@ void LoopAndFillData( PlotUtils::ChainWrapper* data,
 
 {
   std::cout << "Starting data loop...\n";
-  const int nEntries = 5000; //data->GetEntries(); // TODO: July 10 CHANGE BACK TO GEtENTRIES
+  const int nEntries = data->GetEntries(); // TODO: July 10 CHANGE BACK TO GEtENTRIES
   for (int i=0; i <nEntries; ++i) {
     //std::cout << "Now Printing for Event " << i << std::endl;
     //for (auto universe : data_band) {
       const auto universe = data_band.front();
       universe->SetEntry(i);
-     // if(i%1000==0) std::cout << i << " / " << nEntries << "\r" << std::flush;
+      if(i%1000==0) std::cout << i << " / " << nEntries << "\r" << std::flush;
       //std::cout << "Creating Michel Event" << std::endl;
       //if (universe->ShortName() != "cv") continue;
       MichelEvent myevent; 
@@ -386,11 +412,11 @@ int main(const int argc, const char** argv)
 
 
   // For MnvTunev4.3.1 
-  //PlotUtils::MinervaUniverse::SetNonResPiReweight(true);
-  //PlotUtils::MinervaUniverse::SetDeuteriumGeniePiTune(true);
+  PlotUtils::MinervaUniverse::SetNonResPiReweight(true);
+  PlotUtils::MinervaUniverse::SetDeuteriumGeniePiTune(true);
   PlotUtils::MinervaUniverse::SetReadoutVolume("Tracker");
-  //PlotUtils::MinervaUniverse::SetMHRWeightNeutronCVReweight( true );
-  //PlotUtils::MinervaUniverse::SetMHRWeightElastics( true );
+  PlotUtils::MinervaUniverse::SetMHRWeightNeutronCVReweight( true );
+  PlotUtils::MinervaUniverse::SetMHRWeightElastics( true );
   
   //Now that we've defined what a cross section is, decide which sample and model
   //we're extracting a cross section for.
@@ -438,7 +464,8 @@ int main(const int argc, const char** argv)
   //phaseSpace.emplace_back(new truth::q0RangeLimit<CVUniverse>(0.0, .7));
 
   PlotUtils::Cutter<CVUniverse, MichelEvent> mycuts(std::move(preCuts), std::move(sidebands) , std::move(signalDefinition),std::move(phaseSpace));
-  
+ 
+  /* 
   std::vector<std::unique_ptr<PlotUtils::Reweighter<CVUniverse, MichelEvent>>> MnvTunev1;
   MnvTunev1.emplace_back(new PlotUtils::FluxAndCVReweighter<CVUniverse, MichelEvent>());
   MnvTunev1.emplace_back(new PlotUtils::GENIEReweighter<CVUniverse, MichelEvent>(true, false));
@@ -446,10 +473,10 @@ int main(const int argc, const char** argv)
   MnvTunev1.emplace_back(new PlotUtils::MINOSEfficiencyReweighter<CVUniverse, MichelEvent>());
   MnvTunev1.emplace_back(new PlotUtils::RPAReweighter<CVUniverse, MichelEvent>());
   //TODO: Add my pion reweighter here. - Mehreen S.  Nov 22, 2021
-  MnvTunev1.emplace_back(new PlotUtils::PionReweighter<CVUniverse,MichelEvent>()); 
+  //MnvTunev1.emplace_back(new PlotUtils::PionReweighter<CVUniverse,MichelEvent>()); 
   PlotUtils::Model<CVUniverse, MichelEvent> model(std::move(MnvTunev1));
+  */
   
-  /*
   std::vector<std::unique_ptr<PlotUtils::Reweighter<CVUniverse, MichelEvent>>> MnvTunev4;
   MnvTunev4.emplace_back(new PlotUtils::FluxAndCVReweighter<CVUniverse, MichelEvent>());
   MnvTunev4.emplace_back(new PlotUtils::GENIEReweighter<CVUniverse, MichelEvent>(true, true));
@@ -462,9 +489,9 @@ int main(const int argc, const char** argv)
   MnvTunev4.emplace_back(new PlotUtils::FSIReweighter<CVUniverse, MichelEvent>(true, true));
   MnvTunev4.emplace_back(new PlotUtils::COHPionReweighter<CVUniverse, MichelEvent>());
   MnvTunev4.emplace_back(new PlotUtils::TargetMassReweighter<CVUniverse, MichelEvent>());  
-
+  MnvTunev4.emplace_back(new PlotUtils::PionReweighter<CVUniverse,MichelEvent>()); 
   PlotUtils::Model<CVUniverse, MichelEvent> model(std::move(MnvTunev4));
-  */
+  
   // Make a map of systematic universes
   // Leave out systematics when making validation histograms
   const bool doSystematics = (getenv("MNV101_SKIP_SYST") == nullptr);
@@ -473,8 +500,14 @@ int main(const int argc, const char** argv)
     PlotUtils::MinervaUniverse::SetNFluxUniverses(2); //Necessary to get Flux integral later...  Doesn't work with just 1 flux universe though because _that_ triggers "spread errors".
   }
 
+  //Group univeress here. Accesses the groupCompatibleUniverses function
   std::map< std::string, std::vector<CVUniverse*> > error_bands;
-  if(doSystematics) error_bands = GetStandardSystematics(options.m_mc);
+  std::vector<std::vector<CVUniverse*>> groupedUnivs;
+ 
+  if(doSystematics){
+     error_bands = GetStandardSystematics(options.m_mc);
+     groupedUnivs = groupCompatibleUniverses(error_bands); //For running with Systematics 
+  }
   else{
     std::map<std::string, std::vector<CVUniverse*> > band_flux = PlotUtils::GetFluxSystematicsMap<CVUniverse>(options.m_mc, CVUniverse::GetNFluxUniverses());
     error_bands.insert(band_flux.begin(), band_flux.end()); //Necessary to get flux integral later...
@@ -483,7 +516,7 @@ int main(const int argc, const char** argv)
   std::map< std::string, std::vector<CVUniverse*> > truth_bands;
   if(doSystematics) truth_bands = GetStandardSystematics(options.m_truth);
   truth_bands["cv"] = {new CVUniverse(options.m_truth)};
-
+ 
   std::vector<double> dansPTBins = {0, 0.075, 0.10, 0.15, 0.20, 0.30, 0.4, 0.50,0.60 , 0.7, 0.80,0.9, 1.,1.1, 1.2, 1.3, 1.4, 1.5},
                       dansPzBins = {1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 6, 7, 8, 9, 10, 15, 20, 40, 60},
                       robsEmuBins = {0,1,2,3,4,5,7,9,12,15,18,22,36,50,75,80},
@@ -492,7 +525,7 @@ int main(const int argc, const char** argv)
   
    
   int nq3mbins = mehreenQ3Bins.size() -1; 
-  std::vector<double> tpibins = {0, 4., 8., 12., 16., 20., 24., 28., 32., 36., 40., 46., 52.,60., 70., 80., 100., 125.,150., 175., 200., 225., 250., 275., 300., 350., 400., 500., 700.,1000.};   
+  std::vector<double> tpibins = {0, 4., 8., 12., 16., 20., 24., 28., 32., 36., 40., 46., 52.,60., 70., 80., 100., 125.,150., 175., 200., 225., 250., 275., 300., 350., 400., 500., 700.,1000.};//, 1300., 1600., 2000.};   
    std::vector<double> rangebins = {0., 8., 16., 24., 32., 40., 50., 65., 80.,95., 110., 140., 170., 200., 230., 260., 290., 310., 360., 400., 450., 500., 550., 600., 650., 700., 800., 900., 1000., 1200., 1400., 1800., 2400.};
 
   //std::vector<double> rangebins = {0, 4., 8., 12., 16., 20., 24., 28., 32., 36., 40., 44., 50., 56., 62., 70., 80.,90., 100., 110.,  120., 140., 160., 180., 200., 220., 240., 260., 280., 300., 325., 350., 375., 400., 450., 500., 550., 600., 650., 700., 800., 900., 1000., 1200., 1400., 1800., 2400.};             
@@ -902,9 +935,10 @@ std::function<double(const CVUniverse&, const MichelEvent&, const int)> true_ang
                                 };
 
   //std::vector<double> rangebins = {0., 15., 30., 45., 60., 75., 100., 130., 160., 190., 220., 260., 300., 350., 400., 450., 500., 550., 600., 650., 700., 800., 900., 1000., 1400., 1800., 2400.};
+   std::vector<double> anglebins = {-1.2,-1, -.80, -.70, -.60, -.50, -.40, -.30, -.20, -.10, .10, .20, .30, .40,.50,.60,.70,.80,.90,1.,1.2};
    int nbinsrange = rangebins.size()-1;
    int nbinstpi = tpibins.size()-1;
-
+   int nanglebin = anglebins.size() -1;
    //studies.push_back(new PerMichelVarByGENIELabel(true_angle, "true_angle", "cos(#theta)", 21, -1.0, 1.0, error_bands));
    //studies.push_back(new PerMichelVarByGENIELabel(true_angle_range1, "true_angle_range1", "cos(#theta)", 21, -1.0, 1., error_bands));
    //studies.push_back(new PerMichelVarByGENIELabel(true_angle_range2, "true_angle_range2", "cos(#theta)", 21, -1.0, 1., error_bands));
@@ -951,8 +985,9 @@ std::function<double(const CVUniverse&, const MichelEvent&, const int)> true_ang
    eVarConfig2D q3config{"q3_reco", "GeV", nq3mbins, mehreenQ3Bins};
    eVarConfig2D pTconfig{"pT_reco", "GeV", nq3mbins, mehreenQ3Bins};
    eVarConfig2D erangeconfig{"ePirange", "mm", nbinsrange, rangebins};
+   eVarConfig2D angleconfig{"PiAngle", "cos", nanglebin, anglebins};
    eVarConfig2D etpiconfig{"ePion_KE", "MeV", nbinstpi, tpibins};
-   std::vector<double> anglebins = {-1.2,-1, -.80, -.70, -.60, -.50, -.40, -.30, -.20, -.10, .10, .20, .30, .40,.50,.60,.70,.80,.90,1.,1.2};
+   //std::vector<double> anglebins = {-1.2,-1, -.80, -.70, -.60, -.50, -.40, -.30, -.20, -.10, .10, .20, .30, .40,.50,.60,.70,.80,.90,1.,1.2};
    int nbinsangle = anglebins.size() -1;
    studies.push_back(new PerMichelVarVecFSPart(pion_angle, "pion_angle", "cos(#theta)", nbinsangle,anglebins, error_bands));
    studies.push_back(new PerMichelVarVecFSPart(pion_angle_range1, "pion_angle_range1", "cos(#theta)", nbinsangle,anglebins, error_bands));
@@ -971,8 +1006,24 @@ std::function<double(const CVUniverse&, const MichelEvent&, const int)> true_ang
    //sideband_studies.push_back(new PerMichel2DVar(permichel_tpi, permichel_range, tpi_config, pirange_config, error_bands));
 
    studies.push_back(new PerMichel2DVarbin(permichel_tpi, permichel_range, tpiconfig, rangeconfig, error_bands));
+   //studies.push_back(new PerMichel2DVarbin(permichel_range, permichel_tpi, rangeconfig,tpiconfig, error_bands));
    //studies.push_back(new PerMichel2DVar(permichel_tpi, permichel_range, tpi_config, pirange_config, error_bands));
+  
+   std::function<double(const CVUniverse&, const MichelEvent&)> event_angle = [](const CVUniverse& univ, const MichelEvent& evt)
+                                { 
+                                  double angle = evt.m_nmichels[0].best_angle;
+                                  return cos(angle);
+                                };
+   std::function<double(const CVUniverse&, const MichelEvent&)> event_range = [](const CVUniverse& univ, const MichelEvent& evt)
+                                { 
+                                  double range = evt.m_nmichels[0].Best3Ddist;
+                                  return range;
+                                };
    
+   studies.push_back(new PerMichelEvent2DVarbin(event_angle, getpT, erangeconfig, pTconfig, error_bands));
+   studies.push_back(new PerMichelEvent2DVarbin(event_range, getpT, angleconfig, pTconfig, error_bands));
+
+
    std::function<double(const CVUniverse&, const MichelEvent&)> best_pionrange = [](const CVUniverse& univ, const MichelEvent& evt)
                                  {
                                    int bestidx = evt.m_idx;
@@ -1103,7 +1154,6 @@ std::function<double(const CVUniverse&, const MichelEvent&)> lowesttpi = [](cons
    //studies.push_back(new PerMichelEvent2DVarbin(best_tpi, getq3, etpiconfig, q3config, error_bands));
    //studies.push_back(new PerMichelEvent2DVarbin(best_pionrange, getq3, erangeconfig, q3config, error_bands));
    //studies.push_back(new PerMichelEvent2DVarbin(best_tpi, getpT, etpiconfig, pTconfig, error_bands));
-   //studies.push_back(new PerMichelEvent2DVarbin(best_pionrange, getpT, erangeconfig, pTconfig, error_bands));
 
    //sideband_studies.push_back(new PerMichelEvent2DVarbin(best_tpi, best_pionrange, etpiconfig, erangeconfig, error_bands));
    //sideband_studies.push_back(new PerMichelEvent2DVarbin(best_tpi, getq3, etpiconfig, q3config, error_bands));
@@ -1132,7 +1182,8 @@ std::function<double(const CVUniverse&, const MichelEvent&)> lowesttpi = [](cons
   data_studies.push_back(new PerMichelVarVecFSPart(pion_angle_range4, "pion_angle_range4", "cos(#theta)",nbinsangle,anglebins , data_error_bands)); 
   data_studies.push_back(new PerMichelVarVecFSPart(permichel_range, "permichel_pirange", "mm", nbinsrange, rangebins, data_error_bands));
  
-
+  data_studies.push_back(new PerMichelEvent2DVarbin(event_angle, getpT, angleconfig, pTconfig, data_error_bands));
+  data_studies.push_back(new PerMichelEvent2DVarbin(event_range, getpT, erangeconfig, pTconfig, data_error_bands));
   //data_studies.push_back(new PerMichelEventVarByGENIELabel(best_pionrange, "best_pionrange", "mm", 100, 0.0, 2000.0, data_error_bands));
   //data_studies.push_back(new PerMichelVarByGENIELabel(delta_t, "michelmuon_deltat", "#mus", 30, 0.0, 9.0, data_error_bands));
   //data_studies.push_back(new PerMichelVarByGENIELabel(pion_angle, "pion_angle", "cos(#theta)", 21, -1.0, 1., data_error_bands));
@@ -1160,7 +1211,7 @@ std::function<double(const CVUniverse&, const MichelEvent&)> lowesttpi = [](cons
   // Loop entries and fill
   try
   {
-    CVUniverse::SetTruth(false);
+    CVUniverse::SetTruth(true);
     LoopAndFillEventSelection(options.m_mc, error_bands, studies, sideband_studies, mycuts, model);
     std::cout << "MC cut summary:\n" << mycuts << "\n";
     //mycuts.resetStats();

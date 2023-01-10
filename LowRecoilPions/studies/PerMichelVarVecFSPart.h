@@ -37,6 +37,7 @@ class PerMichelVarVecFSPart: public Study
                                                  {3, "DIS"}}; //other category is built in for free.
       //	m_VarToGENIELabel = new util::Categorized<HIST, int>(("GENIE_"+varName).c_str(), varName + "_" + varUnits, GENIELabels, nbins, binvec ,univs);
            
+ 	bkgHist = new HIST((varName+"_bkg").c_str(), (varName + "_" + varUnits + "_").c_str(), nbins, binvec, univs);
     }
     
 
@@ -63,10 +64,14 @@ class PerMichelVarVecFSPart: public Study
        std::cout << "DRAWING the TOTAL MC histogram" << std::endl;
        totalMCHist->SyncCVHistos();
        totalMCHist->hist->Write();
-       std::cout << "DRAWING THE TRUTH HISTOGRAM" << std::endl;
+       
+       bkgHist->SyncCVHistos();
+       bkgHist->hist->Write();
+       //std::cout << "DRAWING THE TRUTH HISTOGRAM" << std::endl;
+       
        //truthHist->SyncCVHistos();
        //truthHist->hist->Write();
-       std::cout << "TRUTH HISTOGRAM DRAWN" << std::endl;
+       //std::cout << "TRUTH HISTOGRAM DRAWN" << std::endl;
        //TODO: You could do plotting here
     }
 
@@ -74,7 +79,7 @@ class PerMichelVarVecFSPart: public Study
     using HIST = PlotUtils::HistWrapper<CVUniverse>;
     typedef PlotUtils::HistWrapper<CVUniverse> HW;
     reco_t fReco;
-
+    HW* bkgHist;
     HW* dataHist;
     HW* totalMCHist;
     //HW* truthHist;
@@ -93,8 +98,8 @@ class PerMichelVarVecFSPart: public Study
     //All of your plots happen here so far.
     void fillSelectedSignal(const CVUniverse& univ, const MichelEvent& evt, const double weight)
     {
-      std::cout << "Printing Universe Name: " << univ.ShortName() << std::endl;
-      std::cout << " Pinrting N Michels " << evt.m_nmichels.size() << std::endl;
+      //std::cout << "Printing Universe Name: " << univ.ShortName() << std::endl;
+      //std::cout << " Pinrting N Michels " << evt.m_nmichels.size() << std::endl;
       
       for(size_t whichMichel = 0; whichMichel < evt.m_nmichels.size(); ++whichMichel)
       {
@@ -106,6 +111,13 @@ class PerMichelVarVecFSPart: public Study
       }
     }
 
+    void fillBackground(const CVUniverse& univ, const MichelEvent& evt, const double weight)
+    {
+      for(size_t whichMichel = 0; whichMichel < evt.m_nmichels.size(); ++whichMichel)
+      {
+        (*bkgHist).FillUniverse(&univ, fReco(univ, evt, whichMichel), weight);
+      }
+    }
     //Do nothing for now...  Good place for efficiency denominators in the future.
     void fillTruthSignal(const CVUniverse& univ, const MichelEvent& evt, const double weight) {
   	/*for(size_t whichMichel = 0; whichMichel < evt.m_nmichels.size(); ++whichMichel)

@@ -247,10 +247,6 @@ void LoopAndFillEventSelection(
                 
 		//var->migration->FillUniverse(universe, var->GetRecoValue(*universe), var->GetTrueValue(*universe), weight2);
                 //var->efficiencyNumerator->FillUniverse(universe, var->GetTrueValue(*universe), weight2);
-                double reco = var->GetRecoValue(*universe);
-                double truevar = var->GetTrueValue(*universe);
-                double recomtrue = reco - truevar;
-                var->recoMinusTrue->FillUniverse(universe, recomtrue, weight2);
           }
           for(auto& var: sidevars2D) {
                 var->mcTotalHist->FillUniverse(universe, var->GetRecoValueX(*universe), var->GetRecoValueY(*universe), weight2);

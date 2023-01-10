@@ -177,11 +177,6 @@ void LoopAndFillEventSelection(
         		var->selectedMCReco->FillUniverse(universe, var->GetRecoValue(*universe), weight2); //"Fake data" for closure
             		(*var->m_MChists)[universe->GetInteractionType()].FillUniverse(universe, var->GetRecoValue(*universe), weight2);
             		var->FillCategHistos(*universe,var->GetRecoValue(*universe), weight2);
-            		double reco = var->GetRecoValue(*universe);
-            		double truevar = var->GetTrueValue(*universe);
-            		double recomtrue = reco - truevar;
-			double bias = recomtrue/truevar;
-			var->biasMCReco->FillUniverse(universe,bias,weight2);
         	}
         	for(auto& var: vars2D) {
                 	var->mcTotalHist->FillUniverse(universe, var->GetRecoValueX(*universe), var->GetRecoValueY(*universe), weight2);
@@ -596,7 +591,7 @@ int main(const int argc, const char** argv)
   std::vector<Variable*> vars = {
     new Variable("pTmu", "p_{T, #mu} [GeV/c]", dansPTBins, &CVUniverse::GetMuonPT, &CVUniverse::GetMuonPTTrue), //0
     new Variable("q3", "q3 [GeV]", mehreenQ3Bins, &CVUniverse::Getq3, &CVUniverse::GetTrueQ3), //1
-    new Variable("q2", "q2 [GeV^2]", dansPTBins, &CVUniverse::GetQ2Reco, &CVUniverse::GetTrueQ2GeV), //2
+    //new Variable("q2", "q2 [GeV^2]", dansPTBins, &CVUniverse::GetQ2Reco, &CVUniverse::GetTrueQ2GeV), //2
     new Variable("pzmu", "p_{||, #mu} [GeV/c]", dansPzBins, &CVUniverse::GetMuonPz, &CVUniverse::GetMuonPzTrue),//3
     new Variable("Emu", "E_{#mu} [GeV]", robsEmuBins, &CVUniverse::GetEmuGeV, &CVUniverse::GetElepTrueGeV),//4
     //new Variable("q3pTdiff","[GeV]", dansPTBins, &CVUniverse::Recoq3pTdiff, &CVUniverse::GetTrueq3pTdiff),//5
@@ -620,8 +615,8 @@ int main(const int argc, const char** argv)
  };
 
  std::vector<Variable2D*> vars2D;
- vars2D.push_back(new Variable2D(*vars[6], *vars[1]));// q3bins vs Eavail
- vars2D.push_back(new Variable2D(*vars[6], *vars[8]));// pTbins vs Eavail
+ vars2D.push_back(new Variable2D(*vars[5], *vars[8]));// q3bins vs Eavail
+ vars2D.push_back(new Variable2D(*vars[5], *vars[7]));// pTbins vs Eavail
  //vars2D.push_back(new Variable2D(*vars[6], *vars[10]));// Wexp vs Eavail
  //vars2D.push_back(new Variable2D(*vars[11], *vars[10])); // Wexp vs q3
  //vars2D.push_back(new Variable2D(*vars[9], *vars[9])); // q2 vs q0 (eHadronic)

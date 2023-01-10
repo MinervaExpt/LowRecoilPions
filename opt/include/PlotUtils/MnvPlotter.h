@@ -841,7 +841,8 @@ namespace PlotUtils
             const std::string& errorGroupName = "",
             const bool         asfrac = true,
             const std::string  &Ytitle = "",
-            bool               ignoreUngrouped = false
+            bool               ignoreUngrouped = false,
+            const std::string& histDrawOption = "HIST"
             );
 
         /*! Draw all error sources and their sum in quadrature on a single plot

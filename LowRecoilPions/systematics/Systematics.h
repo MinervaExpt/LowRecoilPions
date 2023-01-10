@@ -15,7 +15,6 @@
 #include "PlotUtils/AngleSystematics.h"
 #include "PlotUtils/TargetMassSystematics.h"
 #include "PlotUtils/MichelSystematics.h"
-#include "CohDiffractiveSystematics.h"
 
 typedef std::map<std::string, std::vector<CVUniverse*>> UniverseMap;
 

@@ -167,8 +167,8 @@ CMakeFiles/runEventLoop.dir/runEventLoop.cpp.o
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/Categorized.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/GetFluxIntegral.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/GetPlaylist.h
+ /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/PionFSCategory.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/SafeROOTName.h
- /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/TruthInteractionStudies.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/Variable.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/Variable2D.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/AngleSystematics.cxx
@@ -199,6 +199,8 @@ CMakeFiles/runEventLoop.dir/runEventLoop.cpp.o
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/LowRecoilFunctions.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/MINOSEfficiencyReweighter.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/MacroUtil.h
+ /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/MichelSystematics.cxx
+ /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/MichelSystematics.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/MinervaUniverse.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/MinosEfficiencySystematics.cxx
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/MinosEfficiencySystematics.h
@@ -223,6 +225,8 @@ CMakeFiles/runEventLoop.dir/runEventLoop.cpp.o
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/RPAReweighter.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/Table.cxx
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/Table.h
+ /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/TargetMassSystematics.cxx
+ /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/TargetMassSystematics.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/TargetUtils.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/TreeWrapper.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/TruthFunctions.h
@@ -237,11 +241,13 @@ CMakeFiles/runEventLoop.dir/runEventLoop.cpp.o
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/universes/GeantHadronSystematics.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/universes/GenieSystematics.cxx
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/universes/GenieSystematics.h
+ /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/universes/MichelSystematics.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/universes/MinosEfficiencySystematics.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/universes/MnvTuneSystematics.cxx
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/universes/MnvTuneSystematics.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/universes/MuonResolutionSystematics.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/universes/MuonSystematics.h
+ /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/universes/TargetMassSystematics.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/utilities/MnvNormalization.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/utilities/NSFDefaults.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/utilities/PlotUtilsPhysicalConstants.h

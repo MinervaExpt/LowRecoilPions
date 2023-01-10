@@ -89,17 +89,6 @@ list_install_components/fast: list_install_components
 
 .PHONY : list_install_components/fast
 
-# Special rule for the target rebuild_cache
-rebuild_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/cvmfs/minerva.opensciencegrid.org/minerva/hep_hpc_products/cmake/v3_7_1/Linux64bit+3.10-2.17/bin/cmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
-.PHONY : rebuild_cache
-
-# Special rule for the target rebuild_cache
-rebuild_cache/fast: rebuild_cache
-
-.PHONY : rebuild_cache/fast
-
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
@@ -110,6 +99,17 @@ edit_cache:
 edit_cache/fast: edit_cache
 
 .PHONY : edit_cache/fast
+
+# Special rule for the target rebuild_cache
+rebuild_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
+	/cvmfs/minerva.opensciencegrid.org/minerva/hep_hpc_products/cmake/v3_7_1/Linux64bit+3.10-2.17/bin/cmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+.PHONY : rebuild_cache
+
+# Special rule for the target rebuild_cache
+rebuild_cache/fast: rebuild_cache
+
+.PHONY : rebuild_cache/fast
 
 # Special rule for the target install/local
 install/local: preinstall
@@ -179,17 +179,17 @@ runXSecLooper/fast:
 .PHONY : runXSecLooper/fast
 
 #=============================================================================
-# Target rules for targets named cutsEventLoop
+# Target rules for targets named studiesEventLoop
 
 # Build rule for target.
-cutsEventLoop: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 cutsEventLoop
-.PHONY : cutsEventLoop
+studiesEventLoop: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 studiesEventLoop
+.PHONY : studiesEventLoop
 
 # fast build rule for target.
-cutsEventLoop/fast:
-	$(MAKE) -f CMakeFiles/cutsEventLoop.dir/build.make CMakeFiles/cutsEventLoop.dir/build
-.PHONY : cutsEventLoop/fast
+studiesEventLoop/fast:
+	$(MAKE) -f CMakeFiles/studiesEventLoop.dir/build.make CMakeFiles/studiesEventLoop.dir/build
+.PHONY : studiesEventLoop/fast
 
 #=============================================================================
 # Target rules for targets named ContinuousSubmit
@@ -335,6 +335,19 @@ Continuous/fast:
 .PHONY : Continuous/fast
 
 #=============================================================================
+# Target rules for targets named studiesEventLoopSide
+
+# Build rule for target.
+studiesEventLoopSide: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 studiesEventLoopSide
+.PHONY : studiesEventLoopSide
+
+# fast build rule for target.
+studiesEventLoopSide/fast:
+	$(MAKE) -f CMakeFiles/studiesEventLoopSide.dir/build.make CMakeFiles/studiesEventLoopSide.dir/build
+.PHONY : studiesEventLoopSide/fast
+
+#=============================================================================
 # Target rules for targets named NightlyStart
 
 # Build rule for target.
@@ -374,19 +387,6 @@ NightlyMemCheck/fast:
 .PHONY : NightlyMemCheck/fast
 
 #=============================================================================
-# Target rules for targets named runEventLoop
-
-# Build rule for target.
-runEventLoop: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 runEventLoop
-.PHONY : runEventLoop
-
-# fast build rule for target.
-runEventLoop/fast:
-	$(MAKE) -f CMakeFiles/runEventLoop.dir/build.make CMakeFiles/runEventLoop.dir/build
-.PHONY : runEventLoop/fast
-
-#=============================================================================
 # Target rules for targets named ExperimentalStart
 
 # Build rule for target.
@@ -400,17 +400,17 @@ ExperimentalStart/fast:
 .PHONY : ExperimentalStart/fast
 
 #=============================================================================
-# Target rules for targets named michelEventLoop
+# Target rules for targets named twoDEventLoop
 
 # Build rule for target.
-michelEventLoop: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 michelEventLoop
-.PHONY : michelEventLoop
+twoDEventLoop: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 twoDEventLoop
+.PHONY : twoDEventLoop
 
 # fast build rule for target.
-michelEventLoop/fast:
-	$(MAKE) -f CMakeFiles/michelEventLoop.dir/build.make CMakeFiles/michelEventLoop.dir/build
-.PHONY : michelEventLoop/fast
+twoDEventLoop/fast:
+	$(MAKE) -f CMakeFiles/twoDEventLoop.dir/build.make CMakeFiles/twoDEventLoop.dir/build
+.PHONY : twoDEventLoop/fast
 
 #=============================================================================
 # Target rules for targets named ContinuousConfigure
@@ -450,6 +450,19 @@ ExperimentalUpdate: cmake_check_build_system
 ExperimentalUpdate/fast:
 	$(MAKE) -f CMakeFiles/ExperimentalUpdate.dir/build.make CMakeFiles/ExperimentalUpdate.dir/build
 .PHONY : ExperimentalUpdate/fast
+
+#=============================================================================
+# Target rules for targets named twoDEventLoopSide
+
+# Build rule for target.
+twoDEventLoopSide: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 twoDEventLoopSide
+.PHONY : twoDEventLoopSide
+
+# fast build rule for target.
+twoDEventLoopSide/fast:
+	$(MAKE) -f CMakeFiles/twoDEventLoopSide.dir/build.make CMakeFiles/twoDEventLoopSide.dir/build
+.PHONY : twoDEventLoopSide/fast
 
 #=============================================================================
 # Target rules for targets named ExperimentalConfigure
@@ -634,87 +647,6 @@ ExtractCrossSection.cpp.s:
 	$(MAKE) -f CMakeFiles/ExtractCrossSection.dir/build.make CMakeFiles/ExtractCrossSection.dir/ExtractCrossSection.cpp.s
 .PHONY : ExtractCrossSection.cpp.s
 
-michelEventLoop.o: michelEventLoop.cpp.o
-
-.PHONY : michelEventLoop.o
-
-# target to build an object file
-michelEventLoop.cpp.o:
-	$(MAKE) -f CMakeFiles/michelEventLoop.dir/build.make CMakeFiles/michelEventLoop.dir/michelEventLoop.cpp.o
-.PHONY : michelEventLoop.cpp.o
-
-michelEventLoop.i: michelEventLoop.cpp.i
-
-.PHONY : michelEventLoop.i
-
-# target to preprocess a source file
-michelEventLoop.cpp.i:
-	$(MAKE) -f CMakeFiles/michelEventLoop.dir/build.make CMakeFiles/michelEventLoop.dir/michelEventLoop.cpp.i
-.PHONY : michelEventLoop.cpp.i
-
-michelEventLoop.s: michelEventLoop.cpp.s
-
-.PHONY : michelEventLoop.s
-
-# target to generate assembly for a file
-michelEventLoop.cpp.s:
-	$(MAKE) -f CMakeFiles/michelEventLoop.dir/build.make CMakeFiles/michelEventLoop.dir/michelEventLoop.cpp.s
-.PHONY : michelEventLoop.cpp.s
-
-nocutsEventLoop.o: nocutsEventLoop.cpp.o
-
-.PHONY : nocutsEventLoop.o
-
-# target to build an object file
-nocutsEventLoop.cpp.o:
-	$(MAKE) -f CMakeFiles/cutsEventLoop.dir/build.make CMakeFiles/cutsEventLoop.dir/nocutsEventLoop.cpp.o
-.PHONY : nocutsEventLoop.cpp.o
-
-nocutsEventLoop.i: nocutsEventLoop.cpp.i
-
-.PHONY : nocutsEventLoop.i
-
-# target to preprocess a source file
-nocutsEventLoop.cpp.i:
-	$(MAKE) -f CMakeFiles/cutsEventLoop.dir/build.make CMakeFiles/cutsEventLoop.dir/nocutsEventLoop.cpp.i
-.PHONY : nocutsEventLoop.cpp.i
-
-nocutsEventLoop.s: nocutsEventLoop.cpp.s
-
-.PHONY : nocutsEventLoop.s
-
-# target to generate assembly for a file
-nocutsEventLoop.cpp.s:
-	$(MAKE) -f CMakeFiles/cutsEventLoop.dir/build.make CMakeFiles/cutsEventLoop.dir/nocutsEventLoop.cpp.s
-.PHONY : nocutsEventLoop.cpp.s
-
-runEventLoop.o: runEventLoop.cpp.o
-
-.PHONY : runEventLoop.o
-
-# target to build an object file
-runEventLoop.cpp.o:
-	$(MAKE) -f CMakeFiles/runEventLoop.dir/build.make CMakeFiles/runEventLoop.dir/runEventLoop.cpp.o
-.PHONY : runEventLoop.cpp.o
-
-runEventLoop.i: runEventLoop.cpp.i
-
-.PHONY : runEventLoop.i
-
-# target to preprocess a source file
-runEventLoop.cpp.i:
-	$(MAKE) -f CMakeFiles/runEventLoop.dir/build.make CMakeFiles/runEventLoop.dir/runEventLoop.cpp.i
-.PHONY : runEventLoop.cpp.i
-
-runEventLoop.s: runEventLoop.cpp.s
-
-.PHONY : runEventLoop.s
-
-# target to generate assembly for a file
-runEventLoop.cpp.s:
-	$(MAKE) -f CMakeFiles/runEventLoop.dir/build.make CMakeFiles/runEventLoop.dir/runEventLoop.cpp.s
-.PHONY : runEventLoop.cpp.s
-
 runXSecLooper.o: runXSecLooper.cpp.o
 
 .PHONY : runXSecLooper.o
@@ -742,6 +674,114 @@ runXSecLooper.cpp.s:
 	$(MAKE) -f CMakeFiles/runXSecLooper.dir/build.make CMakeFiles/runXSecLooper.dir/runXSecLooper.cpp.s
 .PHONY : runXSecLooper.cpp.s
 
+studiesEventLoop.o: studiesEventLoop.cpp.o
+
+.PHONY : studiesEventLoop.o
+
+# target to build an object file
+studiesEventLoop.cpp.o:
+	$(MAKE) -f CMakeFiles/studiesEventLoop.dir/build.make CMakeFiles/studiesEventLoop.dir/studiesEventLoop.cpp.o
+.PHONY : studiesEventLoop.cpp.o
+
+studiesEventLoop.i: studiesEventLoop.cpp.i
+
+.PHONY : studiesEventLoop.i
+
+# target to preprocess a source file
+studiesEventLoop.cpp.i:
+	$(MAKE) -f CMakeFiles/studiesEventLoop.dir/build.make CMakeFiles/studiesEventLoop.dir/studiesEventLoop.cpp.i
+.PHONY : studiesEventLoop.cpp.i
+
+studiesEventLoop.s: studiesEventLoop.cpp.s
+
+.PHONY : studiesEventLoop.s
+
+# target to generate assembly for a file
+studiesEventLoop.cpp.s:
+	$(MAKE) -f CMakeFiles/studiesEventLoop.dir/build.make CMakeFiles/studiesEventLoop.dir/studiesEventLoop.cpp.s
+.PHONY : studiesEventLoop.cpp.s
+
+studiesEventLoopSide.o: studiesEventLoopSide.cpp.o
+
+.PHONY : studiesEventLoopSide.o
+
+# target to build an object file
+studiesEventLoopSide.cpp.o:
+	$(MAKE) -f CMakeFiles/studiesEventLoopSide.dir/build.make CMakeFiles/studiesEventLoopSide.dir/studiesEventLoopSide.cpp.o
+.PHONY : studiesEventLoopSide.cpp.o
+
+studiesEventLoopSide.i: studiesEventLoopSide.cpp.i
+
+.PHONY : studiesEventLoopSide.i
+
+# target to preprocess a source file
+studiesEventLoopSide.cpp.i:
+	$(MAKE) -f CMakeFiles/studiesEventLoopSide.dir/build.make CMakeFiles/studiesEventLoopSide.dir/studiesEventLoopSide.cpp.i
+.PHONY : studiesEventLoopSide.cpp.i
+
+studiesEventLoopSide.s: studiesEventLoopSide.cpp.s
+
+.PHONY : studiesEventLoopSide.s
+
+# target to generate assembly for a file
+studiesEventLoopSide.cpp.s:
+	$(MAKE) -f CMakeFiles/studiesEventLoopSide.dir/build.make CMakeFiles/studiesEventLoopSide.dir/studiesEventLoopSide.cpp.s
+.PHONY : studiesEventLoopSide.cpp.s
+
+twoDEventLoop.o: twoDEventLoop.cpp.o
+
+.PHONY : twoDEventLoop.o
+
+# target to build an object file
+twoDEventLoop.cpp.o:
+	$(MAKE) -f CMakeFiles/twoDEventLoop.dir/build.make CMakeFiles/twoDEventLoop.dir/twoDEventLoop.cpp.o
+.PHONY : twoDEventLoop.cpp.o
+
+twoDEventLoop.i: twoDEventLoop.cpp.i
+
+.PHONY : twoDEventLoop.i
+
+# target to preprocess a source file
+twoDEventLoop.cpp.i:
+	$(MAKE) -f CMakeFiles/twoDEventLoop.dir/build.make CMakeFiles/twoDEventLoop.dir/twoDEventLoop.cpp.i
+.PHONY : twoDEventLoop.cpp.i
+
+twoDEventLoop.s: twoDEventLoop.cpp.s
+
+.PHONY : twoDEventLoop.s
+
+# target to generate assembly for a file
+twoDEventLoop.cpp.s:
+	$(MAKE) -f CMakeFiles/twoDEventLoop.dir/build.make CMakeFiles/twoDEventLoop.dir/twoDEventLoop.cpp.s
+.PHONY : twoDEventLoop.cpp.s
+
+twoDEventLoopSide.o: twoDEventLoopSide.cpp.o
+
+.PHONY : twoDEventLoopSide.o
+
+# target to build an object file
+twoDEventLoopSide.cpp.o:
+	$(MAKE) -f CMakeFiles/twoDEventLoopSide.dir/build.make CMakeFiles/twoDEventLoopSide.dir/twoDEventLoopSide.cpp.o
+.PHONY : twoDEventLoopSide.cpp.o
+
+twoDEventLoopSide.i: twoDEventLoopSide.cpp.i
+
+.PHONY : twoDEventLoopSide.i
+
+# target to preprocess a source file
+twoDEventLoopSide.cpp.i:
+	$(MAKE) -f CMakeFiles/twoDEventLoopSide.dir/build.make CMakeFiles/twoDEventLoopSide.dir/twoDEventLoopSide.cpp.i
+.PHONY : twoDEventLoopSide.cpp.i
+
+twoDEventLoopSide.s: twoDEventLoopSide.cpp.s
+
+.PHONY : twoDEventLoopSide.s
+
+# target to generate assembly for a file
+twoDEventLoopSide.cpp.s:
+	$(MAKE) -f CMakeFiles/twoDEventLoopSide.dir/build.make CMakeFiles/twoDEventLoopSide.dir/twoDEventLoopSide.cpp.s
+.PHONY : twoDEventLoopSide.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -751,10 +791,10 @@ help:
 	@echo "... install/strip"
 	@echo "... install"
 	@echo "... list_install_components"
-	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... runXSecLooper"
-	@echo "... cutsEventLoop"
+	@echo "... rebuild_cache"
+	@echo "... studiesEventLoop"
 	@echo "... ContinuousSubmit"
 	@echo "... ContinuousCoverage"
 	@echo "... ExtractCrossSection"
@@ -767,16 +807,17 @@ help:
 	@echo "... NightlyBuild"
 	@echo "... install/local"
 	@echo "... Continuous"
+	@echo "... studiesEventLoopSide"
 	@echo "... NightlyStart"
 	@echo "... NightlyMemoryCheck"
 	@echo "... NightlyMemCheck"
-	@echo "... runEventLoop"
 	@echo "... ExperimentalStart"
-	@echo "... michelEventLoop"
+	@echo "... twoDEventLoop"
 	@echo "... ContinuousConfigure"
 	@echo "... NightlyCoverage"
 	@echo "... ExperimentalUpdate"
 	@echo "... test"
+	@echo "... twoDEventLoopSide"
 	@echo "... ExperimentalConfigure"
 	@echo "... ExperimentalCoverage"
 	@echo "... ExperimentalBuild"
@@ -792,18 +833,21 @@ help:
 	@echo "... ExtractCrossSection.o"
 	@echo "... ExtractCrossSection.i"
 	@echo "... ExtractCrossSection.s"
-	@echo "... michelEventLoop.o"
-	@echo "... michelEventLoop.i"
-	@echo "... michelEventLoop.s"
-	@echo "... nocutsEventLoop.o"
-	@echo "... nocutsEventLoop.i"
-	@echo "... nocutsEventLoop.s"
-	@echo "... runEventLoop.o"
-	@echo "... runEventLoop.i"
-	@echo "... runEventLoop.s"
 	@echo "... runXSecLooper.o"
 	@echo "... runXSecLooper.i"
 	@echo "... runXSecLooper.s"
+	@echo "... studiesEventLoop.o"
+	@echo "... studiesEventLoop.i"
+	@echo "... studiesEventLoop.s"
+	@echo "... studiesEventLoopSide.o"
+	@echo "... studiesEventLoopSide.i"
+	@echo "... studiesEventLoopSide.s"
+	@echo "... twoDEventLoop.o"
+	@echo "... twoDEventLoop.i"
+	@echo "... twoDEventLoop.s"
+	@echo "... twoDEventLoopSide.o"
+	@echo "... twoDEventLoopSide.i"
+	@echo "... twoDEventLoopSide.s"
 .PHONY : help
 
 

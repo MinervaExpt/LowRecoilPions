@@ -60,11 +60,10 @@ MAT-prefix/src/MAT-stamp/MAT-update: MAT-prefix/src/MAT-stamp/MAT-download
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Performing update step for 'MAT'"
 	cd /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/MAT && /cvmfs/minerva.opensciencegrid.org/minerva/hep_hpc_products/cmake/v3_7_1/Linux64bit+3.10-2.17/bin/cmake -P /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/MAT-prefix/tmp/MAT-gitupdate.cmake
 
-MAT-prefix/src/MAT-stamp/MAT-download: MAT-prefix/src/MAT-stamp/MAT-gitinfo.txt
 MAT-prefix/src/MAT-stamp/MAT-download: MAT-prefix/src/MAT-stamp/MAT-mkdir
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Performing download step (git clone) for 'MAT'"
-	cd /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions && /cvmfs/minerva.opensciencegrid.org/minerva/hep_hpc_products/cmake/v3_7_1/Linux64bit+3.10-2.17/bin/cmake -P /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/MAT-prefix/tmp/MAT-gitclone.cmake
-	cd /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions && /cvmfs/minerva.opensciencegrid.org/minerva/hep_hpc_products/cmake/v3_7_1/Linux64bit+3.10-2.17/bin/cmake -E touch /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/MAT-prefix/src/MAT-stamp/MAT-download
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "No download step for 'MAT'"
+	cd /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/MAT-prefix/src && /cvmfs/minerva.opensciencegrid.org/minerva/hep_hpc_products/cmake/v3_7_1/Linux64bit+3.10-2.17/bin/cmake -E echo_append
+	cd /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/MAT-prefix/src && /cvmfs/minerva.opensciencegrid.org/minerva/hep_hpc_products/cmake/v3_7_1/Linux64bit+3.10-2.17/bin/cmake -E touch /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/MAT-prefix/src/MAT-stamp/MAT-download
 
 MAT-prefix/src/MAT-stamp/MAT-mkdir:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Creating directories for 'MAT'"

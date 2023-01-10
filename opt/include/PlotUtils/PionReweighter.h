@@ -18,19 +18,15 @@
 
 namespace PlotUtils
 {
-  namespace detail
-  {
-    struct empty;
-  }
 
-  template <class UNIVERSE, class EVENT = PlotUtils::detail::empty>
+  template <class UNIVERSE, class EVENT = MichelEvent>
   class PionReweighter:public Reweighter<UNIVERSE, EVENT>
   {
     public:
       PionReweighter() = default;
       virtual ~PionReweighter() = default;
 
-      virtual double GetWeight(const UNIVERSE& univ, const EVENT& /*event*/) const override{
+      virtual double GetWeight(const UNIVERSE& univ, const EVENT& myevent /*event*/) const override{
 	std::vector<double> q3bin1weights = {0.82435, 0.830887, 0.862543, 0.917496, 0.991634, 1.08006, 1.17502, 1.2697, 1.35885, 1.43734, 1.49575, 1.51875, 1.47963, 1.34423, 1.13559, 0.918846, 0.788976, 0.735919, 0.71303, 0.706644, 0.70802, 0.710867, 0.711998};
 
         std::vector<double> q3bin2weights = {0.169059, 0.182445, 0.242976, 0.339379, 0.459126, 0.586182, 0.708931, 0.82085, 0.924898, 1.03088, 1.14148, 1.24816, 1.32363, 1.32895, 1.24746, 1.06005, 0.868318, 0.767249, 0.771477, 0.835023, 0.913111, 0.971778, 0.987021};
@@ -43,43 +39,46 @@ namespace PlotUtils
 
         std::vector<double> tpibin = {.002, .006, .010, .014, .018, .022, .026, .030, .034, .038, .043, .049, .061, .075, .090, .125, .175, .225, .275, .325, .375, .450, .550};
         double weight2 = 1.0;
-        std::vector<double> currentbins =  q3bin1weights;
-        double q3_mecAna =  univ.Getq3();
-        //if (q3_mecAna < 0.40 ) currentbins = q3bin1weights;
-        //else if (q3_mecAna >= 0.40 || q3_mecAna < 0.60) currentbins = q3bin2weights;
-        //else if (q3_mecAna >= 0.60 || q3_mecAna < 0.80) currentbins = q3bin3weights;
-        //else if (q3_mecAna >= 0.80 || q3_mecAna < 1.00) currentbins = q3bin4weights;
-        //else if (q3_mecAna >= 1.00 || q3_mecAna < 1.20) currentbins = q3bin5weights;
-
+        std::vector<double> currentbins;// =  q3bin1weights;
+        if (isnan(univ.GetTrueQ3())) return 1.0;
+        double q3_mecAna = univ.GetTrueQ3(); //univ.Getq3();
+        if (q3_mecAna < 0.40 ) currentbins = q3bin1weights;
+        else if (q3_mecAna >= 0.40 || q3_mecAna < 0.60) currentbins = q3bin2weights;
+        else if (q3_mecAna >= 0.60 || q3_mecAna < 0.80) currentbins = q3bin3weights;
+        else if (q3_mecAna >= 0.80 || q3_mecAna < 1.00) currentbins = q3bin4weights;
+        else if (q3_mecAna >= 1.00 || q3_mecAna < 1.20) currentbins = q3bin5weights;
 	int nbins = currentbins.size();
-
+        if (univ.GetTrueNPionsinEvent() == 0) return 1.0;
         double tpi = univ.GetTrueLowestTpiEvent()/1000.;
-	
-              
-        for (int i = 0; i<nbins; i++){
-                if (tpi <= tpibin[0]) weight2 = currentbins[0];
-                else if (tpi >= 0.002 && tpi < 0.500){
-                        double binedge1 = (tpibin[i]);
-                        double binedge2 = (tpibin[i+1]);
-                        if (tpi > binedge1 && tpi < binedge2 && tpi < 0.5) {
-                                weight2 = currentbins[i];
-                                //std::cout << "Event Pion Low KE is: " << tpi << " GeV and weight applied is: " << weight2 << std::endl;
+        //std::cout << "Printing the q3 of the event " << q3_mecAna << std::endl;	
+	//std::cout << "Printing the lowest Tpi in Event " << tpi << std::endl;
+      	
+        //double tpi = myevent.m_nmichels[0].pionKE/1000.;
+        for (int i = 0; i< tpibin.size(); i++){
+                if (i == 0 && abs(tpi) < 0.002){
+		   weight2 = currentbins[i];
+ 		   break;
+		}
+		else if (tpi < 0.500){
+                        if ( tpi > tpibin[i-1] && tpi < tpibin[i]) {
+				weight2 = currentbins[i];
+                                //std::cout << "Event Pion Low KE is: " << tpi << " GeV and weight applied is: " << currentbins[i] << std::endl;
+				break;
 			}
-                        }
-                        else{
-                                if (tpi > .500 && tpi < 9.0) weight2 = currentbins[22];
-                                //std::cout << "Event Pion Low KE is: " << tpi << " GeV and weight applied is: " << weight2 << std::endl; 
-                       }
+                 }
+		if (tpi > 0.500){
+		       weight2 = currentbins.back();	
+		}
         }
-        return weight2;	
-	};
-      virtual std::string GetName() const {return "This is the Pion ReWeight"; }
+	return weight2;
+      };
+      virtual std::string GetName() const {return "LowRecPionReweight"; }
 
-      virtual bool DependsReco() const {return true;}
+      virtual bool DependsReco() const {return false;}
       //virtual bool DependsTruth() const {return true;}; //Not needed as of time of writing.
-
-      virtual bool IsCompatible(const PionReweighter& /*other*/) const { return true; }
-      virtual std::vector<UNIVERSE*> GetRequiredUniverses() const { return std::vector<UNIVERSE*>{}; }
+      //PlotUtils::PionReweighter& PionReweighter();
+      //virtual bool IsCompatible(const PionReweighter& /*other*/) const { return true; }
+      //virtual std::vector<UNIVERSE*> GetRequiredUniverses() const { return std::vector<UNIVERSE*>{}; }
   };
 }
 

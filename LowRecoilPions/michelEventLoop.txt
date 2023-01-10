@@ -170,28 +170,12 @@ void LoopAndFillEventSelection(
             		var->FillCategHistos(*universe,var->GetRecoValue(*universe), weight2);
             		//var->migration->FillUniverse(universe, var->GetRecoValue(*universe), var->GetTrueValue(*universe), weight2);
             		var->efficiencyNumerator->FillUniverse(universe, var->GetTrueValue(*universe), weight2);
-            		double reco = var->GetRecoValue(*universe);
-            		double truevar = var->GetTrueValue(*universe);
-            		double recomtrue = reco - truevar;
-            		double bias = recomtrue/truevar;
-			var->biasMCReco->FillUniverse(universe, bias, weight2);
-			var->recoMinusTrue->FillUniverse(universe, recomtrue, weight2);
         	}
         	for(auto& var: vars2D) {
                 	var->mcTotalHist->FillUniverse(universe, var->GetRecoValueX(*universe), var->GetRecoValueY(*universe), weight2);
                 	(*var->m_MChists)[universe->GetInteractionType()].FillUniverse(universe, var->GetRecoValueX(*universe), var->GetRecoValueY(*universe), weight2);
                 	var->FillCategHistos(*universe,var->GetRecoValueX(*universe), var->GetRecoValueY(*universe), weight2);
                 	//var->efficiencyNumerator->FillUniverse(universe, var->GetTrueValueX(*universe), var->GetTrueValueY(*universe), weight2);
-                	double recoX = var->GetRecoValueX(*universe);
-                	double truevarX = var->GetTrueValueX(*universe);
-                	double recomtrueX = recoX - truevarX;
-                	//double recoY = var->GetRecoValueY(*universe);
-                	//double truevarY = var->GetTrueValueY(*universe);
-                	//double recomtrueY = recoY - truevarY;
-                	double biasx = recomtrueX/truevarX;
-			var->biasMCReco->FillUniverse(universe, biasx, var->GetRecoValueY(*universe), weight2);
-			var->recoMinusTrueRBins->FillUniverse(universe, recomtrueX, var->GetRecoValueY(*universe), weight2);
-                	var->recoMinusTrueTBins->FillUniverse(universe, recomtrueX, var->GetTrueValueY(*universe), weight2);
          	}
 
         	for(auto& study: studies) study->SelectedSignal(*universe, myevent, weight2);
@@ -236,24 +220,12 @@ void LoopAndFillEventSelection(
                 var->FillCategHistos(*universe,var->GetRecoValue(*universe), weight2);
                 var->migration->FillUniverse(universe, var->GetRecoValue(*universe), var->GetTrueValue(*universe), weight2);
                 var->efficiencyNumerator->FillUniverse(universe, var->GetTrueValue(*universe), weight2);
-                double reco = var->GetRecoValue(*universe);
-                double truevar = var->GetTrueValue(*universe);
-                double recomtrue = reco - truevar;
-                var->recoMinusTrue->FillUniverse(universe, recomtrue, weight2);
              }
              for(auto& var: sidevars2D) {
                 var->mcTotalHist->FillUniverse(universe, var->GetRecoValueX(*universe), var->GetRecoValueY(*universe), weight2);
                 (*var->m_MChists)[universe->GetInteractionType()].FillUniverse(universe, var->GetRecoValueX(*universe), var->GetRecoValueY(*universe), weight2);
                 var->FillCategHistos(*universe,var->GetRecoValueX(*universe), var->GetRecoValueY(*universe), weight2);
                 var->efficiencyNumerator->FillUniverse(universe, var->GetTrueValueX(*universe), var->GetTrueValueY(*universe), weight2);
-                double recoX = var->GetRecoValueX(*universe);
-                double truevarX = var->GetTrueValueX(*universe);
-                double recomtrueX = recoX - truevarX;
-                double recoY = var->GetRecoValueY(*universe);
-                double truevarY = var->GetTrueValueY(*universe);
-                double recomtrueY = recoY - truevarY;
-                var->recoMinusTrueRBins->FillUniverse(universe, recomtrueX, var->GetRecoValueY(*universe), weight2);
-                var->recoMinusTrueTBins->FillUniverse(universe, recomtrueX, var->GetTrueValueY(*universe), weight2);
              }
              for(auto& study: sideband_studies) study->SelectedSignal(*universe, myevent, weight2);
 
@@ -591,21 +563,8 @@ int main(const int argc, const char** argv)
     new Variable("pTmu", "p_{T, #mu} [GeV/c]", dansPTBins, &CVUniverse::GetMuonPT, &CVUniverse::GetMuonPTTrue),
     new Variable("q3", "q3 [GeV]", dansPTBins, &CVUniverse::Getq3, &CVUniverse::GetTrueQ3),
     new Variable("q2", "q2 [GeV^2]", dansPTBins, &CVUniverse::GetQ2Reco, &CVUniverse::GetTrueQ2GeV), 
-    new Variable("EAvailable", "E_{available}", robsRecoilBins, &CVUniverse::GetEavail, &CVUniverse::GetTrueEAvail),
     new Variable("pzmu", "p_{||, #mu} [GeV/c]", dansPzBins, &CVUniverse::GetMuonPz, &CVUniverse::GetMuonPzTrue),
     new Variable("Emu", "E_{#mu} [GeV]", robsEmuBins, &CVUniverse::GetEmuGeV, &CVUniverse::GetElepTrueGeV),
-    new Variable("q3pTdiff","[GeV]", dansPTBins, &CVUniverse::Recoq3pTdiff, &CVUniverse::GetTrueq3pTdiff),
-    //new Variable("ERecoilvEavail", "Erecoil", robsRecoilBins, &CVUniverse::GetRecoilE, &CVUniverse::GetTrueEAvail),
-    //new Variable("ERecoilCorrvEavail", "Erecoilcorr", robsRecoilBins, &CVUniverse::GetRecoilECorr, &CVUniverse::GetTrueEAvail),
-    new Variable("ERecoilvq0", "Erecoilq0", robsRecoilBins, &CVUniverse::GetRecoilE, &CVUniverse::GetTrueQ0),
-    //new Variable("ERecoilCorrvq0", "Erecoilcorrq0", robsRecoilBins, &CVUniverse::GetRecoilECorr, &CVUniverse::GetTrueQ0),
-    new Variable("EavailCorr", "Eavailablecorr", robsRecoilBins, &CVUniverse::GetEavailCorr, &CVUniverse::GetTrueEAvail),
-    //new Variable("NoPolyLineE", "NoPolyLineE", robsRecoilBins, &CVUniverse::GetNoPolylineE, &CVUniverse::GetTrueQ0),
-    //new Variable("PolyLineE", "PolyLineE", robsRecoilBins, &CVUniverse::GetPolylineE, &CVUniverse::GetTrueQ0),
-    new Variable("Eavailvq0", "Eavailvq0", robsRecoilBins, &CVUniverse::GetEavailCorr, &CVUniverse::GetTrueQ0),
-    new Variable("NewEAvail", "NewEAvail", robsRecoilBins, &CVUniverse::NewEavail, &CVUniverse::GetTrueEAvail), 
-    new Variable("NewRecoilE", "NewRecoilE", robsRecoilBins, &CVUniverse::NewRecoilE, &CVUniverse::GetTrueQ0),
-    new Variable("NewEAvailvq0", "NewEavailvq0", robsRecoilBins, &CVUniverse::NewEavail,&CVUniverse::GetTrueQ0)
   };
    
    std::vector<Variable*> varsagain = {
@@ -613,27 +572,9 @@ int main(const int argc, const char** argv)
     new Variable("pTmu", "pT [GeV/c]", dansPTBins, &CVUniverse::GetMuonPT, &CVUniverse::GetMuonPTTrue),
     new Variable("q3", "q3 [GeV]", mehreenQ3Bins, &CVUniverse::Getq3, &CVUniverse::GetTrueQ3),
     new Variable("q2", "q2 [GeV^2]", dansPTBins, &CVUniverse::GetQ2Reco, &CVUniverse::GetTrueQ2GeV), 
-    new Variable("EAvailable", "E_available", robsRecoilBins, &CVUniverse::GetEavail, &CVUniverse::GetTrueEAvail),
     new Variable("pzmu", "p_z [GeV/c]", dansPzBins, &CVUniverse::GetMuonPz, &CVUniverse::GetMuonPzTrue),
     new Variable("Emu", "E_{#mu} [GeV]", robsEmuBins, &CVUniverse::GetEmuGeV, &CVUniverse::GetElepTrueGeV),
     new Variable("pTmubins", "pT [GeV/c]", mehreenQ3Bins,  &CVUniverse::GetMuonPT, &CVUniverse::GetMuonPTTrue),
-    new Variable("ERecoilvEavail", "Erecoil", robsRecoilBins, &CVUniverse::GetRecoilE, &CVUniverse::GetTrueEAvail),
-    new Variable("ERecoilCorrvEavail", "Erecoilcorr", robsRecoilBins, &CVUniverse::GetRecoilECorr, &CVUniverse::GetTrueEAvail),
-    new Variable("ERecoilvq0", "Erecoilq0", robsRecoilBins, &CVUniverse::GetRecoilE, &CVUniverse::GetTrueQ0),
-    new Variable("ERecoilCorrvq0", "Erecoilcorrq0", robsRecoilBins, &CVUniverse::GetRecoilECorr, &CVUniverse::GetTrueQ0),
-    new Variable("EavailCorr", "Eavailablecorr", robsRecoilBins, &CVUniverse::GetEavailCorr, &CVUniverse::GetTrueEAvail),
-    new Variable("ERecoilvEavaily", "Erecoily", recoilbins, &CVUniverse::GetRecoilE, &CVUniverse::GetTrueEAvail),
-    new Variable("ERecoilCorrvEavaily", "Erecoilcorry", recoilbins, &CVUniverse::GetRecoilECorr, &CVUniverse::GetTrueEAvail),
-    new Variable("ERecoilvq0y", "Erecoilq0y", recoilbins, &CVUniverse::GetRecoilE, &CVUniverse::GetTrueQ0),
-    new Variable("ERecoilCorrvq0y", "Erecoilcorrq0y", recoilbins, &CVUniverse::GetRecoilECorr, &CVUniverse::GetTrueQ0),
-    new Variable("EavailCorry", "Eavailablecorry", recoilbins, &CVUniverse::GetEavailCorr, &CVUniverse::GetTrueEAvail),
-    new Variable("EavailCorryq0", "Eavailablecorryq0", recoilbins, &CVUniverse::GetEavailCorr, &CVUniverse::GetTrueQ0), 
-    new Variable("NewEAvail", "NewEAvail", robsRecoilBins, &CVUniverse::NewEavail, &CVUniverse::GetTrueEAvail),  
-    new Variable("NewRecoilE", "NewRecoilE", robsRecoilBins, &CVUniverse::NewRecoilE, &CVUniverse::GetTrueQ0),
-    new Variable("NewEAvailvq0", "NewEavailvq0", robsRecoilBins, &CVUniverse::NewEavail,&CVUniverse::GetTrueQ0),
-    new Variable("NewEAvaily", "NewEAvaily", recoilbins, &CVUniverse::NewEavail, &CVUniverse::GetTrueEAvail),
-    new Variable("NewRecoilEy", "NewRecoilEy", recoilbins, &CVUniverse::NewRecoilE, &CVUniverse::GetTrueQ0),
-    new Variable("NewEAvailvq0y", "NewEavailvq0y", recoilbins, &CVUniverse::NewEavail,&CVUniverse::GetTrueQ0)
   };
 
   std::vector<Variable2D*> vars2D;
@@ -663,15 +604,9 @@ int main(const int argc, const char** argv)
     new Variable("pTmu", "p_{T, #mu} [GeV/c]", dansPTBins, &CVUniverse::GetMuonPT, &CVUniverse::GetMuonPTTrue),
     new Variable("q3", "q3 [GeV]", dansPTBins, &CVUniverse::Getq3, &CVUniverse::GetTrueQ3),
     new Variable("q2", "q2 [GeV^2]", dansPTBins, &CVUniverse::GetQ2Reco, &CVUniverse::GetTrueQ2GeV),
-    new Variable("EAvailable", "E_{available}", robsRecoilBins, &CVUniverse::GetEavail, &CVUniverse::GetTrueEAvail),
     new Variable("pzmu", "p_{||, #mu} [GeV/c]", dansPzBins, &CVUniverse::GetMuonPz, &CVUniverse::GetMuonPzTrue),
     new Variable("Emu", "E_{#mu} [GeV]", robsEmuBins, &CVUniverse::GetEmuGeV, &CVUniverse::GetElepTrueGeV),
     new Variable("q3pTdiff","[GeV]", dansPTBins, &CVUniverse::Recoq3pTdiff, &CVUniverse::GetTrueq3pTdiff),
-    new Variable("ERecoilvEavail", "Erecoil", robsRecoilBins, &CVUniverse::GetRecoilE, &CVUniverse::GetTrueEAvail),
-    new Variable("ERecoilCorrvEavail", "Erecoilcorr", robsRecoilBins, &CVUniverse::GetRecoilECorr, &CVUniverse::GetTrueEAvail),
-    new Variable("ERecoilvq0", "Erecoilq0", robsRecoilBins, &CVUniverse::GetRecoilE, &CVUniverse::GetTrueQ0),
-    new Variable("ERecoilCorrvq0", "Erecoilcorrq0", robsRecoilBins, &CVUniverse::GetRecoilECorr, &CVUniverse::GetTrueQ0),
-    new Variable("EavailCorr", "Eavailablecorr", robsRecoilBins, &CVUniverse::GetEavailCorr, &CVUniverse::GetTrueEAvail)
    };
 
    std::vector<Variable*> sidevarsagain = {
@@ -679,20 +614,9 @@ int main(const int argc, const char** argv)
     new Variable("pTmu", "pT [GeV/c]", dansPTBins, &CVUniverse::GetMuonPT, &CVUniverse::GetMuonPTTrue),
     new Variable("q3", "q3 [GeV]", mehreenQ3Bins, &CVUniverse::Getq3, &CVUniverse::GetTrueQ3),
     new Variable("q2", "q2 [GeV^2]", dansPTBins, &CVUniverse::GetQ2Reco, &CVUniverse::GetTrueQ2GeV), 
-    new Variable("EAvailable", "E_available", robsRecoilBins, &CVUniverse::GetEavail, &CVUniverse::GetTrueEAvail),
     new Variable("pzmu", "p_z [GeV/c]", dansPzBins, &CVUniverse::GetMuonPz, &CVUniverse::GetMuonPzTrue),
     new Variable("Emu", "E_{#mu} [GeV]", robsEmuBins, &CVUniverse::GetEmuGeV, &CVUniverse::GetElepTrueGeV),
     new Variable("pTmubins", "pT [GeV/c]", mehreenQ3Bins,  &CVUniverse::GetMuonPT, &CVUniverse::GetMuonPTTrue),
-    new Variable("ERecoilvEavail", "Erecoil", robsRecoilBins, &CVUniverse::GetRecoilE, &CVUniverse::GetTrueEAvail),
-    new Variable("ERecoilCorrvEavail", "Erecoilcorr", robsRecoilBins, &CVUniverse::GetRecoilECorr, &CVUniverse::GetTrueEAvail),
-    new Variable("ERecoilvq0", "Erecoilq0", robsRecoilBins, &CVUniverse::GetRecoilE, &CVUniverse::GetTrueQ0),
-    new Variable("ERecoilCorrvq0", "Erecoilcorrq0", robsRecoilBins, &CVUniverse::GetRecoilECorr, &CVUniverse::GetTrueQ0),
-    new Variable("EavailCorr", "Eavailablecorr", robsRecoilBins, &CVUniverse::GetEavailCorr, &CVUniverse::GetTrueEAvail),
-    new Variable("ERecoilvEavaily", "Erecoily", recoilbins, &CVUniverse::GetRecoilE, &CVUniverse::GetTrueEAvail),
-    new Variable("ERecoilCorrvEavaily", "Erecoilcorry", recoilbins, &CVUniverse::GetRecoilECorr, &CVUniverse::GetTrueEAvail),
-    new Variable("ERecoilvq0y", "Erecoilq0y", recoilbins, &CVUniverse::GetRecoilE, &CVUniverse::GetTrueQ0),
-    new Variable("ERecoilCorrvq0y", "Erecoilcorrq0y", recoilbins, &CVUniverse::GetRecoilECorr, &CVUniverse::GetTrueQ0),
-    new Variable("EavailCorry", "Eavailablecorry", recoilbins, &CVUniverse::GetEavailCorr, &CVUniverse::GetTrueEAvail)
   };
 
   std::vector<Variable2D*> sidevars2D;
@@ -720,7 +644,6 @@ int main(const int argc, const char** argv)
     std::cerr << "Detected that tree name is CCQENu.  Making validation histograms.\n";
     vars.push_back(new Variable("pzmu", "p_{||, #mu} [GeV/c]", dansPzBins, &CVUniverse::GetMuonPz, &CVUniverse::GetMuonPzTrue));
     vars.push_back(new Variable("Emu", "E_{#mu} [GeV]", robsEmuBins, &CVUniverse::GetEmuGeV, &CVUniverse::GetElepTrueGeV));
-    vars.push_back(new Variable("Erecoil", "E_{recoil}", robsRecoilBins, &CVUniverse::GetRecoilE, &CVUniverse::GetTrueEAvail)); //TODO: q0 is not the same as recoil energy without a spline correction
     
     vars2D.push_back(new Variable2D(*vars[1], *vars[0]));
   }

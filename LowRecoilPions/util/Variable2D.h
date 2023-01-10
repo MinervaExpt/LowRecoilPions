@@ -43,7 +43,8 @@ class Variable2D: public PlotUtils::Variable2DBase<CVUniverse>
       
       mcTotalHist = new Hist((GetNameX() + "_" + GetNameY() + "_MC").c_str(), GetName().c_str(), GetBinVecX(), GetBinVecY(), mc_error_bands);
       selectedSignalReco = new Hist((GetNameX() + "_" + GetNameY() + "_signal_reco").c_str(), GetName().c_str(), GetBinVecX(), GetBinVecY(), mc_error_bands);
-      
+
+      /*      
       std::vector<double> biasbins = {-2.6, -2.4, -2.2, -2. ,-1.8 ,-1.6, -1.4, -1.2 ,-1., -0.8, -0.6, -0.4, -0.2 ,0., 0.2, 0.4, 0.6, 0.8, 1., 1.2, 1.4, 1.6, 1.8, 2., 2.2 ,2.4, 2.6};
       //{-5. ,-4.8 ,-4.6 ,-4.4 ,-4.2, -4. ,-3.8, -3.6 ,-3.4 ,-3.2 ,-3. ,-2.8, -2.6, -2.4, -2.2, -2. ,-1.8 ,-1.6, -1.4, -1.2 ,-1., -0.8, -0.6, -0.4, -0.2 ,0., 0.2, 0.4, 0.6, 0.8, 1., 1.2, 1.4, 1.6, 1.8, 2., 2.2 ,2.4, 2.6, 2.8, 3., 3.2, 3.4, 3.6, 3.8, 4., 4.2, 4.4, 4.6, 4.8 ,5.};
        
@@ -53,7 +54,7 @@ class Variable2D: public PlotUtils::Variable2DBase<CVUniverse>
       //for(int whichBin = 0; whichBin < 300 + 1; ++whichBin) truediffbins.push_back(-3000+diffBinWidth * whichBin);
       recoMinusTrueTBins = new Hist((GetNameX() + "_" + GetNameY() + "_recoMinusTrueTBins").c_str(), GetName().c_str(), truediffbins, GetBinVecY(), mc_error_bands);
       recoMinusTrueRBins = new Hist((GetNameX() + "_" + GetNameY() + "_recoMinusTrueRBins").c_str(), GetName().c_str(), truediffbins, GetBinVecY(), mc_error_bands);
-
+      */
       mc_trueHist = new Hist((GetNameX() + "_" + GetNameY() + "_true_MC").c_str(), GetName().c_str(), GetBinVecX(), GetBinVecY(), mc_error_bands);
 
     }
@@ -66,10 +67,10 @@ class Variable2D: public PlotUtils::Variable2DBase<CVUniverse>
     Hist* efficiencyDenominator;
     util::Categorized<Hist, FSCategory*>* fSignalByPionsInVar; 
     Hist* mcTotalHist;
-    Hist* recoMinusTrueTBins;
-    Hist* recoMinusTrueRBins;
+    //Hist* recoMinusTrueTBins;
+    //Hist* recoMinusTrueRBins;
     Hist* selectedSignalReco;
-    Hist* biasMCReco;
+    //Hist* biasMCReco;
     Hist* mc_trueHist;
 
     void InitializeDATAHists(std::vector<CVUniverse*>& data_error_bands)
@@ -122,6 +123,7 @@ class Variable2D: public PlotUtils::Variable2DBase<CVUniverse>
                 selectedSignalReco->hist->SetDirectory(&file);
                 selectedSignalReco->hist->Write();
       }
+      /*
       if (recoMinusTrueTBins) {
                 recoMinusTrueTBins->hist->SetDirectory(&file);
                 recoMinusTrueTBins->hist->Write();
@@ -135,7 +137,7 @@ class Variable2D: public PlotUtils::Variable2DBase<CVUniverse>
 	biasMCReco->hist->SetDirectory(&file);
 	biasMCReco->hist->Write();
 
-     }
+     }*/
  
      if(efficiencyNumerator)
       {
@@ -164,9 +166,9 @@ class Variable2D: public PlotUtils::Variable2DBase<CVUniverse>
       if(dataHist) dataHist->SyncCVHistos();
       if(efficiencyNumerator) efficiencyNumerator->SyncCVHistos();
       if(efficiencyDenominator) efficiencyDenominator->SyncCVHistos();
-      if(recoMinusTrueTBins) recoMinusTrueTBins->SyncCVHistos();
-      if(recoMinusTrueRBins) recoMinusTrueRBins->SyncCVHistos();
-      if(biasMCReco) biasMCReco->SyncCVHistos();
+      //if(recoMinusTrueTBins) recoMinusTrueTBins->SyncCVHistos();
+      //if(recoMinusTrueRBins) recoMinusTrueRBins->SyncCVHistos();
+      //if(biasMCReco) biasMCReco->SyncCVHistos();
     }
     
     void FillCategHistos(const CVUniverse& univ, double varx, double vary, const double weight)

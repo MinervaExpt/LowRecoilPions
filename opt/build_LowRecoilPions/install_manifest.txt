@@ -1,6 +1,7 @@
-/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/bin/runEventLoop
-/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/bin/michelEventLoop
-/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/bin/cutsEventLoop
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/bin/studiesEventLoop
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/bin/twoDEventLoop
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/bin/studiesEventLoopSide
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/bin/twoDEventLoopSide
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/bin/ExtractCrossSection
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/bin/runXSecLooper
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/bin/backgroundStack.py

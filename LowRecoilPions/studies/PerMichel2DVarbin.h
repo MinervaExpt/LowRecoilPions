@@ -39,7 +39,8 @@ class PerMichel2DVarbin: public Study
         std::cout << "Filling 2D Variable bin hists" << std::endl;
  	m_VarToGENIELabel = new util::Categorized<HIST, int>(("GENIE_"+yVar.name + "_vs_" + xVar.name).c_str(), (xVar.name + " [" + xVar.units + "];" + yVar.name + " [" + yVar.units + "]"), GENIELabels, xVar.bin, yVar.bin, univs); 
         fSignalByPionsInVar = new util::Categorized<HIST, FSCategory*>(pionFSCategories,("npi_"+yVar.name + "_vs_" + xVar.name).c_str(), (xVar.name + " [" + xVar.units + "];" + yVar.name + " [" + yVar.units + "]").c_str(), xVar.bin, yVar.bin, univs);
-        }
+        bkgHist = new HIST((yVar.name + "_vs_" + xVar.name + "_bkg").c_str(), (xVar.name + " [" + xVar.units + "];" + yVar.name + " [" + yVar.units + "]").c_str(), xVar.bin, yVar.bin, univs);
+    }
     
     
     void SaveOrDraw(TDirectory& outDir)
@@ -72,6 +73,7 @@ class PerMichel2DVarbin: public Study
     util::Categorized<HIST, FSCategory*>* fSignalByPionsInVar;
     HW* totalMCHist;
     HW* dataHist;
+    HW* bkgHist;
     //Overriding base class functions
     //Do nothing for now...  Good place for data comparisons in the future. 
     void fillSelected(const CVUniverse& univ, const MichelEvent& evt, const double weight) {
@@ -80,6 +82,15 @@ class PerMichel2DVarbin: public Study
          (*dataHist).FillUniverse(&univ, fxReco(univ, evt, whichMichel), fyReco(univ, evt, whichMichel), weight);
       }
     }
+
+
+    void fillBackground(const CVUniverse& univ, const MichelEvent& evt, const double weight) {
+      for(size_t whichMichel = 0; whichMichel < evt.m_nmichels.size(); ++whichMichel)
+      {
+         (*bkgHist).FillUniverse(&univ, fxReco(univ, evt, whichMichel), fyReco(univ, evt, whichMichel), weight);
+      }
+    }
+
 
     //All of your plots happen here so far.
     void fillSelectedSignal(const CVUniverse& univ, const MichelEvent& evt, const double weight)

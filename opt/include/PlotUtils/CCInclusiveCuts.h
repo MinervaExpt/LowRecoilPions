@@ -22,6 +22,7 @@
 
 #include "PlotUtils/Cut.h"
 #include <sstream>
+#define _USE_MATH_DEFINES
 #ifndef BEN_CCINCLUSIVECUTS_H
 #define BEN_CCINCLUSIVECUTS_H
 
@@ -146,7 +147,11 @@ namespace reco
     private:
       bool checkCut(const UNIVERSE& univ, EVENT& /*evt*/) const override
       {
-        return univ.GetThetamu() < fMax;
+	//std::cout << "Muon angle is " << univ.GetThetamu() << " Radians " << std::endl;
+        //double angleindeg = univ.GetThetamu()*180./M_PI; //fMax*M_PI/180.;
+        
+	//std::cout << "Muon Angle is " << univ.GetThetamu()*180./M_PI << " Degrees" << std::endl;
+	return (univ.GetThetamu()  < fMax);  //*TMath::Pi()/180; // maxAngleRad;
       }
 
       const double fMax; //radians
@@ -176,16 +181,21 @@ namespace reco
     public:
     Apothem(const double apothem): PlotUtils::Cut<UNIVERSE, EVENT>(std::string("Apothem ") + std::to_string(apothem)), fApothem(apothem), fSlope(-1./sqrt(3.))//A regular hexagon has angles of 2*M_PI/3, so I can find this is 1/tan(M_PI/3.)
       {
+	//fEventList.open("ApothemEvents.txt");
       }
-
+     
     private:
       bool checkCut(const UNIVERSE& univ, EVENT& /*evt*/) const override
       {
         const ROOT::Math::XYZTVector vertex = univ.GetVertex();
+        //if ((univ.ShortName() == "cv") &&  (fabs(vertex.y()) < fSlope*fabs(vertex.x()) + 2.*fApothem/sqrt(3.))&& (fabs(vertex.x()) < fApothem) ){
+	//	fEventList << univ.GetEntry() << "\n";
+	       
+        //} 
         return (fabs(vertex.y()) < fSlope*fabs(vertex.x()) + 2.*fApothem/sqrt(3.))
                && (fabs(vertex.x()) < fApothem);
       }
-
+      mutable std::ofstream fEventList;
       const double fApothem;
       const double fSlope; 
   };

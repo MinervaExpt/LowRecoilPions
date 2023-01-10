@@ -29,6 +29,13 @@ class Study
       fillTruthSignal(univ, evt, weight);
     }
 
+    void BackgroundSelected(const CVUniverse& univ, const MichelEvent& evt, const double weight)
+    {
+      fillBackground(univ, evt, weight);
+    }
+
+        
+
     //Find Andrew if you need to know how to overload functions for drawing.
     //Only need this when you write a new Study.
     virtual void SaveOrDraw(TDirectory& outDir) = 0;
@@ -39,6 +46,7 @@ class Study
     virtual void fillSelected(const CVUniverse& univ, const MichelEvent& evt, const double weight) = 0;
     virtual void fillSelectedSignal(const CVUniverse& univ, const MichelEvent& evt, const double weight) = 0;
     virtual void fillTruthSignal(const CVUniverse& univ, const MichelEvent& evt, const double weight) = 0;
+    virtual void fillBackground(const CVUniverse& univ, const MichelEvent& evt, const double weight) = 0;
 };
 
 #endif //STUDY_H

@@ -39,6 +39,7 @@ class PerMichelEvent2DVarbin: public Study
         std::cout << "Filling 2D Variable bin hists" << std::endl;
  	m_VarToGENIELabel = new util::Categorized<HIST, int>(("GENIE_"+yVar.name + "_vs_" + xVar.name).c_str(), (xVar.name + " [" + xVar.units + "];" + yVar.name + " [" + yVar.units + "]"), GENIELabels, xVar.bin, yVar.bin, univs); 
         fSignalByPionsInVar = new util::Categorized<HIST, FSCategory*>(pionFSCategories,("top_"+yVar.name + "_vs_" + xVar.name).c_str(), (xVar.name + " [" + xVar.units + "];" + yVar.name + " [" + yVar.units + "]").c_str(), xVar.bin, yVar.bin, univs);
+        bkgHist = new HIST((yVar.name + "_vs_" + xVar.name + "_bkg").c_str(), (xVar.name + " [" + xVar.units + "];" + yVar.name + " [" + yVar.units + "]").c_str(), xVar.bin, yVar.bin, univs);
     }
     
     
@@ -60,6 +61,8 @@ class PerMichelEvent2DVarbin: public Study
        totalMCHist->SyncCVHistos();
        totalMCHist->hist->Write();
 
+       bkgHist->SyncCVHistos();
+       bkgHist->hist->Write();
        //TODO: You could do plotting here
     }
 
@@ -72,6 +75,7 @@ class PerMichelEvent2DVarbin: public Study
     util::Categorized<HIST, FSCategory*>* fSignalByPionsInVar;
     HW* totalMCHist;
     HW* dataHist;
+    HW* bkgHist;
     //Overriding base class functions
     //Do nothing for now...  Good place for data comparisons in the future. 
     void fillSelected(const CVUniverse& univ, const MichelEvent& evt, const double weight) {
@@ -86,6 +90,11 @@ class PerMichelEvent2DVarbin: public Study
         (*m_VarToGENIELabel)[univ.GetInteractionType()].FillUniverse(&univ, fxReco(univ, evt), fyReco(univ, evt), weight);
         const auto pionCat = std::find_if(pionFSCategories.begin(), pionFSCategories.end(), [&univ](auto& category) { return (*category)(univ); });
         (*fSignalByPionsInVar)[*pionCat].FillUniverse(&univ, fxReco(univ,evt), fyReco(univ, evt), weight);
+    }
+    
+    void fillBackground(const CVUniverse& univ, const MichelEvent& evt, const double weight)
+    {
+        (*bkgHist).FillUniverse(&univ, fxReco(univ, evt), fyReco(univ, evt), weight);
     }
 
     //Do nothing for now...  Good place for efficiency denominators in the future.

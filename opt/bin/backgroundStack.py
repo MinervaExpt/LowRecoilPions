@@ -2,7 +2,7 @@
 
 from ROOT import *
 from ROOT import PlotUtils
-
+from "PlotUtils/MnvColors.h" import MnvColors
 gROOT.SetBatch() #Don't render histograms to a window.  Also gets filled areas correct.
 
 var = "pTmu"
@@ -17,30 +17,34 @@ labelSize = 0.15
 lineSize = 3
 
 TH1.AddDirectory(False)
-dataFile = TFile.Open("runEventLoopData.root")
-mcFile = TFile.Open("runEventLoopMC.root")
 
-mcPOT = mcFile.Get("POTUsed").GetVal()
-dataPOT = dataFile.Get("POTUsed").GetVal()
+#dataFile = TFile.Open("runEventLoopData.root")
+#mcFile = TFile.Open("runEventLoopMC.root")
+
+#mcPOT = mcFile.Get("POTUsed").GetVal()
+#dataPOT = dataFile.Get("POTUsed").GetVal()
 
 #Organize the MC backgrounds into a stacked histogram.
 #Also keep a sum of backgrounds that has full systematics
 #information.
 mcStack = THStack()
-signalHist = mcFile.Get(var + "_selected_signal_reco")
-signalHist.Scale(dataPOT/mcPOT)
-mcSum = signalHist.Clone()
-for key in mcFile.GetListOfKeys():
-  name = str(key.GetName())
-  if name.find("background") > -1 and name.find(var) > -1:
-    hist = key.ReadObj()
-    hist.Scale(dataPOT/mcPOT)
-    mcStack.Add(hist.GetCVHistoWithError().Clone())
-    mcSum.Add(hist)
-mcStack.Add(signalHist.GetCVHistoWithError().Clone())
+#signalHist = mcFile.Get(var + "_selected_signal_reco")
+#signalHist.Scale(dataPOT/mcPOT)
+#mcSum = signalHist.Clone()
+#for key in mcFile.GetListOfKeys():
+#  name = str(key.GetName())
+#  if name.find("background") > -1 and name.find(var) > -1:
+#    hist = key.ReadObj()
+#    hist.Scale(dataPOT/mcPOT)
+#    mcStack.Add(hist.GetCVHistoWithError().Clone())
+#    mcSum.Add(hist)
+#mcStack.Add(signalHist.GetCVHistoWithError().Clone())
 
 #Apply a different color for each MC category
 mcColors = MnvColors.GetColors(MnvColors.kOkabeItoDarkPalette)
+mcColors = MnvColors.GetColors(MnvColors.kKellyPalette)
+for color in mcColors:
+  print color
 nextColor = 0
 for hist in mcStack.GetHists():
   hist.SetLineColor(mcColors[nextColor])

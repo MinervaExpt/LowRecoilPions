@@ -4,6 +4,8 @@
 #include "TruthFunctions.h"
 #include "PlotUtils/NSFDefaults.h" 
 
+//These functions are to be accessed through CVUniverse.h. Will not work if accessed directly through the Reweighter class.
+
 // Get Weights
 virtual double GetGenieWeight() const {
   double nonResPiWgt = UseNonResPiReweight() && PlotUtils::IsNonResPi(*this)

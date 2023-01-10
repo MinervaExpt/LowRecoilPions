@@ -20,12 +20,7 @@ class RecoilERange: public PlotUtils::Cut<CVUniverse, EVENT>
     double fmax; //maximum pT allowed in GeV;
     bool checkCut(const CVUniverse& univ, EVENT&) const
     {
-      const double wexp = univ.GetWExp(); //GeV
       
-      //if (wexp > 1.7) return false;
-      //else if (wexp < 0.0) return false;
-      //else return true;
-      //const double odE = univ.GetDouble("blob_recoil_E_od");
       
       const double reco = univ.NewEavail()/1000.0; //MeV->GeV
       //if (odE > 100.) return false;
