@@ -23,7 +23,6 @@ struct eVarConfig2D
   int nBins;
   std::vector<double> bin;
 };
-:q
 
 class Event2DVarUniverses: public Study2D
 {
@@ -42,6 +41,7 @@ class Event2DVarUniverses: public Study2D
  	m_VarToGENIELabel = new util::Categorized<HIST, int>(("GENIE_"+yVar.name + "_vs_" + xVar.name).c_str(), (xVar.name + " [" + xVar.units + "];" + yVar.name + " [" + yVar.units + "]"), GENIELabels, xVar.bin, yVar.bin, univs); 
         fSignalByPionsInVar = new util::Categorized<HIST, FSCategory*>(pionFSCategories,("top_"+yVar.name + "_vs_" + xVar.name).c_str(), (xVar.name + " [" + xVar.units + "];" + yVar.name + " [" + yVar.units + "]").c_str(), xVar.bin, yVar.bin, univs);
         bkgHist = new HIST((yVar.name + "_vs_" + xVar.name + "_bkg").c_str(), (xVar.name + " [" + xVar.units + "];" + yVar.name + " [" + yVar.units + "]").c_str(), xVar.bin, yVar.bin, univs);
+        truthHist = new HIST((yVar.name + "_vs_" + xVar.name + "_efficiencynumerator").c_str(), (xVar.name + " [" + xVar.units + "];" + yVar.name + " [" + yVar.units + "]").c_str(), xVar.bin, yVar.bin, univs);
     }
     /*   
     void fillHistForAllUniverses(const PlotUtils::Hist2DWrapper<CVUniverse>& histw, const std::vector<CVUniverse*>& univs, const Model<CVUniverse, MichelEvent>& model, const MichelEvent& evt)
@@ -81,19 +81,22 @@ class Event2DVarUniverses: public Study2D
 
        bkgHist->SyncCVHistos();
        bkgHist->hist->Write();
+
+       truthHist->SyncCVHistos();
+       truthHist->hist->Write();
        //TODO: You could do plotting here
     }
 
   private:
     using HIST = PlotUtils::Hist2DWrapper<CVUniverse>;
-    typedef PlotUtils::Hist2DWrapper<CVUniverse> HW;
     reco_t fxReco, fyReco;
 
     util::Categorized<HIST, int>* m_VarToGENIELabel;
     util::Categorized<HIST, FSCategory*>* fSignalByPionsInVar;
-    HW* totalMCHist;
-    HW* dataHist;
-    HW* bkgHist;
+    HIST* totalMCHist;
+    HIST* dataHist;
+    HIST* bkgHist;
+    HIST* truthHist;
     //Overriding base class functions
     //Do nothing for now...  Good place for data comparisons in the future. 
     void fillSelected(const CVUniverse& univ, const MichelEvent& evt, const double weight) {
@@ -117,15 +120,24 @@ class Event2DVarUniverses: public Study2D
     
     void fillBackground(const std::vector<CVUniverse*>& univs, const Model<CVUniverse, MichelEvent>& model, const MichelEvent& evt)
     {
-        fillHistForAllUniverses((*bkgHist), univs,model, evt);
+        fillHistForAllUniverses(*bkgHist, univs,model, evt);
         //(*bkgHist).FillUniverse(&univ, fxReco(univ, evt), fyReco(univ, evt), weight);
     }
     
-    void fillHistForAllUniverses(const HW& histw, const std::vector<CVUniverse*>& univs, const Model<CVUniverse, MichelEvent>& model, const MichelEvent& evt)
+    void fillHistForAllUniverses(const HIST& histw, const std::vector<CVUniverse*>& univs, const Model<CVUniverse, MichelEvent>& model, const MichelEvent& evt)
     {
+         //std::cout << "Filling HISTS for universes " << univs.size() << std::endl;
+         //std::cout << "Printing name of front universe " << univs.front()->ShortName() << std::endl;
+         //CVUniverse* uni = 
+         //std::cout << "Print hist name " << histw.hist->GetName() << std::endl;
          const int whichBin = histw.univHist(univs.front())->FindBin(fxReco(*univs.front(), evt), fyReco(*univs.front(), evt));
+         
+         //histw.AddUniverses(missinguniverse);
+         
+         //std::cout << "Found which bin " << whichBin << std::endl;
          for (const auto univ: univs)
          {
+            // std::cout << "Filling Hist for univ: " << univ->ShortName() << std::endl;
              auto uniHist = histw.univHist(univ); //Getting the histogram for this universse from the histwrapper 
              const double weight = model.GetWeight(*univ, evt);
              uniHist->AddBinContent(whichBin, weight);
@@ -139,8 +151,9 @@ class Event2DVarUniverses: public Study2D
     } // end of fillHistForallUniverses
     
     //Do nothing for now...  Good place for efficiency denominators in the future.
-    void fillTruthSignal(const std::vector<CVUniverse>& univ, const Model<CVUniverse, MichelEvent>& model, const MichelEvent& evt) {
+    void fillTruthSignal(const std::vector<CVUniverse*>& univs, const Model<CVUniverse, MichelEvent>& model, const MichelEvent& evt) {
          int blah = 1;
+	 //fillHistForAllUniverses((*truthHist), univs,model,evt);
          //Do Nothing for now
     }
 };

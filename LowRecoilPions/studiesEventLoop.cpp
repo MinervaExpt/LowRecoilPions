@@ -195,7 +195,8 @@ void LoopAndFillEventSelection(
             
             for(auto& study: studies) study->SelectedSignal(*universe, myevent, weight2);
             const bool isSignal = michelcuts.isSignal(*universe, weight2);
-            if(!isSignal){
+            if(isSignal){ int i =0;}
+            else if(!isSignal){
                for(auto& study: studies) study->BackgroundSelected(*universe, myevent, weight2);
 	    }
          	
@@ -407,7 +408,7 @@ int main(const int argc, const char** argv)
   PlotUtils::MinervaUniverse::SetNuEConstraint(true);
   PlotUtils::MinervaUniverse::SetPlaylist(options.m_plist_string); //TODO: Infer this from the files somehow?
   PlotUtils::MinervaUniverse::SetAnalysisNuPDG(14);
-  PlotUtils::MinervaUniverse::SetNFluxUniverses(2);
+  PlotUtils::MinervaUniverse::SetNFluxUniverses(500);
   PlotUtils::MinervaUniverse::SetZExpansionFaReweight(false);
 
 
@@ -489,7 +490,7 @@ int main(const int argc, const char** argv)
   MnvTunev4.emplace_back(new PlotUtils::FSIReweighter<CVUniverse, MichelEvent>(true, true));
   MnvTunev4.emplace_back(new PlotUtils::COHPionReweighter<CVUniverse, MichelEvent>());
   MnvTunev4.emplace_back(new PlotUtils::TargetMassReweighter<CVUniverse, MichelEvent>());  
-  MnvTunev4.emplace_back(new PlotUtils::PionReweighter<CVUniverse,MichelEvent>()); 
+  //MnvTunev4.emplace_back(new PlotUtils::PionReweighter<CVUniverse,MichelEvent>()); 
   PlotUtils::Model<CVUniverse, MichelEvent> model(std::move(MnvTunev4));
   
   // Make a map of systematic universes
@@ -525,12 +526,9 @@ int main(const int argc, const char** argv)
   
    
   int nq3mbins = mehreenQ3Bins.size() -1; 
-  std::vector<double> tpibins = {0, 4., 8., 12., 16., 20., 24., 28., 32., 36., 40., 46., 52.,60., 70., 80., 100., 125.,150., 175., 200., 225., 250., 275., 300., 350., 400., 500., 700.,1000.};//, 1300., 1600., 2000.};   
-   std::vector<double> rangebins = {0., 8., 16., 24., 32., 40., 50., 65., 80.,95., 110., 140., 170., 200., 230., 260., 290., 310., 360., 400., 450., 500., 550., 600., 650., 700., 800., 900., 1000., 1200., 1400., 1800., 2400.};
+  std::vector<double> tpibins = {0.0001, 4., 8., 12., 16., 20., 24., 28., 32., 36., 40., 46., 52.,60., 70., 80., 100., 125.,150., 175., 200., 225., 250., 275., 300., 350., 400., 500., 700.,1000.};//, 1300., 1600., 2000.};   
+   std::vector<double> rangebins = {0.0001, 8., 16., 24., 32., 40., 50., 65., 80.,95., 110., 140., 170., 200., 230., 260., 290., 310., 360., 400., 450., 500., 550., 600., 650., 700., 800., 900., 1000., 1200., 1400., 1800., 2400.};
 
-  //std::vector<double> rangebins = {0, 4., 8., 12., 16., 20., 24., 28., 32., 36., 40., 44., 50., 56., 62., 70., 80.,90., 100., 110.,  120., 140., 160., 180., 200., 220., 240., 260., 280., 300., 325., 350., 375., 400., 450., 500., 550., 600., 650., 700., 800., 900., 1000., 1200., 1400., 1800., 2400.};             
-  //std::vector<double> tpibins = {0., 4., 8., 12., 16., 20., 24., 28., 32., 36., 40., 46., 52., 60.,  70., 80., 90., 100., 120., 140., 160., 180., 200., 220., 240., 260.,280., 300., 320., 340., 360., 380., 400., 500., 1000.};
-  //std::vector<double> rangebins = {0., 4., 8., 12., 16., 20., 24., 28., 32., 36., 40., 46., 52., 60., 70., 80., 90., 100., 120., 140., 160., 180., 200., 220., 260., 280., 300., 320., 340., 360., 380., 400., 425., 450., 475., 500., 600., 700., 800., 1000., 1200., 1400., 1600., 2000., 2400.}; 
   std::vector<double> recoilbins = {0.0, 150., 225., 300., 400., 500., 600.,700., 800., 900., 1000.};// 1200., 1400., 1600.};
   const double robsRecoilBinWidth = 50; //MeV
   for(int whichBin = 0; whichBin < 30 + 1; ++whichBin) robsRecoilBins.push_back(robsRecoilBinWidth * whichBin);
@@ -581,7 +579,7 @@ int main(const int argc, const char** argv)
                                  {
                                    double micheldist = evt.m_nmichels[whichMichel].Best3Ddist;
 				   if (evt.m_nmichels[whichMichel].true_parentpdg == 211) return micheldist;
- 				   else return -9999.;
+ 				   else return 9999.;
                                  };
    std::function<double(const CVUniverse&, const MichelEvent&, const int)> permichel_tpi = [](const CVUniverse& univ, const MichelEvent& evt, const int whichMichel)
                                  {
@@ -939,42 +937,6 @@ std::function<double(const CVUniverse&, const MichelEvent&, const int)> true_ang
    int nbinsrange = rangebins.size()-1;
    int nbinstpi = tpibins.size()-1;
    int nanglebin = anglebins.size() -1;
-   //studies.push_back(new PerMichelVarByGENIELabel(true_angle, "true_angle", "cos(#theta)", 21, -1.0, 1.0, error_bands));
-   //studies.push_back(new PerMichelVarByGENIELabel(true_angle_range1, "true_angle_range1", "cos(#theta)", 21, -1.0, 1., error_bands));
-   //studies.push_back(new PerMichelVarByGENIELabel(true_angle_range2, "true_angle_range2", "cos(#theta)", 21, -1.0, 1., error_bands));
-   //studies.push_back(new PerMichelVarByGENIELabel(true_angle_range3, "true_angle_range3", "cos(#theta)", 21, -1.0, 1., error_bands));
-   //studies.push_back(new PerMichelVarByGENIELabel(true_angle_range4, "true_angle_range4", "cos(#theta)", 21, -1.0, 1., error_bands));
-   //studies.push_back(new PerMichelVarByGENIELabel(pion_angle, "pion_angle", "cos(#theta)", 21, -1.0, 1., error_bands));
-   //studies.push_back(new PerMichelVarByGENIELabel(pion_angle_range1, "pion_angle_range1", "cos(#theta)", 21, -1.0, 1., error_bands));
-   //studies.push_back(new PerMichelVarByGENIELabel(pion_angle_range2, "pion_angle_range2", "cos(#theta)", 21, -1.0, 1., error_bands));
-   //studies.push_back(new PerMichelVarByGENIELabel(pion_angle_range3, "pion_angle_range3", "cos(#theta)", 21, -1.0, 1., error_bands));
-   //studies.push_back(new PerMichelVarByGENIELabel(pion_angle_range4, "pion_angle_range4", "cos(#theta)", 21, -1.0, 1., error_bands));
-
-   //studies.push_back(new PerMichelVarVec(michel_XZ, "best_XZ", "mm", nbinsrange, rangebins, error_bands));
-   //studies.push_back(new PerMichelVarVec(michel_UZ, "best_UZ", "mm", nbinsrange, rangebins, error_bands));
-   //studies.push_back(new PerMichelVarVec(michel_VZ, "best_VZ", "mm", nbinsrange, rangebins, error_bands));
-   //studies.push_back(new PerMichelVarVec(michel_XZ_upvtx, "upvtx_XZ", "mm", nbinsrange, rangebins, error_bands));
-   //studies.push_back(new PerMichelVarVec(michel_XZ_upclus, "upclus_XZ", "mm", nbinsrange, rangebins, error_bands));
-   //studies.push_back(new PerMichelVarVec(michel_XZ_downclus, "downclus_XZ", "mm", nbinsrange, rangebins, error_bands));
-   //studies.push_back(new PerMichelVarVec(michel_XZ_downvtx, "downvtx_XZ", "mm", nbinsrange, rangebins, error_bands));
-   //studies.push_back(new PerMichelVarVec(michel_UZ_upvtx, "upvtx_UZ", "mm", nbinsrange,rangebins, error_bands));
-   //studies.push_back(new PerMichelVarVec(michel_UZ_upclus, "upclus_UZ", "mm", nbinsrange, rangebins, error_bands));
-   //studies.push_back(new PerMichelVarVec(michel_UZ_downclus, "downclus_UZ", "mm", nbinsrange, rangebins, error_bands));
-   //studies.push_back(new PerMichelVarVec(michel_UZ_downvtx, "downvtx_UZ", "mm", nbinsrange, rangebins, error_bands));
-   //studies.push_back(new PerMichelVarVec(michel_VZ_upvtx, "upvtx_VZ", "mm", nbinsrange, rangebins, error_bands));
-   //studies.push_back(new PerMichelVarVec(michel_VZ_upclus, "upclus_VZ", "mm", nbinsrange, rangebins, error_bands));
-   //studies.push_back(new PerMichelVarVec(michel_VZ_downclus, "downclus_VZ", "mm", nbinsrange, rangebins, error_bands));
-   //studies.push_back(new PerMichelVarVec(michel_VZ_downvtx, "downvtx_VZ", "mm", nbinsrange, rangebins, error_bands));
-
-   //studies.push_back(new PerMichelVarByGENIELabel(delta_t, "michelmuon_deltat", "#mus", 30, 0.0, 9.0, error_bands));
-   //studies.push_back(new PerMichelVarVec(overlay_vtx_range, "overlay_vtx_range",  "mm", nbinsrange, rangebins, error_bands));    
-   //studies.push_back(new PerMichelVarVec(overlay_clus_range, "overlay_clus_range",  "mm", nbinsrange, rangebins, error_bands));
-   //studies.push_back(new PerMichelVarVec(truemichel_goodvtx_range, "truemichel_goodvtx_range",  "mm", nbinsrange, rangebins, error_bands));
-   //studies.push_back(new PerMichelVarVec(truemichel_goodclus_range, "truemichel_goodclus_range",  "mm", nbinsrange, rangebins, error_bands));
-   //studies.push_back(new PerMichelVarVec(truemichel_badvtx_range, "truemichel_badvtx_range",  "mm",  nbinsrange, rangebins, error_bands));
-   //studies.push_back(new PerMichelVarVec(truemichel_badclus_range, "truemichel_badclus_range",  "mm", nbinsrange, rangebins, error_bands));
-   //studies.push_back(new PerMichelVarVec(permichel_tpi, "Per_Michel_PrimaryParentKE", "MeV", nbinstpi, tpibins, error_bands));
-   //studies.push_back(new PerMichelVarVec(pertruepimichel_range, "permichel_pirange_truepi", "mm", nbinstpi, tpibins, error_bands)); 
 
    //VarConfig deltat_config{"deltat", "#mus", 30, 0., 9.};
    VarConfig pirange_config{"pirange", "mm", 100, 0.0, 2000.0};
@@ -995,19 +957,12 @@ std::function<double(const CVUniverse&, const MichelEvent&, const int)> true_ang
    studies.push_back(new PerMichelVarVecFSPart(pion_angle_range3, "pion_angle_range3", "cos(#theta)", nbinsangle,anglebins, error_bands));
    studies.push_back(new PerMichelVarVecFSPart(pion_angle_range4, "pion_angle_range4", "cos(#theta)",nbinsangle,anglebins , error_bands));
 
-   //studies.push_back(new PerMichelVarVec(permichel_range,"permichel_pirange", "mm",nbinsrange, rangebins, error_bands));
-   //studies.push_back(new PerMichelVarVec(permichel_tpi,"permichel_tpi", "MeV", nbinstpi, tpibins, error_bands)); 
    studies.push_back(new PerMichelVarVecFSPart(permichel_range, "permichel_pirange", "mm", nbinsrange, rangebins, error_bands));
    studies.push_back(new PerMichelVarVecFSPart(permichel_tpi,"permichel_tpi", "MeV", nbinstpi, tpibins, error_bands));
 
-   //sideband_studies.push_back(new PerMichelVarVecFSPart(permichel_range, "permichel_pirange_npi", "mm", nbinsrange, rangebins, error_bands));
-   //sideband_studies.push_back(new PerMichelVarVecFSPart(permichel_tpi,"permichel_tpi_npi", "MeV", nbinstpi, tpibins, error_bands));
-   //sideband_studies.push_back(new PerMichel2DVarbin(permichel_tpi, permichel_range, tpiconfig, rangeconfig, error_bands));
-   //sideband_studies.push_back(new PerMichel2DVar(permichel_tpi, permichel_range, tpi_config, pirange_config, error_bands));
 
-   studies.push_back(new PerMichel2DVarbin(permichel_tpi, permichel_range, tpiconfig, rangeconfig, error_bands));
+   studies.push_back(new PerMichel2DVarbin(permichel_tpi, pertruepimichel_range, tpiconfig, rangeconfig, error_bands));
    //studies.push_back(new PerMichel2DVarbin(permichel_range, permichel_tpi, rangeconfig,tpiconfig, error_bands));
-   //studies.push_back(new PerMichel2DVar(permichel_tpi, permichel_range, tpi_config, pirange_config, error_bands));
   
    std::function<double(const CVUniverse&, const MichelEvent&)> event_angle = [](const CVUniverse& univ, const MichelEvent& evt)
                                 { 
@@ -1020,151 +975,10 @@ std::function<double(const CVUniverse&, const MichelEvent&, const int)> true_ang
                                   return range;
                                 };
    
-   studies.push_back(new PerMichelEvent2DVarbin(event_angle, getpT, erangeconfig, pTconfig, error_bands));
-   studies.push_back(new PerMichelEvent2DVarbin(event_range, getpT, angleconfig, pTconfig, error_bands));
+   studies.push_back(new PerMichelEvent2DVarbin(event_angle, getpT, angleconfig, pTconfig, error_bands));
+   studies.push_back(new PerMichelEvent2DVarbin(event_range, getpT, erangeconfig, pTconfig, error_bands));
 
 
-   std::function<double(const CVUniverse&, const MichelEvent&)> best_pionrange = [](const CVUniverse& univ, const MichelEvent& evt)
-                                 {
-                                   int bestidx = evt.m_idx;
-                                   if (bestidx < 0) return -9999.;
-                                   else{
-                                   double dist = evt.m_nmichels[bestidx].Best3Ddist;
-                                   return dist;
-                                   }
-                                 };
-
-   std::function<double(const CVUniverse&, const MichelEvent&)> best_tpi = [](const CVUniverse& univ, const MichelEvent& evt)
-                                 {
-                                   int bestidx = evt.m_idx;
-				   if (bestidx < 0) return -9999.;
-                                   else{
-                                   double tpi = evt.m_nmichels[bestidx].pionKE;
-                                   return tpi;
-                                   }
-                                 };
-   std::function<double(const CVUniverse&, const MichelEvent&)> best_pionrange_overlay_vtx = [](const CVUniverse& univ, const MichelEvent& evt)
-                                 {
-                                   int bestidx = evt.m_idx;
-                                   if (bestidx < 0) return -9999.;
-                                   else{
-                                        double micheldist = evt.m_nmichels[bestidx].Best3Ddist;
-                                   	int overlayfrac = evt.m_nmichels[bestidx].overlay_fraction;
-                                   	int matchtype = evt.m_nmichels[bestidx].BestMatch;
-                                   	int trueEnd = evt.m_nmichels[bestidx].trueEndpoint;
-                                   	int recoEnd = evt.m_nmichels[bestidx].recoEndpoint;
-                                   	if (overlayfrac > .5 && (matchtype == 1 || matchtype == 2)) return micheldist;
-                                   	else return -9999.;
-				   }
-                                 };
-
-  std::function<double(const CVUniverse&, const MichelEvent&)> best_pionrange_overlay_clus = [](const CVUniverse& univ, const MichelEvent& evt)
-                                 {
-                                   int bestidx = evt.m_idx;
-                                   if (bestidx < 0) return -9999.;
-                                   else{
-                                        double micheldist = evt.m_nmichels[bestidx].Best3Ddist;
-                                        int overlayfrac = evt.m_nmichels[bestidx].overlay_fraction;
-                                        int matchtype = evt.m_nmichels[bestidx].BestMatch;
-                                        int trueEnd = evt.m_nmichels[bestidx].trueEndpoint;
-                                        int recoEnd = evt.m_nmichels[bestidx].recoEndpoint;
-                                        if (overlayfrac > .5 && (matchtype == 3 || matchtype == 4)) return micheldist;
-                                        else return -9999.;
-                                   }
-                                 };
-
-std::function<double(const CVUniverse&, const MichelEvent&)> best_pionrange_truegood_vtx = [](const CVUniverse& univ, const MichelEvent& evt)
-                                 {
-                                   int bestidx = evt.m_idx;
-                                   if (bestidx < 0) return -9999.;
-                                   else{
-                                        double micheldist = evt.m_nmichels[bestidx].Best3Ddist;
-                                        int overlayfrac = evt.m_nmichels[bestidx].overlay_fraction;
-                                        int matchtype = evt.m_nmichels[bestidx].BestMatch;
-                                        int trueEnd = evt.m_nmichels[bestidx].trueEndpoint;
-                                        int recoEnd = evt.m_nmichels[bestidx].recoEndpoint;
-                                        if (overlayfrac < .5 && trueEnd == recoEnd && (matchtype == 1 || matchtype == 2)) return micheldist;
-                                        else return -9999.;
-                                   }
-                                 };
-
-std::function<double(const CVUniverse&, const MichelEvent&)> best_pionrange_truebad_vtx = [](const CVUniverse& univ, const MichelEvent& evt)
-                                 {
-                                   int bestidx = evt.m_idx;
-                                   if (bestidx < 0) return -9999.;
-                                   else{
-                                        double micheldist = evt.m_nmichels[bestidx].Best3Ddist;
-                                        int overlayfrac = evt.m_nmichels[bestidx].overlay_fraction;
-                                        int matchtype = evt.m_nmichels[bestidx].BestMatch;
-                                        int trueEnd = evt.m_nmichels[bestidx].trueEndpoint;
-                                        int recoEnd = evt.m_nmichels[bestidx].recoEndpoint;
-                                        if (overlayfrac < .5 && trueEnd != recoEnd && (matchtype == 1 || matchtype == 2)) return micheldist;
-                                        else return -9999.;
-                                   }
-                                 };
-
-std::function<double(const CVUniverse&, const MichelEvent&)> best_pionrange_truegood_clus = [](const CVUniverse& univ, const MichelEvent& evt)
-                                 {
-                                   int bestidx = evt.m_idx;
-                                   if (bestidx < 0) return -9999.;
-                                   else{
-                                        double micheldist = evt.m_nmichels[bestidx].Best3Ddist;
-                                        int overlayfrac = evt.m_nmichels[bestidx].overlay_fraction;
-                                        int matchtype = evt.m_nmichels[bestidx].BestMatch;
-                                        int trueEnd = evt.m_nmichels[bestidx].trueEndpoint;
-                                        int recoEnd = evt.m_nmichels[bestidx].recoEndpoint;
-                                        if (overlayfrac < .5 && trueEnd == recoEnd && (matchtype == 3 || matchtype == 4)) return micheldist;
-                                        else return -9999.;
-                                   }
-                                 };
-
-std::function<double(const CVUniverse&, const MichelEvent&)> best_pionrange_truebad_clus = [](const CVUniverse& univ, const MichelEvent& evt)
-                                 {
-                                   int bestidx = evt.m_idx;
-                                   if (bestidx < 0) return -9999.;
-                                   else{
-                                        double micheldist = evt.m_nmichels[bestidx].Best3Ddist;
-                                        int overlayfrac = evt.m_nmichels[bestidx].overlay_fraction;
-                                        int matchtype = evt.m_nmichels[bestidx].BestMatch;
-                                        int trueEnd = evt.m_nmichels[bestidx].trueEndpoint;
-                                        int recoEnd = evt.m_nmichels[bestidx].recoEndpoint;
-                                        if (overlayfrac < .5 && trueEnd != recoEnd && (matchtype == 3 || matchtype == 4)) return micheldist;
-                                        else return -9999.;
-                                   }
-                                 };
-
-
-std::function<double(const CVUniverse&, const MichelEvent&)> lowesttpi = [](const CVUniverse& univ, const MichelEvent& evt)
-{
-				   double lowtpi = evt.lowTpi;
-			  	   return lowtpi;
-
-};
-   //studies.push_back(new PerEventVarBin(lowesttpi, "LowestKE_pion", "MeV", nbinstpi ,tpibins, error_bands));
-
-   //studies.push_back(new PerMichelEventVarByGENIELabel(best_pionrange, "best_pionrange", "mm", 100, 0.0, 2000.0, error_bands));
-   //studies.push_back(new PerMichelEventVarByGENIELabel(best_pionrange_overlay_clus, "best_pionrange_overlay_clus",  "mm", 100, 0.0, 2000.0, error_bands));
-   //studies.push_back(new PerMichelEventVarByGENIELabel(best_pionrange_overlay_vtx , "best_pionrange_overlay_vtx ",  "mm", 100, 0.0, 2000.0, error_bands));
-   //studies.push_back(new PerMichelEventVarByGENIELabel(best_pionrange_truegood_vtx, "best_pionrange_truegood_vtx",  "mm", 100, 0.0, 2000.0, error_bands));
-   //studies.push_back(new PerMichelEventVarByGENIELabel(best_pionrange_truebad_vtx, "best_pionrange_truebad_vtx",  "mm", 100, 0.0, 2000.0, error_bands));
-   //studies.push_back(new PerMichelEventVarByGENIELabel(best_pionrange_truegood_clus, "best_pionrange_truegood_clus",  "mm", 100, 0.0, 2000.0, error_bands));
-   //studies.push_back(new PerMichelEventVarByGENIELabel(best_pionrange_truebad_clus, "best_pionrange_truebad_clus",  "mm", 100, 0.0, 2000.0, error_bands));
-   
-   //studies.push_back(new PerMichelEvent2DVarbin(best_tpi, best_pionrange, etpiconfig, erangeconfig, error_bands));
-   //studies.push_back(new PerMichelEvent2DVarbin(best_tpi, getq3, etpiconfig, q3config, error_bands));
-   //studies.push_back(new PerMichelEvent2DVarbin(best_pionrange, getq3, erangeconfig, q3config, error_bands));
-   //studies.push_back(new PerMichelEvent2DVarbin(best_tpi, getpT, etpiconfig, pTconfig, error_bands));
-
-   //sideband_studies.push_back(new PerMichelEvent2DVarbin(best_tpi, best_pionrange, etpiconfig, erangeconfig, error_bands));
-   //sideband_studies.push_back(new PerMichelEvent2DVarbin(best_tpi, getq3, etpiconfig, q3config, error_bands));
-   //sideband_studies.push_back(new PerMichelEvent2DVarbin(best_pionrange, getq3, erangeconfig, q3config, error_bands));
-   //sideband_studies.push_back(new PerMichelEvent2DVarbin(best_tpi, getpT, etpiconfig, pTconfig, error_bands));
-   //sideband_studies.push_back(new PerMichelEvent2DVarbin(best_pionrange, getpT, erangeconfig, pTconfig, error_bands)); 
-
-
-
-  //studies.push_back(new PerMichel2DVar(delta_t, permichel_range, deltat_config, pirange_config, error_bands));  
-   //   studies.push_back(new PerMichel2DVar(permichel_tpi, permichel_range, tpi_config, pirange_config, error_bands));
 
 // Set Up Data Universe
 
@@ -1184,28 +998,6 @@ std::function<double(const CVUniverse&, const MichelEvent&)> lowesttpi = [](cons
  
   data_studies.push_back(new PerMichelEvent2DVarbin(event_angle, getpT, angleconfig, pTconfig, data_error_bands));
   data_studies.push_back(new PerMichelEvent2DVarbin(event_range, getpT, erangeconfig, pTconfig, data_error_bands));
-  //data_studies.push_back(new PerMichelEventVarByGENIELabel(best_pionrange, "best_pionrange", "mm", 100, 0.0, 2000.0, data_error_bands));
-  //data_studies.push_back(new PerMichelVarByGENIELabel(delta_t, "michelmuon_deltat", "#mus", 30, 0.0, 9.0, data_error_bands));
-  //data_studies.push_back(new PerMichelVarByGENIELabel(pion_angle, "pion_angle", "cos(#theta)", 21, -1.0, 1., data_error_bands));
-  //data_studies.push_back(new PerMichelVarByGENIELabel(pion_angle_range1, "pion_angle_range1", "cos(#theta)", 21, -1.0, 1., data_error_bands));
-  //data_studies.push_back(new PerMichelVarByGENIELabel(pion_angle_range2, "pion_angle_range2", "cos(#theta)", 21, -1.0, 1., data_error_bands));
-  //data_studies.push_back(new PerMichelVarByGENIELabel(pion_angle_range3, "pion_angle_range3", "cos(#theta)", 21, -1.0, 1., data_error_bands));
-  //data_studies.push_back(new PerMichelVarByGENIELabel(pion_angle_range4, "pion_angle_range4", "cos(#theta)", 21, -1.0, 1., data_error_bands)); 
-  //data_studies.push_back(new PerMichelVarVec(permichel_range,"permichel_pirange", "mm",nbinsrange, rangebins, data_error_bands));
-  //data_studies.push_back(new PerMichelEvent2DVarbin(best_pionrange, getq3, erangeconfig, q3config, data_error_bands));
-  //data_studies.push_back(new PerMichelEvent2DVarbin(best_pionrange, getpT, erangeconfig, pTconfig, data_error_bands));
- 
-
-  //data_sidebands.push_back(new PerMichelEventVarByGENIELabel(best_pionrange, "best_pionrange", "mm", 100, 0.0, 2000.0, data_error_bands));
-  //data_sidebands.push_back(new PerMichelVarByGENIELabel(delta_t, "michelmuon_deltat", "#mus", 30, 0.0, 9.0, data_error_bands));
-  //data_sidebands.push_back(new PerMichelVarByGENIELabel(pion_angle, "pion_angle", "cos(#theta)", 21, -1.0, 1., data_error_bands));
-  //data_sidebands.push_back(new PerMichelVarByGENIELabel(pion_angle_range1, "pion_angle_range1", "cos(#theta)", 21, -1.0, 1., data_error_bands));
-  //data_sidebands.push_back(new PerMichelVarByGENIELabel(pion_angle_range2, "pion_angle_range2", "cos(#theta)", 21, -1.0, 1., data_error_bands));
-  //data_sidebands.push_back(new PerMichelVarByGENIELabel(pion_angle_range3, "pion_angle_range3", "cos(#theta)", 21, -1.0, 1., data_error_bands));
-  //data_sidebands.push_back(new PerMichelVarByGENIELabel(pion_angle_range4, "pion_angle_range4", "cos(#theta)", 21, -1.0, 1., data_error_bands));
-  //data_sidebands.push_back(new PerMichelVarVec(permichel_range,"permichel_pirange", "mm",nbinsrange, rangebins, data_error_bands));
-  //data_sidebands.push_back(new PerMichelEvent2DVarbin(best_pionrange, getq3, erangeconfig, q3config, data_error_bands));
-  //data_sidebands.push_back(new PerMichelEvent2DVarbin(best_pionrange, getpT, erangeconfig, pTconfig, data_error_bands)); 
    
 
   // Loop entries and fill

@@ -74,9 +74,9 @@ add_subdirectory(util)
 #target_link_libraries(runEventLoop ${ROOT_LIBRARIES} util MAT MAT-MINERvA) #event cuts studies systematics)
 #install(TARGETS runEventLoop DESTINATION bin)
 
-#add_executable(studies2DEventLoop studies2DEventLoop.cpp)
-#target_link_libraries(studies2DEventLoop ${ROOT_LIBRARIES} util MAT MAT-MINERvA) #event cuts studies systematics)
-#install(TARGETS studies2DEventLoop DESTINATION bin)
+add_executable(twoDEventLoopFull twoDEventLoopFull.cpp)
+target_link_libraries(twoDEventLoopFull ${ROOT_LIBRARIES} util MAT MAT-MINERvA) #event cuts studies systematics)
+install(TARGETS twoDEventLoopFull DESTINATION bin)
 
 add_executable(studiesEventLoop studiesEventLoop.cpp)
 target_link_libraries(studiesEventLoop ${ROOT_LIBRARIES} util MAT MAT-MINERvA) #event cuts studies systematics)

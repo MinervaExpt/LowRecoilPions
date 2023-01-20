@@ -69,6 +69,3 @@ echo "Submitting EventLoop"
 mv *.txt $CONDOR_DIR_OUT
 mv *.log *.err $CONDOR_DIR_OUT
 mv *.root $CONDOR_DIR_OUT
-
-/usr/bin/time -v -o runEventLoopTime.txt studiesEventLoop LowRecoilPions/playlists/$1 LowRecoilPions/playlists/$2 > Dump_runEventLoop.txt
-

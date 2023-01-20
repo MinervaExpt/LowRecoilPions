@@ -89,10 +89,10 @@ class PerMichelVarVecFSPart: public Study
     //Overriding base class functions
     //Do nothing for now...  Good place for data comparisons in the future. 
     void fillSelected(const CVUniverse& univ, const MichelEvent& evt, const double weight) {
-      for(size_t whichMichel = 0; whichMichel < evt.m_nmichels.size(); ++whichMichel)
-      {
-         (*dataHist).FillUniverse(&univ, fReco(univ, evt, whichMichel), weight);
-      }
+     // for(size_t whichMichel = 0; whichMichel < evt.m_nmichels.size(); ++whichMichel)
+     // {
+         (*dataHist).FillUniverse(&univ, fReco(univ, evt, 0), weight);
+     // }
     }
 
     //All of your plots happen here so far.
@@ -101,22 +101,22 @@ class PerMichelVarVecFSPart: public Study
       //std::cout << "Printing Universe Name: " << univ.ShortName() << std::endl;
       //std::cout << " Pinrting N Michels " << evt.m_nmichels.size() << std::endl;
       
-      for(size_t whichMichel = 0; whichMichel < evt.m_nmichels.size(); ++whichMichel)
-      {
+     // for(size_t whichMichel = 0; whichMichel < evt.m_nmichels.size(); ++whichMichel)
+     // {
         //std::cout << "Printing Universe Name: " << univ.ShortName() << std::endl;
-        (*totalMCHist).FillUniverse(&univ, fReco(univ, evt, whichMichel), weight);
+        (*totalMCHist).FillUniverse(&univ, fReco(univ, evt, 0), weight);
      //   (*m_VarToGENIELabel)[univ.GetInteractionType()].FillUniverse(&univ, fReco(univ, evt, whichMichel), weight);    
         const auto pionCat = std::find_if(pionFSCategories.begin(), pionFSCategories.end(), [&univ](auto& category) { return (*category)(univ); });
-        fSignalByPionsInVar[*pionCat].FillUniverse(&univ, fReco(univ,evt,whichMichel), weight);
-      }
+        fSignalByPionsInVar[*pionCat].FillUniverse(&univ, fReco(univ,evt,0), weight);
+     // }
     }
 
     void fillBackground(const CVUniverse& univ, const MichelEvent& evt, const double weight)
     {
-      for(size_t whichMichel = 0; whichMichel < evt.m_nmichels.size(); ++whichMichel)
-      {
-        (*bkgHist).FillUniverse(&univ, fReco(univ, evt, whichMichel), weight);
-      }
+      //for(size_t whichMichel = 0; whichMichel < evt.m_nmichels.size(); ++whichMichel)
+     // {
+        (*bkgHist).FillUniverse(&univ, fReco(univ, evt, 0), weight);
+     // }
     }
     //Do nothing for now...  Good place for efficiency denominators in the future.
     void fillTruthSignal(const CVUniverse& univ, const MichelEvent& evt, const double weight) {

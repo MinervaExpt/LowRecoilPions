@@ -43,6 +43,7 @@ class GetClosestMichel: public PlotUtils::Cut<UNIVERSE, EVENT>
         double dist = evt.m_nmichels[i].Best3Ddist; 
 	int order = i+1;
         if (dist == allmichel3Ddist[i]) evt.m_nmichels[i].OrderOfMichel = order;
+         
         //std::cout << "Printing Order of Michels " << order << " , dist: "<< dist << std::endl;
       }
       //std::cout << "Printing Closest Distance in event : " << allmichel3Ddist[0] << std::endl;
@@ -71,7 +72,6 @@ class GetClosestMichel: public PlotUtils::Cut<UNIVERSE, EVENT>
            evt.best_y = evt.m_nmichels[i].m_y2;
            evt.best_z = evt.m_nmichels[i].m_z2;
            }
-	   //if (bmatch == 1 || bmatch ==2)  univ.PrintTrueArachneLink(); //TODO: PRINT ARACHNE LINK
            evt.b_truex = evt.m_nmichels[i].true_initialx;
            evt.b_truey = evt.m_nmichels[i].true_initialy;
            evt.b_truez = evt.m_nmichels[i].true_initialz;

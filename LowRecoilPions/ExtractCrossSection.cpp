@@ -280,7 +280,7 @@ int main(const int argc, const char** argv)
       purnum->Divide(purnum, purden);
       Plot(*recosignal, "Purity", prefix);   
       recosignal->Clone()->Write("Purity");
-      effNum->Divide(effNum, effDenom); //Only the 2 parameter version of MnvH1D::Divide()
+      effNum->Divide(effNum, effDenom,1,1, "B"); //Only the 2 parameter version of MnvH1D::Divide()
                                         //handles systematics correctly.
       Plot(*effNum, "efficiency", prefix);
 

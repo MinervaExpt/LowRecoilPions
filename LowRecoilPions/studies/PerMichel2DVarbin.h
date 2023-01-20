@@ -38,7 +38,7 @@ class PerMichel2DVarbin: public Study
 //      std::map<int, std::string> GENIELabels = {{0, "All?"}}; //other category is built in for free.  
         std::cout << "Filling 2D Variable bin hists" << std::endl;
  	m_VarToGENIELabel = new util::Categorized<HIST, int>(("GENIE_"+yVar.name + "_vs_" + xVar.name).c_str(), (xVar.name + " [" + xVar.units + "];" + yVar.name + " [" + yVar.units + "]"), GENIELabels, xVar.bin, yVar.bin, univs); 
-        fSignalByPionsInVar = new util::Categorized<HIST, FSCategory*>(pionFSCategories,("npi_"+yVar.name + "_vs_" + xVar.name).c_str(), (xVar.name + " [" + xVar.units + "];" + yVar.name + " [" + yVar.units + "]").c_str(), xVar.bin, yVar.bin, univs);
+        fSignalByPionsInVar = new util::Categorized<HIST, FSCategory*>(pionFSCategories,(yVar.name + "_vs_" + xVar.name).c_str(), (xVar.name + " [" + xVar.units + "];" + yVar.name + " [" + yVar.units + "]").c_str(), xVar.bin, yVar.bin, univs);
         bkgHist = new HIST((yVar.name + "_vs_" + xVar.name + "_bkg").c_str(), (xVar.name + " [" + xVar.units + "];" + yVar.name + " [" + yVar.units + "]").c_str(), xVar.bin, yVar.bin, univs);
     }
     

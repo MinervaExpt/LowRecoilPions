@@ -1,7 +1,7 @@
-#define MC_OUT_FILE_NAME "runEventLoopMC.root"
-#define DATA_OUT_FILE_NAME "runEventLoopData.root"
-#define MC_SIDE_FILE_NAME "runEventLoopMC_sideband.root"
-#define DATA_SIDE_FILE_NAME "runEventLoopDATA_sideband.root"
+#define MC_OUT_FILE_NAME "sidebandMC.root"
+#define DATA_OUT_FILE_NAME "sidebandData.root"
+#define MC_SIDE_FILE_NAME "SidebandMC.root"
+#define DATA_SIDE_FILE_NAME "SidebandData.root"
 
 
 #define USAGE \
@@ -103,8 +103,14 @@ enum ErrorCodes
 #include "PlotUtils/RPAReweighter.h"
 #include "PlotUtils/MINOSEfficiencyReweighter.h"
 #include "PlotUtils/TargetUtils.h"
-#include "../MAT-MINERvA/weighters/PionReweighter.h"
-#include "PlotUtils/LowRecPionSignal.h"
+#include "util/PionReweighter.h"
+#include "cuts/LowRecPionSignal.h"
+#include "PlotUtils/LowQ2PiReweighter.h"
+#include "PlotUtils/GeantNeutronCVReweighter.h"
+#include "PlotUtils/FSIReweighter.h"
+#include "util/COHPionReweighter.h"
+#include "util/TargetMassReweighter.h"
+#include "util/DiffractiveReweighter.h"
 #pragma GCC diagnostic pop
 
 //ROOT includes
@@ -574,7 +580,7 @@ int main(const int argc, const char** argv)
   //phaseSpace.emplace_back(new truth::q0RangeLimit<CVUniverse>(0.0, .7));
 
   PlotUtils::Cutter<CVUniverse, MichelEvent> mycuts(std::move(preCuts), std::move(sidebands) , std::move(signalDefinition),std::move(phaseSpace));
-
+  /*
   std::vector<std::unique_ptr<PlotUtils::Reweighter<CVUniverse, MichelEvent>>> MnvTunev1;
   MnvTunev1.emplace_back(new PlotUtils::FluxAndCVReweighter<CVUniverse, MichelEvent>());
   MnvTunev1.emplace_back(new PlotUtils::GENIEReweighter<CVUniverse, MichelEvent>(true, false));
@@ -584,6 +590,33 @@ int main(const int argc, const char** argv)
   //TODO: Add my pion reweighter here. - Mehreen S.  Nov 22, 2021
   //MnvTunev1.emplace_back(new PlotUtils::PionReweighter<CVUniverse,MichelEvent>()); 
   PlotUtils::Model<CVUniverse, MichelEvent> model(std::move(MnvTunev1));
+  */
+
+
+  //Decisions to add for MnvTunev4.3.1
+
+  PlotUtils::MinervaUniverse::SetNonResPiReweight(true);
+  PlotUtils::MinervaUniverse::SetDeuteriumGeniePiTune(true);
+  PlotUtils::MinervaUniverse::SetReadoutVolume("Tracker");
+  PlotUtils::MinervaUniverse::SetMHRWeightNeutronCVReweight( true );
+  PlotUtils::MinervaUniverse::SetMHRWeightElastics( true );
+
+  std::vector<std::unique_ptr<PlotUtils::Reweighter<CVUniverse, MichelEvent>>> MnvTunev4;
+  MnvTunev4.emplace_back(new PlotUtils::FluxAndCVReweighter<CVUniverse, MichelEvent>());
+  MnvTunev4.emplace_back(new PlotUtils::GENIEReweighter<CVUniverse, MichelEvent>(true, true));
+  MnvTunev4.emplace_back(new PlotUtils::LowRecoil2p2hReweighter<CVUniverse, MichelEvent>());
+  MnvTunev4.emplace_back(new PlotUtils::MINOSEfficiencyReweighter<CVUniverse, MichelEvent>());
+  MnvTunev4.emplace_back(new PlotUtils::RPAReweighter<CVUniverse, MichelEvent>());
+  MnvTunev4.emplace_back(new PlotUtils::LowQ2PiReweighter<CVUniverse, MichelEvent>("MENU1PI"));
+  MnvTunev4.emplace_back(new PlotUtils::DiffractiveReweighter<CVUniverse, MichelEvent>());
+  MnvTunev4.emplace_back(new PlotUtils::GeantNeutronCVReweighter<CVUniverse, MichelEvent>());
+  MnvTunev4.emplace_back(new PlotUtils::FSIReweighter<CVUniverse, MichelEvent>(true, true));
+  MnvTunev4.emplace_back(new PlotUtils::COHPionReweighter<CVUniverse, MichelEvent>());
+  MnvTunev4.emplace_back(new PlotUtils::TargetMassReweighter<CVUniverse, MichelEvent>());
+  //MnvTunev4.emplace_back(new PlotUtils::PionReweighter<CVUniverse,MichelEvent>());
+  PlotUtils::Model<CVUniverse, MichelEvent> model(std::move(MnvTunev4));  
+
+
 
   // Make a map of systematic universes
   // Leave out systematics when making validation histograms
@@ -617,23 +650,16 @@ int main(const int argc, const char** argv)
   std::vector<double> rangebins = {0, 4., 8., 12., 16., 20., 24., 28., 32., 36., 40., 44., 50., 56., 62., 70., 80.,90., 100., 110.,  120., 140., 160., 180., 200., 220., 240., 260., 280., 300., 325., 350., 375., 400., 450., 500., 550., 600., 650., 700., 800., 900., 1000., 1200., 1400., 1800., 2400.};
   std::vector<double> recoilbins = {0.0, 200., 300., 400., 500., 600., 800., 1000., 1200., 1400., 1600.};
   std::vector<double> recoilbins2 = {0.0, 150., 225., 300., 400., 500., 600., 700., 800., 900., 1000.}; //AvailableE bins 
-  const double robsRecoilBinWidth = 75; //MeV
-  for(int whichBin = 0; whichBin < 20 + 1; ++whichBin) robsRecoilBins.push_back(robsRecoilBinWidth * whichBin);  
    
   std::vector<Variable*> vars = {
-    new Variable("pTmu", "p_{T, #mu} [GeV/c]", dansPTBins, &CVUniverse::GetMuonPT, &CVUniverse::GetMuonPTTrue), //0
-    new Variable("q3", "q3 [GeV]", mehreenQ3Bins, &CVUniverse::Getq3, &CVUniverse::GetTrueQ3), //1
-    new Variable("q2", "q2 [GeV^2]", dansPTBins, &CVUniverse::GetQ2Reco, &CVUniverse::GetTrueQ2GeV), //2
-    new Variable("pzmu", "p_{||, #mu} [GeV/c]", dansPzBins, &CVUniverse::GetMuonPz, &CVUniverse::GetMuonPzTrue),//3
-    new Variable("Emu", "E_{#mu} [GeV]", robsEmuBins, &CVUniverse::GetEmuGeV, &CVUniverse::GetElepTrueGeV),//4
-    new Variable("LowTpi", "LowTpi", tpibins, &CVUniverse::GetZero, &CVUniverse::GetTrueLowestTpiEvent),
-    new Variable("AvailableE", "AvailableE", recoilbins2, &CVUniverse::NewEavail, &CVUniverse::GetTrueEAvail),//6 
-    new Variable("Pmu", "pmu", mehreenpmubins, &CVUniverse::GetMuonP, &CVUniverse::GetPmuTrue), //7
-    new Variable("pTmubins", "pTmuy", mehreenQ3Bins, &CVUniverse::GetMuonPT, &CVUniverse::GetMuonPTTrue) //8
-   };
+    new Variable("pTmubins", "pTmubins", mehreenQ3Bins, &CVUniverse::GetMuonPT, &CVUniverse::GetMuonPTTrue),
+    new Variable("q3bins", "q3bins", dansPTBins,  &CVUniverse::Getq3, &CVUniverse::GetTrueQ3),
+    new Variable("AvailableE", "AvailableE", recoilbins2, &CVUniverse::NewEavail, &CVUniverse::GetTrueEAvail),
+    new Variable("pzmu", "p_{||, #mu} [GeV/c]", dansPzBins, &CVUniverse::GetMuonPz, &CVUniverse::GetMuonPzTrue) 
+  };
   std::vector<Variable2D*> vars2D;
-  vars2D.push_back(new Variable2D(*vars[6], *vars[1]));// q3bins vs Eavail
-  vars2D.push_back(new Variable2D(*vars[6], *vars[8]));// pTbins vs Eavail
+  vars2D.push_back(new Variable2D(*vars[2], *vars[1]));// q3bins vs Eavail
+  vars2D.push_back(new Variable2D(*vars[2], *vars[0]));// pTbins vs Eavail
 
   std::vector<Variable*> sidevars = vars; 
 

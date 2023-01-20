@@ -61,7 +61,7 @@ enum ErrorCodes
 //#include "util/TruthInteractionStudies.h"
 #include "util/PionFSCategory.h"
 #include "cuts/q3RecoCut.h"
-#include "studies/Study.h"
+//#include "studies/Study.h"
 #include "studies/Study2D.h"
 #include "studies/Event2DVarUniverses.h"
 //#include "studies/PerMichelVarByGENIELabel.h"
@@ -123,16 +123,17 @@ enum ErrorCodes
 #include <cstdlib> //getenv()
 
 //Free function that will group universes based on compatability. Want all vertical together to save time when getting bins. 
-std::vector<std::vector<CVUniverse*>> groupCompatibleUniverses(const std::map<std::string, std::vector<CVUniverse*>> bands)
+std::vector<std::vector<CVUniverse*>> groupCompatibleUniverses(const std::map<std::string, std::vector<CVUniverse*>>& bands)
 {
    std::vector<std::vector<CVUniverse*>> groupedUnivs;
    std::vector<CVUniverse*> vertical;
    for(const auto& band: bands)
    {
+     //std::cout << "Grouping universes " << std::endl;
      if(band.first == "cv") vertical.insert(vertical.begin(), band.second.begin(), band.second.end());
      else
      {
-       for(const auto univ: band.second)
+       for(const auto& univ: band.second)
        {
          if(univ->IsVerticalOnly()) vertical.push_back(univ);
          else groupedUnivs.push_back(std::vector<CVUniverse*>{univ});
@@ -158,30 +159,39 @@ void LoopAndFillEventSelection(
   
   std::cout << "Starting MC reco loop...\n";
   const int nEntries = chain->GetEntries();  
+  
   for(int i=0; i < nEntries; ++i)
   {
-       
+     if(i%1000==0) std::cout << i << " / " << nEntries << "\r" << std::flush;     
+     
      //assert(!error_bands["cv"].empty() && "\"cv\" error band is empty!  Can't set Model weight.");
-     //auto& cvUniv = group["cv"].front(); TODO: Jan 9 2023: need to define CV in a bit
+     //auto& cvUniverse = group["cv"].front(); TODO: Jan 9 2023: need to define CV in a bit
      
      cvUniverse->SetEntry(i);
      MichelEvent cvEvent;
      model.SetEntry(*cvUniverse, cvEvent);
      const double cvWeight = model.GetWeight(*cvUniverse, cvEvent);
    
-     std::cout << "Starting MC reco loop...\n";
-     if(i%1000==0) std::cout << i << " / " << nEntries << "\r" << std::flush;
+     //if(i%1000==0) std::cout << i << " / " << nEntries << "\r" << std::flush;
      for (const auto& group: groupUnivs){
+           //std::cout << "Printing inside group " << group.size() << std::endl;
            for(const auto univ: group) univ->SetEntry(i); //This is needed to get weight for this specific entry in this universe 
+           
+           //assert(group["cv"].size() == 1 && "List of error bands must contain a universe named \"cv\" for the flux integral.");
            const auto repUniv = group.front(); //Representative universe 
+           
            MichelEvent myevent; // make sure your event is inside the error band loop. 
            const double weight = model.GetWeight(*repUniv, myevent); 
            const auto cutResults = michelcuts.isMCSelected(*repUniv, myevent, cvWeight); //Use CVWeight for now. 
    	   if (!cutResults.all()) continue;
            if (cutResults.all()){
-               
+	     //  std::cout << " Printing after Cuts Selection " << std::endl;
                for(auto& study: studies) study->SelectedSignal(group, model, myevent);
+              // std::cout << "Filled Selected Reco for event " << std::endl;
                const bool isSignal = michelcuts.isSignal(*repUniv, weight);
+               if(isSignal){
+                  int blh = 0;//for(auto& study: studies) study->SelectedSignal(group, model, myevent);
+               }
                if(!isSignal){
                   for(auto& study: studies) study->BackgroundSelected(group, model, myevent);
    	       }
@@ -369,7 +379,7 @@ int main(const int argc, const char** argv)
   PlotUtils::MinervaUniverse::SetNuEConstraint(true);
   PlotUtils::MinervaUniverse::SetPlaylist(options.m_plist_string); //TODO: Infer this from the files somehow?
   PlotUtils::MinervaUniverse::SetAnalysisNuPDG(14);
-  PlotUtils::MinervaUniverse::SetNFluxUniverses(2);
+  PlotUtils::MinervaUniverse::SetNFluxUniverses(500);
   PlotUtils::MinervaUniverse::SetZExpansionFaReweight(false);
 
 
@@ -459,22 +469,26 @@ int main(const int argc, const char** argv)
   const bool doSystematics = (getenv("MNV101_SKIP_SYST") == nullptr);
   if(!doSystematics){
     std::cout << "Skipping systematics (except 1 flux universe) because environment variable MNV101_SKIP_SYST is set.\n";
-    PlotUtils::MinervaUniverse::SetNFluxUniverses(2); //Necessary to get Flux integral later...  Doesn't work with just 1 flux universe though because _that_ triggers "spread errors".
+    PlotUtils::MinervaUniverse::SetNFluxUniverses(2);//TODO: change to 2 //Necessary to get Flux integral later...  Doesn't work with just 1 flux universe though because _that_ triggers "spread errors".
   }
 
   //Group univeress here. Accesses the groupCompatibleUniverses function
   std::map< std::string, std::vector<CVUniverse*> > error_bands;
   std::vector<std::vector<CVUniverse*>> groupedUnivs;
- 
+  //error_bands = GetStandardSystematics(options.m_mc); 
   if(doSystematics){
      error_bands = GetStandardSystematics(options.m_mc);
-     groupedUnivs = groupCompatibleUniverses(error_bands); //For running with Systematics 
+     //groupedUnivs = groupCompatibleUniverses(error_bands); //For running with Systematics 
   }
   else{
     std::map<std::string, std::vector<CVUniverse*> > band_flux = PlotUtils::GetFluxSystematicsMap<CVUniverse>(options.m_mc, CVUniverse::GetNFluxUniverses());
     error_bands.insert(band_flux.begin(), band_flux.end()); //Necessary to get flux integral later...
   }
-  error_bands["cv"] = {new CVUniverse(options.m_mc)};
+  //assert(error_bands["cv"].size() == 1 && "List of error bands must contain a universe named \"cv\" for the flux integral.");
+  groupedUnivs = groupCompatibleUniverses(error_bands);
+  //error_bands["cv"] = {new CVUniverse(options.m_mc)};
+  assert(error_bands["cv"].size() == 1 && "List of error bands must contain a universe named \"cv\" for the flux integral.");
+  std::cout << "Setting Up error bands for MC" << std::endl;
   const auto cvUnivs = error_bands["cv"].front();
   std::map< std::string, std::vector<CVUniverse*> > truth_bands;
   if(doSystematics) truth_bands = GetStandardSystematics(options.m_truth);
@@ -542,18 +556,27 @@ int main(const int argc, const char** argv)
                                   return range;
                                 };
    
+   std::function<double(const CVUniverse&, const MichelEvent&)> event_tpi = [](const CVUniverse& univ, const MichelEvent& evt)
+                                {
+                                  if (evt.m_nmichels[0].true_parentpdg == 211) return evt.m_nmichels[0].pionKE;
+                                  else return 9999.;
+                                };
+
+
 
    studies.push_back(new Event2DVarUniverses(event_range, getpT, erangeconfig, pTconfig, error_bands));
    studies.push_back(new Event2DVarUniverses(event_angle, getpT, angleconfig, pTconfig, error_bands));
-   
+   studies.push_back(new Event2DVarUniverses(event_tpi, event_range, etpiconfig, erangeconfig, error_bands));
+
 // Set Up Data Universe
 
   CVUniverse* data_universe = new CVUniverse(options.m_data);
   std::vector<CVUniverse*> data_band = {data_universe}; // turning this into a vector of vector for unity sake
   std::map<std::string, std::vector<CVUniverse*> > data_error_bands;
   std::vector<std::vector<CVUniverse*>> data_groupedUniverses; 
-  data_groupedUniverses = groupCompatibleUniverses(data_error_bands);
   data_error_bands["cv"] = data_band;
+  data_groupedUniverses = groupCompatibleUniverses(data_error_bands);
+  //data_error_bands["cv"] = data_band;
   
   std::vector<Study2D*> data_studies;
   data_studies.push_back(new Event2DVarUniverses(event_range, getpT, erangeconfig, pTconfig, data_error_bands));

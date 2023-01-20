@@ -50,13 +50,14 @@ class Study2D
     virtual void SaveOrDraw(TDirectory& outDir) = 0;
     
   private:
-    using Hist = PlotUtils::HistWrapper<CVUniverse>;
-
+    using Hist = PlotUtils::Hist2DWrapper<CVUniverse>;
+    //using HW = PlotUtils::Hist2DWrapper<CVUniverse>; //PlotUtils::HistWrapper<CVUniverse>
     virtual void fillSelected(const CVUniverse& univ, const MichelEvent& evt, const double weight) = 0;
     virtual void fillSelectedSignal(const std::vector<CVUniverse*>& univ, const Model<CVUniverse, MichelEvent>& model, const MichelEvent& evt) = 0;
     virtual void fillTruthSignal(const std::vector<CVUniverse*>& univ, const Model<CVUniverse, MichelEvent>& model, const MichelEvent& evt) = 0;
     virtual void fillBackground(const std::vector<CVUniverse*>& univ, const Model<CVUniverse, MichelEvent>& model, const MichelEvent& evt) = 0;
-    virtual void fillHistForAllUniverses(const std::vector<CVUniverse*>& univs, const Model<CVUniverse, MichelEvent>& model, const MichelEvent& evt) = 0; 
+    virtual void fillHistForAllUniverses(const Hist& histw, const std::vector<CVUniverse*>& univs, const Model<CVUniverse, MichelEvent>& model, const MichelEvent& evt) = 0; 
+
 };
 
 #endif //STUDY2D_H
