@@ -22,17 +22,18 @@ class hasMichel: public PlotUtils::Cut<UNIVERSE, EVENT>
       if (nmichels == 0) return false;
       for (int i = 0; i < nmichels; ++i)
       {
-        Michel* current_michel= new Michel(univ, i);
-        if (current_michel->is_fitted != 1) continue;
- 	if (abs(current_michel->vtx_michel_timediff) < 0.400) continue; // < 0.400 is to reject dead michels that happen during dead time. >-0.250 is to see what matches look like for michels that happen before neutrino event. 
+        Michel current_michel(univ, i);
+        //Michel* current_michel= new Michel(univ, i);
+        if (current_michel.is_fitted != 1) continue;
+ 	if (abs(current_michel.vtx_michel_timediff) < 0.400) continue; // < 0.400 is to reject dead michels that happen during dead time. >-0.250 is to see what matches look like for michels that happen before neutrino event. 
        
 
-	double z1 = current_michel->m_z1;
-	double z2 = current_michel->m_z2;
+	double z1 = current_michel.m_z1;
+	double z2 = current_michel.m_z2;
 	
 	if (z1 < 5980. || z2 < 5980.) continue; 
 	if (z1 > 9038. || z2 > 9038.) continue;
-        evt.m_allmichels->push_back(current_michel);       
+        evt.m_allmichels.push_back(current_michel);       
                    	
         
        }
