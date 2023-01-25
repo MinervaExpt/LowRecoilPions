@@ -425,10 +425,6 @@ int main(const int argc, const char** argv)
   signalDefinition.emplace_back(new truth::IsNeutrino<CVUniverse>());
   signalDefinition.emplace_back(new truth::IsCC<CVUniverse>());
   signalDefinition.emplace_back(new truth::HasPion<CVUniverse>());
-  //signalDefinition.emplace_back(new Q3Limit<CVUniverse>(0.0, 1.20));
-  //signalDefinition.emplace_back(new truth::ZRange<CVUniverse>("Tracker", minZ, maxZ));
-  //signalDefinition.emplace_back(new truth::Apothem<CVUniverse>(apothem)); 
-  //signalDefinition.emplace_back(new hasTruePion<CVUniverse>());                                                                                                              
   
   phaseSpace.emplace_back(new truth::ZRange<CVUniverse>("Tracker", minZ, maxZ));
   phaseSpace.emplace_back(new truth::Apothem<CVUniverse>(apothem));

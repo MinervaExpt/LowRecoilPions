@@ -451,10 +451,6 @@ int main(const int argc, const char** argv)
   signalDefinition.emplace_back(new truth::IsNeutrino<CVUniverse>());
   signalDefinition.emplace_back(new truth::IsCC<CVUniverse>());
   signalDefinition.emplace_back(new truth::HasPion<CVUniverse>());
-  //signalDefinition.emplace_back(new Q3Limit<CVUniverse>(0.0, 1.20));
-  signalDefinition.emplace_back(new truth::ZRange<CVUniverse>("Tracker", minZ, maxZ));
-  signalDefinition.emplace_back(new truth::Apothem<CVUniverse>(apothem)); 
-  //signalDefinition.emplace_back(new hasTruePion<CVUniverse>());                                                                                                              
   
   phaseSpace.emplace_back(new truth::ZRange<CVUniverse>("Tracker", minZ, maxZ));
   phaseSpace.emplace_back(new truth::Apothem<CVUniverse>(apothem));
@@ -521,13 +517,13 @@ int main(const int argc, const char** argv)
   std::vector<double> dansPTBins = {0, 0.075, 0.10, 0.15, 0.20, 0.30, 0.4, 0.50,0.60 , 0.7, 0.80,0.9, 1.,1.1, 1.2, 1.3, 1.4, 1.5},
                       dansPzBins = {1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 6, 7, 8, 9, 10, 15, 20, 40, 60},
                       robsEmuBins = {0,1,2,3,4,5,7,9,12,15,18,22,36,50,75,80},
-                      mehreenQ3Bins = {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4},
+                      mehreenQ3Bins = {0.001, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4},
 		      robsRecoilBins;
   
    
   int nq3mbins = mehreenQ3Bins.size() -1; 
-  std::vector<double> tpibins = {0.0001, 4., 8., 12., 16., 20., 24., 28., 32., 36., 40., 46., 52.,60., 70., 80., 100., 125.,150., 175., 200., 225., 250., 275., 300., 350., 400., 500., 700.,1000.};//, 1300., 1600., 2000.};   
-   std::vector<double> rangebins = {0.0001, 8., 16., 24., 32., 40., 50., 65., 80.,95., 110., 140., 170., 200., 230., 260., 290., 310., 360., 400., 450., 500., 550., 600., 650., 700., 800., 900., 1000., 1200., 1400., 1800., 2400.};
+  std::vector<double> tpibins = {1., 4., 8., 12., 16., 20., 24., 28., 32., 36., 40., 46., 52.,60., 70., 80., 100., 125.,150., 175., 200., 225., 250., 275., 300., 350., 400., 500., 700.,1000.};//, 1300., 1600., 2000.};   
+   std::vector<double> rangebins = {1., 8., 16., 24., 32., 40., 50., 65., 80.,95., 110., 140., 170., 200., 230., 260., 290., 310., 360., 400., 450., 500., 550., 600., 650., 700., 800., 900., 1000., 1200., 1400., 1800., 2400.};
 
   std::vector<double> recoilbins = {0.0, 150., 225., 300., 400., 500., 600.,700., 800., 900., 1000.};// 1200., 1400., 1600.};
   const double robsRecoilBinWidth = 50; //MeV
@@ -578,12 +574,14 @@ int main(const int argc, const char** argv)
    std::function<double(const CVUniverse&, const MichelEvent&, const int)> pertruepimichel_range = [](const CVUniverse& univ, const MichelEvent& evt, const int whichMichel)
                                  {
                                    double micheldist = evt.m_nmichels[whichMichel].Best3Ddist;
-				   if (evt.m_nmichels[whichMichel].true_parentpdg == 211) return micheldist;
+				   double pdg = evt.m_nmichels[whichMichel].true_parentpdg;
+				   if (pdg == 211 || pdg == 321) return micheldist;
  				   else return 9999.;
                                  };
    std::function<double(const CVUniverse&, const MichelEvent&, const int)> permichel_tpi = [](const CVUniverse& univ, const MichelEvent& evt, const int whichMichel)
                                  {
-				   if (evt.m_nmichels[whichMichel].true_parentpdg == 211) return evt.m_nmichels[whichMichel].pionKE;
+				   double pdg = evt.m_nmichels[whichMichel].true_parentpdg;
+				   if (pdg == 211 || pdg == 321) return evt.m_nmichels[whichMichel].pionKE;
 				   else return 9999.;
 
 				 };

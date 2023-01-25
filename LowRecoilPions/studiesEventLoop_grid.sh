@@ -64,10 +64,8 @@ echo "Setting up environment for MAT"
 #8: optional naming of the files
 #9: optional switch to turn off neutron cuts when passed a 0.
 echo "Submitting EventLoop" 
-/usr/bin/time -v -o runEventLoopTime.txt twoDEventLoop LowRecoilPions/playlists/$1 LowRecoilPions/playlists/$2 > Dump_runEventLoop.txt
 
+/usr/bin/time -v -o studiesEventLoopTime.txt studiesEventLoop LowRecoilPions/playlists/$1 LowRecoilPions/playlists/$2 > Dump_studiesEventLoop.txt
 mv *.txt $CONDOR_DIR_OUT
 mv *.log *.err $CONDOR_DIR_OUT
 mv *.root $CONDOR_DIR_OUT
-
-
