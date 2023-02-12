@@ -77,32 +77,32 @@ class PerMichel2DVarbin: public Study
     //Overriding base class functions
     //Do nothing for now...  Good place for data comparisons in the future. 
     void fillSelected(const CVUniverse& univ, const MichelEvent& evt, const double weight) {
-      for(size_t whichMichel = 0; whichMichel < evt.m_nmichels.size(); ++whichMichel)
-      {
-         (*dataHist).FillUniverse(&univ, fxReco(univ, evt, whichMichel), fyReco(univ, evt, whichMichel), weight);
-      }
+      //for(size_t whichMichel = 0; whichMichel < evt.m_nmichels.size(); ++whichMichel)
+      //{
+         (*dataHist).FillUniverse(&univ, fxReco(univ, evt, 0), fyReco(univ, evt, 0), weight);
+      // }
     }
 
 
     void fillBackground(const CVUniverse& univ, const MichelEvent& evt, const double weight) {
-      for(size_t whichMichel = 0; whichMichel < evt.m_nmichels.size(); ++whichMichel)
-      {
-         (*bkgHist).FillUniverse(&univ, fxReco(univ, evt, whichMichel), fyReco(univ, evt, whichMichel), weight);
-      }
+     // for(size_t whichMichel = 0; whichMichel < evt.m_nmichels.size(); ++whichMichel)
+     // {
+         (*bkgHist).FillUniverse(&univ, fxReco(univ, evt, 0), fyReco(univ, evt, 0), weight);
+     // }
     }
 
 
     //All of your plots happen here so far.
     void fillSelectedSignal(const CVUniverse& univ, const MichelEvent& evt, const double weight)
     {
-      for(size_t whichMichel = 0; whichMichel < evt.m_nmichels.size(); ++whichMichel)
-      {
-        (*totalMCHist).FillUniverse(&univ, fxReco(univ, evt, whichMichel), fyReco(univ, evt, whichMichel), weight);
+     // for(size_t whichMichel = 0; whichMichel < evt.m_nmichels.size(); ++whichMichel)
+     // {
+        (*totalMCHist).FillUniverse(&univ, fxReco(univ, evt, 0), fyReco(univ, evt, 0), weight);
  
-        (*m_VarToGENIELabel)[univ.GetInteractionType()].FillUniverse(&univ, fxReco(univ, evt, whichMichel), fyReco(univ, evt, whichMichel), weight);
+        (*m_VarToGENIELabel)[univ.GetInteractionType()].FillUniverse(&univ, fxReco(univ, evt, 0), fyReco(univ, evt, 0), weight);
         const auto pionCat = std::find_if(pionFSCategories.begin(), pionFSCategories.end(), [&univ](auto& category) { return (*category)(univ); });
-        (*fSignalByPionsInVar)[*pionCat].FillUniverse(&univ, fxReco(univ,evt,whichMichel), fyReco(univ, evt, whichMichel), weight);
-      }
+        (*fSignalByPionsInVar)[*pionCat].FillUniverse(&univ, fxReco(univ,evt,0), fyReco(univ, evt, 0), weight);
+     // }
     }
 
     //Do nothing for now...  Good place for efficiency denominators in the future.

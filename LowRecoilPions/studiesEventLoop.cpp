@@ -110,6 +110,7 @@ enum ErrorCodes
 #include "PlotUtils/FSIReweighter.h"
 #include "util/COHPionReweighter.h"
 #include "util/TargetMassReweighter.h"
+#include "util/MnvTunev431Reweighter.h"
 #pragma GCC diagnostic pop
 
 //ROOT includes
@@ -413,8 +414,8 @@ int main(const int argc, const char** argv)
 
 
   // For MnvTunev4.3.1 
-  PlotUtils::MinervaUniverse::SetNonResPiReweight(true);
-  PlotUtils::MinervaUniverse::SetDeuteriumGeniePiTune(true);
+  //PlotUtils::MinervaUniverse::SetNonResPiReweight(true);
+  //PlotUtils::MinervaUniverse::SetDeuteriumGeniePiTune(true);
   PlotUtils::MinervaUniverse::SetReadoutVolume("Tracker");
   PlotUtils::MinervaUniverse::SetMHRWeightNeutronCVReweight( true );
   PlotUtils::MinervaUniverse::SetMHRWeightElastics( true );
@@ -451,13 +452,15 @@ int main(const int argc, const char** argv)
   signalDefinition.emplace_back(new truth::IsNeutrino<CVUniverse>());
   signalDefinition.emplace_back(new truth::IsCC<CVUniverse>());
   signalDefinition.emplace_back(new truth::HasPion<CVUniverse>());
+  //signalDefinition.emplace_back(new truth::TpiCut<CVUniverse>());
   
   phaseSpace.emplace_back(new truth::ZRange<CVUniverse>("Tracker", minZ, maxZ));
   phaseSpace.emplace_back(new truth::Apothem<CVUniverse>(apothem));
   phaseSpace.emplace_back(new truth::MuonAngle<CVUniverse>(20.));
   phaseSpace.emplace_back(new truth::PZMuMin<CVUniverse>(1500.));
   phaseSpace.emplace_back(new truth::pTRangeLimit<CVUniverse>(0., 1.0));
-  phaseSpace.emplace_back(new truth::pMuCut<CVUniverse>(1.5));  
+  phaseSpace.emplace_back(new truth::pMuCut<CVUniverse>(1.5)); 
+  phaseSpace.emplace_back(new truth::EavailCut<CVUniverse>()); 
   //phaseSpace.emplace_back(new truth::q0RangeLimit<CVUniverse>(0.0, .7));
 
   PlotUtils::Cutter<CVUniverse, MichelEvent> mycuts(std::move(preCuts), std::move(sidebands) , std::move(signalDefinition),std::move(phaseSpace));
@@ -480,13 +483,14 @@ int main(const int argc, const char** argv)
   MnvTunev4.emplace_back(new PlotUtils::LowRecoil2p2hReweighter<CVUniverse, MichelEvent>());
   MnvTunev4.emplace_back(new PlotUtils::MINOSEfficiencyReweighter<CVUniverse, MichelEvent>());
   MnvTunev4.emplace_back(new PlotUtils::RPAReweighter<CVUniverse, MichelEvent>());
-  MnvTunev4.emplace_back(new PlotUtils::LowQ2PiReweighter<CVUniverse, MichelEvent>("MENU1PI"));
-  MnvTunev4.emplace_back(new PlotUtils::DiffractiveReweighter<CVUniverse, MichelEvent>());
-  MnvTunev4.emplace_back(new PlotUtils::GeantNeutronCVReweighter<CVUniverse, MichelEvent>());
-  MnvTunev4.emplace_back(new PlotUtils::FSIReweighter<CVUniverse, MichelEvent>(true, true));
-  MnvTunev4.emplace_back(new PlotUtils::COHPionReweighter<CVUniverse, MichelEvent>());
-  MnvTunev4.emplace_back(new PlotUtils::TargetMassReweighter<CVUniverse, MichelEvent>());  
-  //MnvTunev4.emplace_back(new PlotUtils::PionReweighter<CVUniverse,MichelEvent>()); 
+  //MnvTunev4.emplace_back(new PlotUtils::LowQ2PiReweighter<CVUniverse, MichelEvent>("MENU1PI"));
+  //MnvTunev4.emplace_back(new PlotUtils::DiffractiveReweighter<CVUniverse, MichelEvent>());
+  //MnvTunev4.emplace_back(new PlotUtils::GeantNeutronCVReweighter<CVUniverse, MichelEvent>());
+  //MnvTunev4.emplace_back(new PlotUtils::FSIReweighter<CVUniverse, MichelEvent>(true, true));
+  //MnvTunev4.emplace_back(new PlotUtils::COHPionReweighter<CVUniverse, MichelEvent>());
+  //MnvTunev4.emplace_back(new PlotUtils::TargetMassReweighter<CVUniverse, MichelEvent>());  
+  MnvTunev4.emplace_back(new PlotUtils::MnvTunev431Reweighter<CVUniverse, MichelEvent>()); 
+  MnvTunev4.emplace_back(new PlotUtils::PionReweighter<CVUniverse,MichelEvent>()); 
   PlotUtils::Model<CVUniverse, MichelEvent> model(std::move(MnvTunev4));
   
   // Make a map of systematic universes

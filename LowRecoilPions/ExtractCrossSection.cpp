@@ -72,8 +72,14 @@ void Plot(PlotUtils::MnvH1D& hist, const std::string& stepName, const std::strin
   can.Print((prefix + "_" + stepName + "_otherUncertainties.png").c_str());
 
   const std::string systname("Cross Section Models");
-  plotter.DrawErrorSummary(&hist, "TR", true, true, 0.00001, false, systname, true, "");
+  plotter.DrawErrorSummary(&hist, "TR", true, true, 0.00001, false, systname);
   can.Print((prefix + "_" + stepName + "_CrossSectionModels.png").c_str());
+  
+  const std::string fsiname("FSI Models");
+  plotter.DrawErrorSummary(&hist, "TR", true, true, 0.00001, false, fsiname);
+  can.Print((prefix + "_" + stepName + "_FSIModels.png").c_str());
+
+
 
 }
 

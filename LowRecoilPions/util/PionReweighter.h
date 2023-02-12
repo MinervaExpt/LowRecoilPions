@@ -64,6 +64,7 @@ namespace PlotUtils
         0.05296071, -0.04128534,  0.18793639,  0.26660532,  1.13225302}; // Reweights from numpy with bkg subtracted data range 
         */
         //Tpi reweights for mnvtunev4
+        /*
         //The Following is a reweight for MnvTunev4 with background subtracted and tolerance of 0.06
         std::vector<double> tpiweights = {-0.00215655,  0.11053229,  0.0091617 ,  0.18465904,  0.32759373,
         				  0.65192503,  0.77486729,  0.94197336,  0.69163669,  0.46433796,
@@ -72,6 +73,7 @@ namespace PlotUtils
         				  0.60126032,  0.49300099,  0.45267546,  0.6169398 ,  1.07933653,
         				  0.75220218,  1.01279084,  0.84404324,  0.62274187,  0.64837269};         
 
+        */
         /*
         //The following is a reweight for MnvTunev4 with background subtracted and tolerance of 0.08
          std::vector<double> tpiweights = {0.1200114 , 0.18887331, 0.1870642 , 0.27444119, 0.34557614,
@@ -81,12 +83,48 @@ namespace PlotUtils
                                           0.62373223, 0.38251533, 0.46220911, 0.60804838, 1.09106715,
                                           0.78382882, 1.04735398, 0.8434568 , 0.65095178, 0.65611836}; 
         */
-        std::vector<double> tpilowbins = {0.0, 4.0, 8.0, 12.0, 16.0, 20.0, 24.0, 28.0, 32.0, 36.0, 40.0, 46.0, 52.0, 60.0, 70.0, 80.0, 100.0, 125.0, 150.0, 175.0, 200.0, 225.0, 250.0, 275.0, 300.0, 350.0, 400.0, 500.0, 700.0, 1000.0};
+        //The following is reweight for MnvTunev431 with background subtracted and tolerance of 0.06 with full ME1A statistics
+        /*std::vector<double>tpiweights = {0.1902855,  0.2954966,  0.3703688,  0.3903857,  0.473193 ,
+        				0.5182093,  0.6041358,  0.6818155,  0.7368678,  0.7260622,
+        				1.0200225,  0.9287505,  1.0881722,  1.2070503,  0.9951518,
+        				1.3066559,  1.1821288,  1.1417606,  0.9864009,  1.1229612,
+        				0.999276 ,  0.8574656,  0.7296579,  0.6093314,  0.8987519,
+        				0.5927742,  0.7078378,  0.7067878,  0.5828136, -0.0004369};
+        */
+
+        //The following is a reweight for MnvTunev431 with fixes to LowQ2 and COH pion implementation. Range cut < 1000mm. Signal Tpi cut < 350 MeV. 
+        /*std::vector<double>tpiweights = {0.1727731,  0.2648498,  0.3024206,  0.3654409,  0.4399542,
+        0.4648256,  0.5480141,  0.6236805,  0.7197562,  0.6610829,
+        0.9579538,  0.9148854,  1.1541735,  1.1104433,  0.870103 ,
+        1.2277846,  1.0469355,  1.0605834,  0.9115713,  0.7011701,
+        0.363619 ,  0.3702355,  0.3012748,  0.2264294,  0.3344879,
+        0.2065797,  0.2612956,  0.3321888,  0.2875124, -0.0000552};
+        */
+
+	// The following is a reweight for Mnvtunev4 bug fix (coh applied twice) and with low q2 turned on. Tolerance of 0.07
+	/*std::vector<double> tpiweights = {0.1623999,  0.2532403,  0.2868589,  0.3483384,  0.4167944,
+        				0.458954 ,  0.5535843,  0.6406514,  0.7842327,  0.7314507,
+        				1.0782849,  0.9666569,  1.1400208,  1.1620875,  0.9457339,
+        				1.2891274,  1.1025859,  1.2414063,  0.9547479,  0.9850241,
+        				0.9252908,  0.8733355,  0.7545873,  0.5580611,  0.8883108,
+        				0.5754092,  0.7220107,  0.7224896,  0.5922406, -0.001366 };
+        */
+
+        //The following is a reweight for MnvTunev4 without LowQ2 and tolerance of 0.07
+        std::vector<double> tpiweights = {0.1740693,  0.2836968,  0.3152313,  0.3890271,  0.4754425,
+        0.5146361,  0.6296602,  0.7122324,  0.8777017,  0.8275259,
+        1.2257956,  1.0909433,  1.2560052,  1.2901227,  1.0463555,
+        1.4124964,  1.1655215,  1.349213 ,  1.0538344,  1.1087648,
+        1.1036029,  0.9979603,  0.8691629,  0.644745 ,  1.0185651,
+        0.6825277,  0.8367527,  0.8308716,  0.697864 , -0.0013543};
+
+ 
+        std::vector<double> tpilowbins = {1., 4., 8., 12., 16., 20., 24., 28., 32., 36., 40., 46., 52.,60., 70., 80., 100., 125.,150., 175., 200., 225., 250., 275., 300., 350., 400., 500., 700.,1000.}; 
         if (univ.GetTrueNPionsinEvent() == 0) return 1.0;
         double tpi = univ.GetTrueLowestTpiEvent();
         //std::cout << "Printing the q3 of the event " << q3_mecAna << std::endl;	
 	//std::cout << "Printing the lowest Tpi in Event " << tpi << std::endl;
-      	
+        double angle = cos(univ.GetTrueAngleLowTpi());	
         //double tpi = myevent.m_nmichels[0].pionKE/1000.;
         for (int i = 0; i< tpilowbins.size(); i++){
                 if (i < tpilowbins.size() and tpi >= tpilowbins[i] and tpi < tpilowbins[i+1]){
@@ -94,10 +132,11 @@ namespace PlotUtils
  		   break;
 		}
 		else if (tpi >= 1000.){
-	           weight2 = 1.0; //tpiweights[i];
+	           weight2 = abs(tpiweights[29]);
        		   break; 
                 }
         }
+        //if (angle > 0.10) weight2 = 0.90*weight2; //Correcting for Forward going Pions 
 	return weight2;
       };
       virtual std::string GetName() const {return "LowRecPionReweight"; }

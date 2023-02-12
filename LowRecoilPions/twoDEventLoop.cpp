@@ -112,6 +112,7 @@ enum ErrorCodes
 #include "PlotUtils/FSIReweighter.h"
 #include "util/COHPionReweighter.h"
 #include "util/TargetMassReweighter.h"
+#include "util/MnvTunev431Reweighter.h"
 #pragma GCC diagnostic pop
 
 //ROOT includes
@@ -329,9 +330,11 @@ void LoopAndFillEffDenom( PlotUtils::ChainWrapper* truth,
         // Tell the Event which entry in the TChain it's looking at
         universe->SetEntry(i);
 	//std::cout << "checking to see if event is in signal and phase space" << std::endl;
-        if (!michelcuts.isEfficiencyDenom(*universe, cvWeight)) continue; //Weight is ignored for isEfficiencyDenom() in all but the CV universe 
-        const double weight = model.GetWeight(*universe, myevent); //Only calculate the weight for events that will use it
-
+        //if (!michelcuts.isEfficiencyDenom(*universe, cvWeight)) continue; //Weight is ignored for isEfficiencyDenom() in all but the CV universe 
+        //const double weight = model.GetWeight(*universe, myevent); //Only calculate the weight for events that will use it
+        auto isEffDenom = michelcuts.isEfficiencyDenom(*universe, cvWeight);
+	if (!isEffDenom) continue;
+        const double weight = model.GetWeight(*universe, myevent);
         //Fill efficiency denominator now: 
         for(auto var: vars)
         {
@@ -453,8 +456,8 @@ int main(const int argc, const char** argv)
   PlotUtils::MinervaUniverse::SetZExpansionFaReweight(false);
  
   //For MnvTunev4.3.1 - Aaron's Tune we need the following:
-  PlotUtils::MinervaUniverse::SetNonResPiReweight(true);
-  PlotUtils::MinervaUniverse::SetDeuteriumGeniePiTune(true);
+  //PlotUtils::MinervaUniverse::SetNonResPiReweight(true);
+  //PlotUtils::MinervaUniverse::SetDeuteriumGeniePiTune(true);
   PlotUtils::MinervaUniverse::SetReadoutVolume("Tracker");
   PlotUtils::MinervaUniverse::SetMHRWeightNeutronCVReweight( true );
   PlotUtils::MinervaUniverse::SetMHRWeightElastics( true ); 
@@ -476,7 +479,7 @@ int main(const int argc, const char** argv)
   preCuts.emplace_back(new reco::IsNeutrino<CVUniverse, MichelEvent>());
   //preCuts.emplace_back(new Q3RangeReco<CVUniverse, MichelEvent>(0.0,1.2));
   preCuts.emplace_back(new PTRangeReco<CVUniverse, MichelEvent>(0.0,1.0));
-  preCuts.emplace_back(new RecoilERange<CVUniverse, MichelEvent>(0.0,1.5));
+  preCuts.emplace_back(new RecoilERange<CVUniverse, MichelEvent>(0.0,1.0));
   preCuts.emplace_back(new PmuCut<CVUniverse, MichelEvent>(1.5));
   preCuts.emplace_back(new hasMichel<CVUniverse, MichelEvent>());
    
@@ -491,7 +494,7 @@ int main(const int argc, const char** argv)
   signalDefinition.emplace_back(new truth::IsNeutrino<CVUniverse>());
   signalDefinition.emplace_back(new truth::IsCC<CVUniverse>());
   signalDefinition.emplace_back(new truth::HasPion<CVUniverse>());
-  //signalDefinition.emplace_back(new truth::EavailCut<CVUniverse>());
+  //signalDefinition.emplace_back(new truth::TpiCut<CVUniverse>());
   //signalDefinition.emplace_back(new Q3Limit<CVUniverse>(0.0, 1.20));
   //signalDefinition.emplace_back(new truth::ZRange<CVUniverse>("Tracker", minZ, maxZ));
   //signalDefinition.emplace_back(new truth::Apothem<CVUniverse>(apothem));
@@ -507,8 +510,7 @@ int main(const int argc, const char** argv)
   phaseSpace.emplace_back(new truth::PZMuMin<CVUniverse>(1500.));
   phaseSpace.emplace_back(new truth::pTRangeLimit<CVUniverse>(0., 1.0));
   phaseSpace.emplace_back(new truth::pMuCut<CVUniverse>(1.5));
-  //phaseSpace.emplace_back(new truth::TrueEavailCut<CVUniverse>());
-  //phaseSpace.emplace_back(new truth::EAvailCut<CVUniverse>(1500.));
+  phaseSpace.emplace_back(new truth::EavailCut<CVUniverse>());
 
   PlotUtils::Cutter<CVUniverse, MichelEvent> mycuts(std::move(preCuts), std::move(sidebands) , std::move(signalDefinition),std::move(phaseSpace));
 /*  
@@ -532,13 +534,14 @@ int main(const int argc, const char** argv)
   MnvTunev4.emplace_back(new PlotUtils::LowRecoil2p2hReweighter<CVUniverse, MichelEvent>());
   MnvTunev4.emplace_back(new PlotUtils::MINOSEfficiencyReweighter<CVUniverse, MichelEvent>());
   MnvTunev4.emplace_back(new PlotUtils::RPAReweighter<CVUniverse, MichelEvent>());
-  MnvTunev4.emplace_back(new PlotUtils::LowQ2PiReweighter<CVUniverse, MichelEvent>("MENU1PI"));
-  MnvTunev4.emplace_back(new PlotUtils::DiffractiveReweighter<CVUniverse, MichelEvent>());
-  MnvTunev4.emplace_back(new PlotUtils::GeantNeutronCVReweighter<CVUniverse, MichelEvent>());
-  MnvTunev4.emplace_back(new PlotUtils::FSIReweighter<CVUniverse, MichelEvent>(true, true)); 
-  MnvTunev4.emplace_back(new PlotUtils::COHPionReweighter<CVUniverse, MichelEvent>());
-  MnvTunev4.emplace_back(new PlotUtils::TargetMassReweighter<CVUniverse, MichelEvent>()); 
-  //MnvTunev4.emplace_back(new PlotUtils::PionReweighter<CVUniverse,MichelEvent>());
+  //MnvTunev4.emplace_back(new PlotUtils::LowQ2PiReweighter<CVUniverse, MichelEvent>("MENU1PI"));
+  //MnvTunev4.emplace_back(new PlotUtils::DiffractiveReweighter<CVUniverse, MichelEvent>());
+  //MnvTunev4.emplace_back(new PlotUtils::GeantNeutronCVReweighter<CVUniverse, MichelEvent>());
+  //MnvTunev4.emplace_back(new PlotUtils::FSIReweighter<CVUniverse, MichelEvent>(true, true)); 
+  //MnvTunev4.emplace_back(new PlotUtils::COHPionReweighter<CVUniverse, MichelEvent>());
+  MnvTunev4.emplace_back(new PlotUtils::MnvTunev431Reweighter<CVUniverse, MichelEvent>());
+  //MnvTunev4.emplace_back(new PlotUtils::TargetMassReweighter<CVUniverse, MichelEvent>()); 
+  MnvTunev4.emplace_back(new PlotUtils::PionReweighter<CVUniverse,MichelEvent>());
   PlotUtils::Model<CVUniverse, MichelEvent> model(std::move(MnvTunev4));
   
    
@@ -562,8 +565,8 @@ int main(const int argc, const char** argv)
   truth_bands["cv"] = {new CVUniverse(options.m_truth)};
 
 
-
-  std::vector<double> dansPTBins = {0, 0.075, 0.10, 0.15, 0.20, 0.30, 0.4, 0.50,0.60 , 0.7, 0.80,0.9, 1.,1.1, 1.2, 1.3, 1.4, 1.5, 2.0, 3.0, 4.0},
+  std::vector<double> ptbins = {0, 0.075, 0.10, 0.15, 0.20, 0.25,0.30,0.35, 0.4, 0.45, 0.50, 0.55, 0.60 , 0.7, 0.80,0.9, 1.};
+  std::vector<double> dansPTBins = {0, 0.075, 0.10, 0.15, 0.20, 0.25,0.30,0.35, 0.4, 0.45, 0.50, 0.55, 0.60 , 0.7, 0.80,0.9, 1.,1.1, 1.2, 1.3, 1.4, 1.5, 2.0, 3.0, 4.0},
                       dansPzBins = {1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 6, 7, 8, 9, 10, 15, 20, 40, 60},
                       robsEmuBins = {0,1,2,3,4,5,7,9,12,15,18,22,36,50,75,80},
                       mehreenQ3Bins = {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2},
@@ -585,10 +588,10 @@ int main(const int argc, const char** argv)
     new Variable("pTmubins", "pTmubins", mehreenQ3Bins, &CVUniverse::GetMuonPT, &CVUniverse::GetMuonPTTrue),
     new Variable("q3bins", "q3bins", dansPTBins,  &CVUniverse::Getq3, &CVUniverse::GetTrueQ3),
     new Variable("AvailableE", "AvailableE", recoilbins2, &CVUniverse::NewEavail, &CVUniverse::GetTrueEAvail),
-    new Variable("pzmu", "p_{||, #mu} [GeV/c]", dansPzBins, &CVUniverse::GetMuonPz, &CVUniverse::GetMuonPzTrue)    
-    //new Variable("pTmu", "p_{T, #mu} [GeV/c]", dansPTBins, &CVUniverse::GetMuonPT, &CVUniverse::GetMuonPTTrue), //0
+    new Variable("pzmu", "p_{||, #mu} [GeV/c]", dansPzBins, &CVUniverse::GetMuonPz, &CVUniverse::GetMuonPzTrue),    
+    new Variable("pTmu", "p_{T, #mu} [GeV/c]", ptbins, &CVUniverse::GetMuonPT, &CVUniverse::GetMuonPTTrue), //0
     //new Variable("q3", "q3 [GeV]", mehreenQ3Bins, &CVUniverse::Getq3, &CVUniverse::GetTrueQ3), //1
-    //new Variable("q2", "q2 [GeV^2]", dansPTBins, &CVUniverse::GetQ2Reco, &CVUniverse::GetTrueQ2GeV), //2
+    new Variable("q2", "q2 [GeV^2]", dansPTBins, &CVUniverse::GetQ2Reco, &CVUniverse::GetTrueQ2GeV), //2
     //new Variable("pzmu", "p_{||, #mu} [GeV/c]", dansPzBins, &CVUniverse::GetMuonPz, &CVUniverse::GetMuonPzTrue),//3
     //new Variable("Emu", "E_{#mu} [GeV]", robsEmuBins, &CVUniverse::GetEmuGeV, &CVUniverse::GetElepTrueGeV),//4
     //new Variable("q3pTdiff","[GeV]", dansPTBins, &CVUniverse::Recoq3pTdiff, &CVUniverse::GetTrueq3pTdiff),//5
@@ -708,7 +711,7 @@ int main(const int argc, const char** argv)
    
     std::cout << "Printing POT MC " << std::endl;
     auto mcPOT = new TParameter<double>("POTUsed", options.m_mc_pot);
-    mcPOT->Write();
+    //mcPOT->Write();
     mcOutDir->cd();
     mcPOT->Write();
     
@@ -751,7 +754,7 @@ int main(const int argc, const char** argv)
     //for(auto& var: sidevars2D) var->Write(*dataSideDir); 
     //Protons On Target
     auto dataPOT = new TParameter<double>("POTUsed", options.m_data_pot);
-    dataPOT->Write();
+    //dataPOT->Write();
     dataOutDir->cd();
     dataPOT->Write();
     dataOutDir->cd();

@@ -15,6 +15,9 @@
 #include "PlotUtils/AngleSystematics.h"
 #include "PlotUtils/TargetMassSystematics.h"
 #include "PlotUtils/MichelSystematics.h"
+#include "PlotUtils/MuonSystematics.h"
+#include "PlotUtils/NSFDefaults.h"
+#include "PlotUtils/ResponseSystematics.h"
 
 typedef std::map<std::string, std::vector<CVUniverse*>> UniverseMap;
 
@@ -102,6 +105,16 @@ UniverseMap GetStandardSystematics(PlotUtils::ChainWrapper* chain)
   //========================================================================
   UniverseMap michel_error_bands = PlotUtils::GetMichelEfficiencySystematicsMap<CVUniverse>(chain);
   error_bands.insert(michel_error_bands.begin(),michel_error_bands.end());  
+  
+
+  //Adding systematics according to what Ben has
+
+  UniverseMap new_res_genie_error_bands = PlotUtils::GetGenieResPionFitSystematicsMap<CVUniverse>(chain);
+  error_bands.insert(new_res_genie_error_bands.begin(), new_res_genie_error_bands.end());
+
+  UniverseMap new_ep_genie_error_bands = PlotUtils::GetGenieEPMvResSystematicsMap<CVUniverse>(chain);
+  error_bands.insert(new_ep_genie_error_bands.begin(), new_ep_genie_error_bands.end());
+  
 
 
   return error_bands;

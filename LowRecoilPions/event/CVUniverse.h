@@ -25,6 +25,8 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
   #include "PlotUtils/TruthFunctions.h" //Getq3True
   #include "PlotUtils/LowRecoilFunctions.h" // GetEAvailable()
   #include "PlotUtils/WeightFunctions.h" // Get COH Weight functions  
+  #include "PlotUtils/MichelFunctions.h"
+  //#include "PlotUtils/RecoilEnergyFunctions.h"
   // ========================================================================
   // Constructor/Destructor
   // ========================================================================
@@ -311,14 +313,44 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
 
   }
 
+  //This is for RecoilFunction Calculations
+  virtual double GetLowQ2PionWeight() const
+  {   
+      double weight = GetLowQ2PiWeight("MENU1PI");
+      //if (weight != 1.0) PrintTrueArachneLink();
+      return GetLowQ2PiWeight("MENU1PI");
+  }
+
+  virtual double GetMichelEfficiencyReWeight() const{
+    return GetMichelEfficiencyWeight();
+  }
+
+  virtual double GetGeantHadronReWeight() const{
+    return GetGeantHadronWeight();
+
+  }
+
+  virtual double GetFSIReWeight() const{
+    return GetFSIWeight(0);
+  }
+
+  virtual double GetTargetMassReWeight() const {
+    return GetTargetMassWeight();
+  }
+ 
   virtual double GetCOHPionWeight() const {
-     if(GetInt("mc_intType") == 4){
-       int npi = GetTrueNPionsinEvent();
-       if (npi == 0) return 1.0;
+    if(!GetInt("mc_intType") == 4) return 1.0;
+    if(GetInt("mc_intType") == 4){
+       //int npi = GetTrueNPionsinEvent();
+       //if (npi == 0) return 1.0;
        double angle = GetTrueAngleHighTpi();
-       double KE = GetTrueHighTpi();
-       double weight = GetCoherentPiWeight(angle, KE);
-       return weight;
+       double KE = GetTrueHighTpi()/1000.;
+       if (KE < 0) return 1.0;
+       else {
+	double weight = GetCoherentPiWeight(angle, KE); //Inputs are in Degrees and GeV
+        //std::cout << "Printing COHerent weight for COH event for angle: " << angle << " degrees and KE : " << KE << " GeV. And weight: " << weight << std::endl;
+	return weight;
+       }
      }
      else return 1.0;
   }
@@ -344,10 +376,33 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
 
       return angle;
    }
+
+   virtual double GetTrueAngleLowTpi() const {
+     int nFSpi = GetTrueNPions();
+     double angle = 9999.; //WRTbeam and in degrees
+     double pionKE = 9999.;
+     int idk = -9999;
+     for (int i = 0; i < nFSpi; i++){
+         int pdg = GetVecElem("mc_FSPartPDG",i);
+         if(pdg != 211) continue;
+         double energy = GetVecElem("mc_FSPartE", i);
+         double mass = 139.569;
+         double tpi = energy - mass;
+         if (tpi <= pionKE) {
+               pionKE = tpi;
+               TVector3 pimomentumvec(GetVecElem("mc_FSPartPx", i), GetVecElem("mc_FSPartPz", i),GetVecElem("mc_FSPartPz", i));
+               double deg_wrtb = thetaWRTBeam(pimomentumvec.X(), pimomentumvec.Y(), pimomentumvec.Z()); //rad
+               angle = deg_wrtb*180./M_PI;
+         }
+      }
+
+      return angle;
+   }
+   
   
    virtual double GetTrueHighTpi() const {
      int nFSpi = GetTrueNPions();
-     double pionKE = 0.0;
+     double pionKE = -9999.0;
      for (int i = 0; i < nFSpi; i++){
           int pdg = GetVecElem("mc_FSPartPDG",i);
           if(pdg != 211) continue;
@@ -456,6 +511,7 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
      else return false;
 
  }
+ 
 
  /*
  virtual double GetTrueWexp() const {
@@ -518,12 +574,12 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
  
  virtual double GetDiffractiveWeight() const {
     if (GetInt("mc_intType") != 4) return 1.;
-    if (!IsInPlastic() && !PlotUtils::TargetUtils::Get().InWaterTargetMC(
+    else if (!IsInPlastic() && !PlotUtils::TargetUtils::Get().InWaterTargetMC(
                             GetTrueIntVtxX(), GetTrueIntVtxY(),
                             GetTrueIntVtxZ(), GetInt("mc_targetZ"))) {
     return 1.;
     }
-    return 1.4368;
+    else return 1.4368;
  }
 
  virtual int GetTrueNPionsinEvent() const {
@@ -777,10 +833,10 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
 
  virtual double NewEavail() const
  {
-    double recoiltracker =  GetDouble("blob_recoil_E_tracker") -  GetTrackerMuFuzz(); 
-    //double recoiltracker = GetClusterEnergyTracker() - GetTrackerMuFuzz();
-    double recoilEcal = GetDouble("blob_recoil_E_ecal") - GetECALMuFuzz();
-    //double recoilEcal = GetClusterEnergyECAL() - GetECALMuFuzz();
+    //double recoiltracker =  GetDouble("blob_recoil_E_tracker") -  GetTrackerMuFuzz(); 
+    double recoiltracker = GetClusterEnergyTracker() - GetTrackerMuFuzz();
+    //double recoilEcal = GetDouble("blob_recoil_E_ecal") - GetECALMuFuzz();
+    double recoilEcal = GetClusterEnergyECAL() - GetECALMuFuzz();
     const double Eavailable_scale = 1.17;
     double eavail = recoiltracker + recoilEcal;
     return eavail*Eavailable_scale;
@@ -850,7 +906,7 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
         else if (pdg == 22) Eavail += energy; // photons
         else if (pdg == 311) Eavail += energy - 497.611/2.0; // K0 ???? - Kaon rest mass / 2
         else if (abs(pdg) == 321) Eavail += energy - 497.611/2.0; // Kaon+ Kinetic Energy  divide by Kmass/2 
-        //else if (pdg == 221) Eavail += energy; //Adding etas
+        else if (pdg == 221) Eavail += energy; //Adding etas
 	//else if (pdg == 3222) Eavail += energy - 1115.683; // mass of Lambda 
 	//else if (pdg == 3122) Eavail += energy - 1189.37 ; // mass of Sigma
         	

@@ -577,6 +577,7 @@ int main(const int argc, const char** argv)
   phaseSpace.emplace_back(new truth::PZMuMin<CVUniverse>(1500.));
   phaseSpace.emplace_back(new truth::pTRangeLimit<CVUniverse>(0., 1.0));
   phaseSpace.emplace_back(new truth::pMuCut<CVUniverse>(1.5));
+  phaseSpace.emplace_back(new truth::EavailCut<CVUniverse>());
   //phaseSpace.emplace_back(new truth::q0RangeLimit<CVUniverse>(0.0, .7));
 
   PlotUtils::Cutter<CVUniverse, MichelEvent> mycuts(std::move(preCuts), std::move(sidebands) , std::move(signalDefinition),std::move(phaseSpace));
@@ -603,7 +604,7 @@ int main(const int argc, const char** argv)
 
   std::vector<std::unique_ptr<PlotUtils::Reweighter<CVUniverse, MichelEvent>>> MnvTunev4;
   MnvTunev4.emplace_back(new PlotUtils::FluxAndCVReweighter<CVUniverse, MichelEvent>());
-  MnvTunev4.emplace_back(new PlotUtils::GENIEReweighter<CVUniverse, MichelEvent>(true, true));
+  //MnvTunev4.emplace_back(new PlotUtils::GENIEReweighter<CVUniverse, MichelEvent>(true, true));
   MnvTunev4.emplace_back(new PlotUtils::LowRecoil2p2hReweighter<CVUniverse, MichelEvent>());
   MnvTunev4.emplace_back(new PlotUtils::MINOSEfficiencyReweighter<CVUniverse, MichelEvent>());
   MnvTunev4.emplace_back(new PlotUtils::RPAReweighter<CVUniverse, MichelEvent>());
@@ -640,7 +641,7 @@ int main(const int argc, const char** argv)
   std::vector<double> dansPTBins = {0, 0.075, 0.10, 0.15, 0.20, 0.30, 0.4, 0.50,0.60 , 0.7, 0.80,0.9, 1.,1.1, 1.2, 1.3, 1.4, 1.5, 2.0},
                       dansPzBins = {1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 6, 7, 8, 9, 10, 15, 20, 40, 60},
                       robsEmuBins = {0,1,2,3,4,5,7,9,12,15,18,22,36,50,75,80},
-                      mehreenQ3Bins = {0.0, 0.2,0.3, 0.4, 0.6, 0.9, 1.2, 1.5, 2.0, 3.0},
+                      mehreenQ3Bins = {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2}, //{0.0, 0.2,0.3, 0.4, 0.6, 0.9, 1.2, 1.5, 2.0, 3.0},
                       mehreenpmubins = {0.0, 0.5, 1.0, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 6, 7, 8, 9, 10, 15, 20, 40},
                      robsRecoilBins;
 
@@ -685,7 +686,7 @@ int main(const int argc, const char** argv)
   // Loop entries and fill
   try
   {
-    CVUniverse::SetTruth(false);
+    CVUniverse::SetTruth(true);
     LoopAndFillEventSelection(options.m_mc, error_bands, vars, vars2D, sidevars, sidevars2D, mycuts, model);
     std::cout << "MC cut summary:\n" << mycuts << "\n";
     //mycuts.resetStats();

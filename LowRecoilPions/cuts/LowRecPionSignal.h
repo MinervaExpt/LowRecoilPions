@@ -92,10 +92,30 @@ namespace truth
       bool checkConstraint(const UNIVERSE& univ) const //override
       {
         double trueE = univ.GetTrueEAvail()/1000.;
-        if (trueE < 2.0) return true;
+        if (trueE < 1.2) return true;
 	else return false;
       }
 
   };
+
+  template <class UNIVERSE>
+  class TpiCut: public PlotUtils::SignalConstraint<UNIVERSE>
+  {
+   public:
+      TpiCut(): PlotUtils::SignalConstraint<UNIVERSE>("Pion Kinetic Energy < .350 GeV")
+      {
+      }
+
+   private:
+      bool checkConstraint(const UNIVERSE& univ) const //override
+      {
+        double trueE = univ.GetTrueLowestTpiEvent();
+        if (trueE < 350.) return true;
+        else return false;
+      }
+
+  };
+
+
 
 } 

@@ -31,8 +31,9 @@ namespace PlotUtils
       virtual ~TargetMassReweighter() = default;
 
       virtual double GetWeight(const UNIVERSE& univ, const EVENT& myevent /*event*/) const override{
-	double weight = 1.0; //GetTargetMassWeight();; 
-	return weight;
+	double weight = univ.GetTargetMassWeight();//*univ.GetTrueMichelEfficiencyWeight(); //GetTargetMassWeight();; 
+	
+        return weight;
                 
 	
       };

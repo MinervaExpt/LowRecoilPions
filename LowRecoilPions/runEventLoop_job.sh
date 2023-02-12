@@ -47,11 +47,17 @@ ls
 #source setup.sh
 #source setup_MAT-MINERvA.sh
 #source setup_MAT_IncPions.sh 
+
+
 source LowRecoilPions/setup_env.sh
 echo "Setting up utils."
 source LowRecoilPions/setup_utils.sh
 echo "Setting up environment for MAT"
 
+env
+echo "Which ifdhc "
+ 
+which ifdhc
 
 #Arguments Reminder
 #1: playlist data
@@ -64,8 +70,10 @@ echo "Setting up environment for MAT"
 #8: optional naming of the files
 #9: optional switch to turn off neutron cuts when passed a 0.
 echo "Submitting EventLoop" 
+export MNV101_SKIP_SYST=1 
+echo "With playlists: " `$1` " and " `$2` 
 /usr/bin/time -v -o runEventLoopTime.txt twoDEventLoop LowRecoilPions/playlists/$1 LowRecoilPions/playlists/$2 > Dump_runEventLoop.txt
-
+echo "Moving files to output Dir " `$CONDOR_DIR_OUT`
 mv *.txt $CONDOR_DIR_OUT
 mv *.log *.err $CONDOR_DIR_OUT
 mv *.root $CONDOR_DIR_OUT
