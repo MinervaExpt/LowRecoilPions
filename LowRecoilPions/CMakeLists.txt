@@ -75,23 +75,23 @@ add_subdirectory(util)
 #install(TARGETS runEventLoop DESTINATION bin)
 
 add_executable(twoDEventLoopFull twoDEventLoopFull.cpp)
-target_link_libraries(twoDEventLoopFull ${ROOT_LIBRARIES} util MAT MAT-MINERvA) #event cuts studies systematics)
+target_link_libraries(twoDEventLoopFull ${ROOT_LIBRARIES} util MAT MAT-MINERvA UnfoldUtils) #event cuts studies systematics)
 install(TARGETS twoDEventLoopFull DESTINATION bin)
 
 add_executable(studiesEventLoop studiesEventLoop.cpp)
-target_link_libraries(studiesEventLoop ${ROOT_LIBRARIES} util MAT MAT-MINERvA) #event cuts studies systematics)
+target_link_libraries(studiesEventLoop ${ROOT_LIBRARIES} util MAT MAT-MINERvA UnfoldUtils) #event cuts studies systematics)
 install(TARGETS studiesEventLoop DESTINATION bin)
 
 add_executable(twoDEventLoop twoDEventLoop.cpp)
-target_link_libraries(twoDEventLoop ${ROOT_LIBRARIES} util MAT MAT-MINERvA) #event cuts studies systematics)
+target_link_libraries(twoDEventLoop ${ROOT_LIBRARIES} util MAT MAT-MINERvA UnfoldUtils) #event cuts studies systematics)
 install(TARGETS twoDEventLoop DESTINATION bin)
 
 add_executable(studiesEventLoopSide studiesEventLoopSide.cpp)
-target_link_libraries(studiesEventLoopSide ${ROOT_LIBRARIES} util MAT MAT-MINERvA) #event cuts studies systematics)
+target_link_libraries(studiesEventLoopSide ${ROOT_LIBRARIES} util MAT MAT-MINERvA UnfoldUtils) #event cuts studies systematics)
 install(TARGETS studiesEventLoopSide DESTINATION bin)
 
 add_executable(twoDEventLoopSide twoDEventLoopSide.cpp)
-target_link_libraries(twoDEventLoopSide ${ROOT_LIBRARIES} util MAT MAT-MINERvA) #event cuts studies systematics)
+target_link_libraries(twoDEventLoopSide ${ROOT_LIBRARIES} util MAT MAT-MINERvA UnfoldUtils) #event cuts studies systematics)
 install(TARGETS twoDEventLoopSide DESTINATION bin)
 
 add_executable(ExtractCrossSection ExtractCrossSection.cpp)

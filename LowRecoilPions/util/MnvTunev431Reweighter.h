@@ -49,7 +49,7 @@ namespace PlotUtils
 		  << "Printing GeantHadron weight: " << wgt_geant << "\n"
 		  << "Printing COH weight: " << wgt_coh << "\n" << std::endl;
         */
-	return wgt_diff*wgt_mich*wgt_target*wgt_fsi*wgt_coh*wgt_geant;//*wgt_lowq2pi;
+	return wgt_diff*wgt_mich*wgt_target*wgt_fsi*wgt_coh*wgt_geant*wgt_lowq2pi;
                 
 	
       };

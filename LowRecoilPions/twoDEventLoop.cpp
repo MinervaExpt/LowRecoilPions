@@ -92,6 +92,7 @@ enum ErrorCodes
 #include "PlotUtils/Hist2DWrapper.h"
 #include "PlotUtils/MacroUtil.h"
 #include "PlotUtils/MnvPlotter.h"
+#include "MinervaUnfold/MnvResponse.h"
 #include "PlotUtils/CCInclusiveCuts.h"
 #include "PlotUtils/CCInclusiveSignal.h"
 #include "PlotUtils/CrashOnROOTMessage.h" //Sets up ROOT's debug callbacks by itself
@@ -161,6 +162,7 @@ void LoopAndFillEventSelection(
       std::vector<CVUniverse*> error_band_universes = band.second;
       for (auto universe : error_band_universes)
       {
+        int unv_count = 0;
         //if (universe->ShortName() != "cv") continue;
         //MichelEvent myevent; // make sure your event is inside the error band loop. 
         //if (universe->ShortName() != "cv") continue;
@@ -206,7 +208,8 @@ void LoopAndFillEventSelection(
 			for(auto& var: vars2D)
           		{
             			var->efficiencyNumerator->FillUniverse(universe, var->GetTrueValueX(*universe), var->GetTrueValueY(*universe), weight2);
-          		}
+        			var->FillResponse(var->GetRecoValueX(*universe), var->GetRecoValueY(*universe),var->GetTrueValueX(*universe), var->GetTrueValueY(*universe),universe->ShortName(),weight2,unv_count);
+	  		}
 		} // end of if Signal()
                 else if (!isSignal){
 		 /*	
@@ -230,12 +233,15 @@ void LoopAndFillEventSelection(
           		for(auto& var: vars2D) (*var->m_backgroundHists)[bkgd_ID].FillUniverse(universe, var->GetRecoValueX(*universe), var->GetRecoValueY(*universe), weight2);
         	} // End of else statement for if Signal 
        } // If event passes PreCuts
+       ++unv_count;
       } // End band's universe loop
     } // End Band loop
   
   //std::cout << "Printing Muon Momentum At End of Entry Loop: " << cvUniv->GetMuonPTTrue() << std::endl;
   //std::cout << "====================================================== ==========" << std::endl;
   } //End entries loop
+  
+  for (auto v : vars2D) v->getResponseObjects(error_bands);
   std::cout << "Finished MC reco loop.\n";
 }
 
@@ -541,7 +547,7 @@ int main(const int argc, const char** argv)
   //MnvTunev4.emplace_back(new PlotUtils::COHPionReweighter<CVUniverse, MichelEvent>());
   MnvTunev4.emplace_back(new PlotUtils::MnvTunev431Reweighter<CVUniverse, MichelEvent>());
   //MnvTunev4.emplace_back(new PlotUtils::TargetMassReweighter<CVUniverse, MichelEvent>()); 
-  MnvTunev4.emplace_back(new PlotUtils::PionReweighter<CVUniverse,MichelEvent>());
+  //MnvTunev4.emplace_back(new PlotUtils::PionReweighter<CVUniverse,MichelEvent>());
   PlotUtils::Model<CVUniverse, MichelEvent> model(std::move(MnvTunev4));
   
    
@@ -560,6 +566,9 @@ int main(const int argc, const char** argv)
     error_bands.insert(band_flux.begin(), band_flux.end()); //Necessary to get flux integral later...
   }
   error_bands["cv"] = {new CVUniverse(options.m_mc)};
+  std::map<const std::string, int> error_name;
+  std::map<std::string, std::vector<CVUniverse*> >::iterator itr;
+  for(itr = error_bands.begin(); itr != error_bands.end(); ++itr) error_name.insert(std::pair<std::string, const int>((itr->second)[0]->ShortName(), (itr->second).size()));
   std::map< std::string, std::vector<CVUniverse*> > truth_bands;
   if(doSystematics) truth_bands = GetStandardSystematics(options.m_truth);
   truth_bands["cv"] = {new CVUniverse(options.m_truth)};
@@ -650,8 +659,12 @@ int main(const int argc, const char** argv)
   
   for(auto& var: vars) var->InitializeMCHists(error_bands, truth_bands);
   for(auto& var: vars) var->InitializeDATAHists(data_band);
-  for(auto& var: vars2D) var->InitializeMCHists(error_bands, truth_bands);
+  for(auto& var: vars2D){
+	var->InitializeMCHists(error_bands, truth_bands);
+	var->SetupResponse(error_name);
+  }
   for(auto& var: vars2D) var->InitializeDATAHists(data_band);
+
   //for(auto& var: sidevars) var->InitializeDATAHists(data_band);
   //for(auto& var: sidevars) var->InitializeMCHists(error_bands, truth_bands);
   //for(auto& var: sidevars2D) var->InitializeMCHists(error_bands, truth_bands);

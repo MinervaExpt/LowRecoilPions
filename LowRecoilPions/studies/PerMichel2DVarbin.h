@@ -40,6 +40,8 @@ class PerMichel2DVarbin: public Study
  	m_VarToGENIELabel = new util::Categorized<HIST, int>(("GENIE_"+yVar.name + "_vs_" + xVar.name).c_str(), (xVar.name + " [" + xVar.units + "];" + yVar.name + " [" + yVar.units + "]"), GENIELabels, xVar.bin, yVar.bin, univs); 
         fSignalByPionsInVar = new util::Categorized<HIST, FSCategory*>(pionFSCategories,(yVar.name + "_vs_" + xVar.name).c_str(), (xVar.name + " [" + xVar.units + "];" + yVar.name + " [" + yVar.units + "]").c_str(), xVar.bin, yVar.bin, univs);
         bkgHist = new HIST((yVar.name + "_vs_" + xVar.name + "_bkg").c_str(), (xVar.name + " [" + xVar.units + "];" + yVar.name + " [" + yVar.units + "]").c_str(), xVar.bin, yVar.bin, univs);
+   	sigHist = new HIST((yVar.name + "_vs_" + xVar.name + "_signal").c_str(), (xVar.name + " [" + xVar.units + "];" + yVar.name + " [" + yVar.units + "]").c_str(), xVar.bin, yVar.bin, univs);
+	
     }
     
     
@@ -60,7 +62,10 @@ class PerMichel2DVarbin: public Study
        dataHist->hist->Write();
        totalMCHist->SyncCVHistos();
        totalMCHist->hist->Write();
-
+       bkgHist->SyncCVHistos();
+       bkgHist->hist->Write();
+       sigHist->SyncCVHistos();
+       sigHist->hist->Write();
        //TODO: You could do plotting here
     }
 
@@ -74,6 +79,7 @@ class PerMichel2DVarbin: public Study
     HW* totalMCHist;
     HW* dataHist;
     HW* bkgHist;
+    HW* sigHist;
     //Overriding base class functions
     //Do nothing for now...  Good place for data comparisons in the future. 
     void fillSelected(const CVUniverse& univ, const MichelEvent& evt, const double weight) {
@@ -91,6 +97,8 @@ class PerMichel2DVarbin: public Study
      // }
     }
 
+    
+
 
     //All of your plots happen here so far.
     void fillSelectedSignal(const CVUniverse& univ, const MichelEvent& evt, const double weight)
@@ -106,5 +114,9 @@ class PerMichel2DVarbin: public Study
     }
 
     //Do nothing for now...  Good place for efficiency denominators in the future.
-    void fillTruthSignal(const CVUniverse& univ, const MichelEvent& evt, const double weight) {}
+    void fillTruthSignal(const CVUniverse& univ, const MichelEvent& evt, const double weight) {
+
+	(*sigHist).FillUniverse(&univ, fxReco(univ, evt, 0), fyReco(univ, evt, 0), weight);
+	
+    }
 };

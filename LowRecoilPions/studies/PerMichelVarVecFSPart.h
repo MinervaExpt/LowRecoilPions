@@ -38,6 +38,8 @@ class PerMichelVarVecFSPart: public Study
       //	m_VarToGENIELabel = new util::Categorized<HIST, int>(("GENIE_"+varName).c_str(), varName + "_" + varUnits, GENIELabels, nbins, binvec ,univs);
            
  	bkgHist = new HIST((varName+"_bkg").c_str(), (varName + "_" + varUnits + "_").c_str(), nbins, binvec, univs);
+        sigHist = new HIST((varName+"_signal").c_str(), (varName + "_" + varUnits + "_").c_str(), nbins, binvec, univs);
+
     }
     
 
@@ -67,6 +69,10 @@ class PerMichelVarVecFSPart: public Study
        
        bkgHist->SyncCVHistos();
        bkgHist->hist->Write();
+
+       sigHist->SyncCVHistos();
+       sigHist->hist->Write();     
+
        //std::cout << "DRAWING THE TRUTH HISTOGRAM" << std::endl;
        
        //truthHist->SyncCVHistos();
@@ -82,7 +88,7 @@ class PerMichelVarVecFSPart: public Study
     HW* bkgHist;
     HW* dataHist;
     HW* totalMCHist;
-    //HW* truthHist;
+    HW* sigHist;
     util::Categorized<HIST, FSCategory*> fSignalByPionsInVar;
    // util::Categorized<HIST, int>* m_VarToGENIELabel;
 
@@ -120,7 +126,8 @@ class PerMichelVarVecFSPart: public Study
     }
     //Do nothing for now...  Good place for efficiency denominators in the future.
     void fillTruthSignal(const CVUniverse& univ, const MichelEvent& evt, const double weight) {
-  	/*for(size_t whichMichel = 0; whichMichel < evt.m_nmichels.size(); ++whichMichel)
+       (*sigHist).FillUniverse(&univ, fReco(univ, evt, 0), weight);	
+       /*for(size_t whichMichel = 0; whichMichel < evt.m_nmichels.size(); ++whichMichel)
         {
           (*truthHist).FillUniverse(&univ, fReco(univ, evt, whichMichel), weight);
 	}*/

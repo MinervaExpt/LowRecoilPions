@@ -5,16 +5,31 @@
 #include "PlotUtils/Variable2DBase.h"
 #include "util/Categorized.h"
 #include "util/PionFSCategory.h"
+#include "MinervaUnfold/MnvResponse.h"
+#include "TArrayD.h"
+#include "PlotUtils/AnaBinning.h"
+
 //#include "util/TruthInteractionStudies.h"
 class Variable2D: public PlotUtils::Variable2DBase<CVUniverse>
 {
   private:
     typedef PlotUtils::Hist2DWrapper<CVUniverse> Hist;
+    typedef MinervaUnfold::MnvResponse MResponse;
+    typedef PlotUtils::axis_binning axis_binning;
   public:
     template <class ...ARGS>
     Variable2D(ARGS... args): PlotUtils::Variable2DBase<CVUniverse>(args...)
     {
     }
+    
+    TArrayD GetTArrayFromVec(const std::vector<double>& vec) {
+  	double array[vec.size()];
+  	std::copy(vec.begin(), vec.end(), array);
+  	const int size = sizeof(array) / sizeof(*array);
+  	return TArrayD(size, array);
+    } 
+
+      
 
     //TODO: It's really silly to have to make 2 sets of error bands just because they point to different trees.
     //      I'd rather the physics of the error bands remain the same and just change which tree they point to.
@@ -44,20 +59,57 @@ class Variable2D: public PlotUtils::Variable2DBase<CVUniverse>
       mcTotalHist = new Hist((GetNameX() + "_" + GetNameY() + "_MC").c_str(), GetName().c_str(), GetBinVecX(), GetBinVecY(), mc_error_bands);
       selectedSignalReco = new Hist((GetNameX() + "_" + GetNameY() + "_signal_reco").c_str(), GetName().c_str(), GetBinVecX(), GetBinVecY(), mc_error_bands);
 
-      /*      
-      std::vector<double> biasbins = {-2.6, -2.4, -2.2, -2. ,-1.8 ,-1.6, -1.4, -1.2 ,-1., -0.8, -0.6, -0.4, -0.2 ,0., 0.2, 0.4, 0.6, 0.8, 1., 1.2, 1.4, 1.6, 1.8, 2., 2.2 ,2.4, 2.6};
-      //{-5. ,-4.8 ,-4.6 ,-4.4 ,-4.2, -4. ,-3.8, -3.6 ,-3.4 ,-3.2 ,-3. ,-2.8, -2.6, -2.4, -2.2, -2. ,-1.8 ,-1.6, -1.4, -1.2 ,-1., -0.8, -0.6, -0.4, -0.2 ,0., 0.2, 0.4, 0.6, 0.8, 1., 1.2, 1.4, 1.6, 1.8, 2., 2.2 ,2.4, 2.6, 2.8, 3., 3.2, 3.4, 3.6, 3.8, 4., 4.2, 4.4, 4.6, 4.8 ,5.};
-       
-      biasMCReco = new Hist((GetNameX() + "_" + GetNameY() + "_biasReco").c_str(), GetName().c_str(), biasbins, GetBinVecY(), mc_error_bands);
-      std::vector<double> truediffbins = {-3000.0, -2950.0, -2900.0, -2850.0, -2800.0, -2750.0, -2700.0, -2650.0, -2600.0, -2550.0, -2500.0, -2450.0, -2400.0, -2350.0, -2300.0, -2250.0, -2200.0, -2150.0, -2100.0, -2050.0, -2000.0, -1950.0, -1900.0, -1850.0, -1800.0, -1750.0, -1700.0, -1650.0, -1600.0, -1550.0, -1500.0, -1450.0, -1400.0, -1350.0, -1300.0, -1250.0, -1200.0, -1150.0, -1100.0, -1050.0, -1000.0, -950.0, -900.0, -850.0, -800.0, -750.0, -700.0, -650.0, -600.0, -550.0, -500.0, -450.0, -400.0, -350.0, -300.0, -250.0, -200.0, -150.0, -100.0, -50.0, 0.0, 50.0, 100.0, 150.0, 200.0, 250.0, 300.0, 350.0, 400.0, 450.0, 500.0, 550.0, 600.0, 650.0, 700.0, 750.0, 800.0, 850.0, 900.0, 950.0, 1000.0, 1050.0, 1100.0, 1150.0, 1200.0, 1250.0, 1300.0, 1350.0, 1400.0, 1450.0, 1500.0, 1550.0, 1600.0, 1650.0, 1700.0, 1750.0, 1800.0, 1850.0, 1900.0, 1950.0, 2000.0, 2050.0, 2100.0, 2150.0, 2200.0, 2250.0, 2300.0, 2350.0, 2400.0, 2450.0, 2500.0, 2550.0, 2600.0, 2650.0, 2700.0, 2750.0, 2800.0, 2850.0, 2900.0, 2950.0, 3000.0}; 
-      //const double diffBinWidth = 50; //MeV
-      //for(int whichBin = 0; whichBin < 300 + 1; ++whichBin) truediffbins.push_back(-3000+diffBinWidth * whichBin);
-      recoMinusTrueTBins = new Hist((GetNameX() + "_" + GetNameY() + "_recoMinusTrueTBins").c_str(), GetName().c_str(), truediffbins, GetBinVecY(), mc_error_bands);
-      recoMinusTrueRBins = new Hist((GetNameX() + "_" + GetNameY() + "_recoMinusTrueRBins").c_str(), GetName().c_str(), truediffbins, GetBinVecY(), mc_error_bands);
-      */
       mc_trueHist = new Hist((GetNameX() + "_" + GetNameY() + "_true_MC").c_str(), GetName().c_str(), GetBinVecX(), GetBinVecY(), mc_error_bands);
+   
+      //xaxis = new axis(GetBinVecX(), GetNBinsX(), GetBinVecX()[0], GetBinVecX()[GetNBinsX()-1], false);
+      
+
+     // m_response = new MResponse((GetNameX() + "_" + GetNameY() + "_MnvResponse").c_str(), GetName().c_str(), GetNBinsX(), GetTArrayFromVec(GetBinVecX()), GetNBinsY(), GetTArrayFromVec(GetBinVecY()), GetNBinsX(), GetTArrayFromVec(GetBinVecX()), GetNBinsY(), GetTArrayFromVec(GetBinVecY()));
+    }
+  
+    void SetupResponse(std::map<const std::string,  int> systematics){
+	const char* name = GetName().c_str();
+        const char* newname = (GetNameX() + "_vs_" + GetNameY() + "_MnvResponse").c_str();//GetName().c_str();
+        axis_binning bin_x, bin_y;
+        bin_x.uniform=false;
+
+        std::vector<double> vx;
+
+        for(int i=0; i<=GetNBinsX(); i++){vx.push_back(GetBinVecX().data()[i]);}
+
+        std::vector<double> vy;
+        for(int j=0; j<=GetNBinsY(); j++){vy.push_back(GetBinVecY().data()[j]);}
+        bin_x.bin_edges = vx;
+        bin_x.nbins      = GetNBinsX();
+        bin_x.min        = GetBinVecX().data()[0];
+        bin_x.max       = GetBinVecX().data()[GetNBinsX()];
+        bin_y.bin_edges = vy;
+        bin_y.nbins      = GetNBinsY();
+        bin_y.min        = GetBinVecY().data()[0];
+        bin_y.max       = GetBinVecY().data()[GetNBinsY()];
+	Response.insert(std::pair<const std::string, MinervaUnfold::MnvResponse*>(newname, new MinervaUnfold::MnvResponse(Form("response2d_%s",newname), newname, bin_x, bin_y, bin_x, bin_y, systematics)));
+    }
+
+    void FillResponse(double x_reco, double y_reco, double x_true, double y_true, const std::string name, double w, int unv){
+        for(mnv_itr = Response.begin(); mnv_itr != Response.end(); ++mnv_itr){
+                (mnv_itr->second)->Fill(x_reco,y_reco,x_true,y_true,name,unv, w);
+        }
 
     }
+
+    template <typename T>
+    void getResponseObjects(T univs)
+    {
+	for(mnv_itr2 = Response.begin(); mnv_itr2 != Response.end(); ++mnv_itr2){
+                (mnv_itr2->second)->GetMigrationObjects( migrationH, h_reco, h_truth );;
+        }
+
+        const bool clear_bands = false;
+  	//migrationH->PopVertErrorBand("cv");
+	mresp = new Hist(migrationH, univs, clear_bands);
+    } 
+    
+
 
     //Histograms to be filled
     util::Categorized<Hist, int>* m_backgroundHists;
@@ -67,12 +119,18 @@ class Variable2D: public PlotUtils::Variable2DBase<CVUniverse>
     Hist* efficiencyDenominator;
     util::Categorized<Hist, FSCategory*>* fSignalByPionsInVar; 
     Hist* mcTotalHist;
-    //Hist* recoMinusTrueTBins;
-    //Hist* recoMinusTrueRBins;
     Hist* selectedSignalReco;
-    //Hist* biasMCReco;
     Hist* mc_trueHist;
 
+    //Adding Response Matrix for 2D Unfolding needs
+    MResponse m_response;
+    std::map<std::string,MinervaUnfold::MnvResponse*> Response;
+    std::map<std::string,MinervaUnfold::MnvResponse*>::iterator mnv_itr;
+    std::map<std::string,MinervaUnfold::MnvResponse*>::iterator mnv_itr2;
+    Hist* mresp;
+    MnvH2D *migrationH = NULL;
+    MnvH2D *h_reco = NULL;
+    MnvH2D *h_truth = NULL;
     void InitializeDATAHists(std::vector<CVUniverse*>& data_error_bands)
     {
         const char* name = (GetName()).c_str();
@@ -117,7 +175,7 @@ class Variable2D: public PlotUtils::Variable2DBase<CVUniverse>
 
       if (mcTotalHist->hist) {
                 mcTotalHist->hist->SetDirectory(&file);
-                mcTotalHist->hist->Write();
+                mcTotalHist->hist->Write((GetNameX() + "_" + GetNameY() + "_data").c_str());
       }
       if (selectedSignalReco) {
                 selectedSignalReco->hist->SetDirectory(&file);
@@ -150,7 +208,17 @@ class Variable2D: public PlotUtils::Variable2DBase<CVUniverse>
         efficiencyDenominator->hist->SetDirectory(&file);
         efficiencyDenominator->hist->Write();
       }
+
+      if(mresp)
+      {
+        mresp->hist->SetDirectory(&file);
+	mresp->hist->Write((GetNameX() + "_" + GetNameY() + "_migration").c_str());
+	
+      }
+
+
     }
+
 
     //Only call this manually if you Draw(), Add(), or Divide() plots in this
     //program.
@@ -166,6 +234,7 @@ class Variable2D: public PlotUtils::Variable2DBase<CVUniverse>
       if(dataHist) dataHist->SyncCVHistos();
       if(efficiencyNumerator) efficiencyNumerator->SyncCVHistos();
       if(efficiencyDenominator) efficiencyDenominator->SyncCVHistos();
+      if(mresp) mresp->SyncCVHistos();
       //if(recoMinusTrueTBins) recoMinusTrueTBins->SyncCVHistos();
       //if(recoMinusTrueRBins) recoMinusTrueRBins->SyncCVHistos();
       //if(biasMCReco) biasMCReco->SyncCVHistos();

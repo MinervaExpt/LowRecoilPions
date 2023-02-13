@@ -94,6 +94,7 @@ enum ErrorCodes
 #include "PlotUtils/CCInclusiveCuts.h"
 #include "PlotUtils/CCInclusiveSignal.h"
 #include "PlotUtils/CrashOnROOTMessage.h" //Sets up ROOT's debug callbacks by itself
+#include "MinervaUnfold/MnvResponse.h"
 #include "PlotUtils/Cutter.h"
 #include "PlotUtils/Model.h"
 #include "PlotUtils/FluxAndCVReweighter.h"
@@ -196,7 +197,9 @@ void LoopAndFillEventSelection(
             
             for(auto& study: studies) study->SelectedSignal(*universe, myevent, weight2);
             const bool isSignal = michelcuts.isSignal(*universe, weight2);
-            if(isSignal){ int i =0;}
+            if(isSignal){ 
+		for(auto& study: studies) study->TruthSignal(*universe, myevent, weight2);
+	    }
             else if(!isSignal){
                for(auto& study: studies) study->BackgroundSelected(*universe, myevent, weight2);
 	    }
@@ -490,7 +493,7 @@ int main(const int argc, const char** argv)
   //MnvTunev4.emplace_back(new PlotUtils::COHPionReweighter<CVUniverse, MichelEvent>());
   //MnvTunev4.emplace_back(new PlotUtils::TargetMassReweighter<CVUniverse, MichelEvent>());  
   MnvTunev4.emplace_back(new PlotUtils::MnvTunev431Reweighter<CVUniverse, MichelEvent>()); 
-  MnvTunev4.emplace_back(new PlotUtils::PionReweighter<CVUniverse,MichelEvent>()); 
+  //MnvTunev4.emplace_back(new PlotUtils::PionReweighter<CVUniverse,MichelEvent>()); 
   PlotUtils::Model<CVUniverse, MichelEvent> model(std::move(MnvTunev4));
   
   // Make a map of systematic universes
@@ -585,8 +588,8 @@ int main(const int argc, const char** argv)
    std::function<double(const CVUniverse&, const MichelEvent&, const int)> permichel_tpi = [](const CVUniverse& univ, const MichelEvent& evt, const int whichMichel)
                                  {
 				   double pdg = evt.m_nmichels[whichMichel].true_parentpdg;
-				   if (pdg == 211 || pdg == 321) return evt.m_nmichels[whichMichel].pionKE;
-				   else return 9999.;
+				   return evt.m_nmichels[whichMichel].pionKE;
+				   //else return 9999.;
 
 				 };
 
@@ -963,7 +966,7 @@ std::function<double(const CVUniverse&, const MichelEvent&, const int)> true_ang
    studies.push_back(new PerMichelVarVecFSPart(permichel_tpi,"permichel_tpi", "MeV", nbinstpi, tpibins, error_bands));
 
 
-   studies.push_back(new PerMichel2DVarbin(permichel_tpi, pertruepimichel_range, tpiconfig, rangeconfig, error_bands));
+   studies.push_back(new PerMichel2DVarbin(permichel_tpi, permichel_range, tpiconfig, rangeconfig, error_bands));
    //studies.push_back(new PerMichel2DVarbin(permichel_range, permichel_tpi, rangeconfig,tpiconfig, error_bands));
   
    std::function<double(const CVUniverse&, const MichelEvent&)> event_angle = [](const CVUniverse& univ, const MichelEvent& evt)

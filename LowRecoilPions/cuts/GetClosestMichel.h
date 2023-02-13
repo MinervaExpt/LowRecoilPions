@@ -52,7 +52,7 @@ class GetClosestMichel: public PlotUtils::Cut<UNIVERSE, EVENT>
         double dist = evt.m_nmichels[i].Best3Ddist; 
 	if (evt.m_nmichels[i].OrderOfMichel == 1) {
            //closestMichel.push_back(evt.m_nmichels[i]);
-	   //if (dist > 1000.) return false; // mimicing aaron's cuts to remove high tpi events > 350 MeV. 1000 - 1200 mm in range is approximately the bin with the most events in that tpi bins. . 
+	   if (dist > 2400.) return false; // mimicing aaron's cuts to remove high tpi events > 350 MeV. 1000 - 1200 mm in range is approximately the bin with the most events in that tpi bins. . 
 	   
            evt.m_bestdist = dist;
 	              
@@ -105,7 +105,7 @@ class GetClosestMichel: public PlotUtils::Cut<UNIVERSE, EVENT>
 	   //  std::cout << "Available Energy: " << univ.NewEavail() << " Muon pT Reco: " << univ.GetMuonPT()  << " Primary Vtx time: " << vtx_t << " Best Michel at time: " << evt.m_nmichels[0].time << " range: " << evt.m_nmichels[0].Best3Ddist << " energy: " << evt.m_nmichels[0].energy << " Matched to : " <<  evt.m_nmichels[0].BestMatch << std::endl;
           
        }
-       if (closestMichel[0].Best3Ddist > 2500.) return false;
+       //if (closestMichel[0].Best3Ddist > 2500.) return false;
        return true;       
        //return !evt.m_nmichels.empty();
     };

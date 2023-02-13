@@ -70,7 +70,7 @@ which ifdhc
 #8: optional naming of the files
 #9: optional switch to turn off neutron cuts when passed a 0.
 echo "Submitting EventLoop" 
-export MNV101_SKIP_SYST=1 
+#export MNV101_SKIP_SYST=1 
 echo "With playlists: " `$1` " and " `$2` 
 /usr/bin/time -v -o runEventLoopTime.txt twoDEventLoop LowRecoilPions/playlists/$1 LowRecoilPions/playlists/$2 > Dump_runEventLoop.txt
 echo "Moving files to output Dir " `$CONDOR_DIR_OUT`

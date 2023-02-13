@@ -24,7 +24,7 @@ class RecoilERange: public PlotUtils::Cut<CVUniverse, EVENT>
       
       const double reco = univ.NewEavail()/1000.0; //MeV->GeV
       //if (odE > 100.) return false;
-      return (reco > fmin) && (reco <= fmax); 
+      return (reco > fmin) && (reco < fmax); 
     }
 
 };
