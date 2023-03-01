@@ -48,11 +48,10 @@ class PerMichelVarVecFSPart: public Study
        outDir.cd();
 
        std::cout << "Drawing the FSPart categorized histogram" << std::endl;
-       fSignalByPionsInVar.visit([](auto& Hist) { 
+       	fSignalByPionsInVar.visit([](auto& Hist) { 
 						    Hist.SyncCVHistos(); 
 						    Hist.hist->Write();
 						});
-
        //m_VarToGENIELabel->visit([](HIST& wrapper)
        //                         {
        //                           wrapper.SyncCVHistos();
@@ -60,19 +59,18 @@ class PerMichelVarVecFSPart: public Study
        //                         });
        
        std::cout << "Drawing the DATA Histogram" << std::endl;
-       dataHist->SyncCVHistos();
-       dataHist->hist->Write();
+         dataHist->SyncCVHistos();
+         dataHist->hist->Write();
+         std::cout << "DRAWING the TOTAL MC histogram" << std::endl;
        
-       std::cout << "DRAWING the TOTAL MC histogram" << std::endl;
-       totalMCHist->SyncCVHistos();
-       totalMCHist->hist->Write();
-       
-       bkgHist->SyncCVHistos();
-       bkgHist->hist->Write();
+         totalMCHist->SyncCVHistos();
+         totalMCHist->hist->Write();
+  
+         bkgHist->SyncCVHistos();
+         bkgHist->hist->Write();
 
-       sigHist->SyncCVHistos();
-       sigHist->hist->Write();     
-
+         sigHist->SyncCVHistos();
+         sigHist->hist->Write();     
        //std::cout << "DRAWING THE TRUTH HISTOGRAM" << std::endl;
        
        //truthHist->SyncCVHistos();
@@ -110,7 +108,8 @@ class PerMichelVarVecFSPart: public Study
      // for(size_t whichMichel = 0; whichMichel < evt.m_nmichels.size(); ++whichMichel)
      // {
         //std::cout << "Printing Universe Name: " << univ.ShortName() << std::endl;
-        (*totalMCHist).FillUniverse(&univ, fReco(univ, evt, 0), weight);
+        
+	(*totalMCHist).FillUniverse(&univ, fReco(univ, evt, 0), weight);
      //   (*m_VarToGENIELabel)[univ.GetInteractionType()].FillUniverse(&univ, fReco(univ, evt, whichMichel), weight);    
         const auto pionCat = std::find_if(pionFSCategories.begin(), pionFSCategories.end(), [&univ](auto& category) { return (*category)(univ); });
         fSignalByPionsInVar[*pionCat].FillUniverse(&univ, fReco(univ,evt,0), weight);

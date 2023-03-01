@@ -14,7 +14,6 @@ cd $_CONDOR_SCRATCH_DIR #/pnfs/minerva/persistent/users/sultana/MnvTuneComp/MnvT
 
 echo "pwd is " `pwd`
 
-TARFILEPATH=/pnfs/minerva/resilient/tarballs/sultana_Jan192023_AnalysisArea.tgz
 
 #Output location defined by use of $CONDOR_DIR_OUT defined by -d OUT /pnfs/minerva/scratch/users/dlast/
 
@@ -26,19 +25,32 @@ echo "GRID_USER = `echo $GRID_USER`"
 
 OUTTAG=`date +%m_%d_%Y_%H_%M`_${CLUSTER}.${PROCESS}
 
+
+#ls -lrtR $INPUT_TAR_DIR_LOCAL
+
 echo "Here is the your environment in this job: " > job_output_${OUTTAG}.log 2> job_output_${OUTTAG}.err #Creates file for logging information, note that this is stdout only
 env >> job_output_${OUTTAG}.log 2>> job_output_${OUTTAG}.err #since file already exists use ">>" instead of ">"
 
-/usr/bin/time -v -o tarTime.txt tar -xzvf $CONDOR_DIR_INPUT/sultana*.tgz
+#/usr/bin/time -v -o tarTime.txt tar -xzvf $CONDOR_DIR_INPUT/sultana*.tgz
 
-if [ $? -ne 0 ]; then
-        echo "Failed to unpack input tarball"
-        echo "Are you sure this file exists?:"
-        echo "$TARFILEPATH"
-        exit 71
-fi
+#if [ $? -ne 0 ]; then
+#        echo "Failed to unpack input tarball"
+#        echo "Are you sure this file exists?:"
+#        #echo "$TARFILEPATH"
+#        exit 71
+#fi
 
-export MINERVA_PREFIX=`pwd`/opt
+
+cp -r $INPUT_TAR_DIR_LOCAL/* .
+
+#cd $CONDOR_DIR_INPUT/opt
+
+echo "pwd is " `pwd`
+
+export MINERVA_PREFIX=`pwd`
+
+cd LowRecoilPions/
+
 echo "Printing items in current directory"
 echo "pwd is " `pwd`
 echo "What is in this directory? "
@@ -48,11 +60,12 @@ ls
 #source setup_MAT-MINERvA.sh
 #source setup_MAT_IncPions.sh 
 
-
-source LowRecoilPions/setup_env.sh
+source setup_env.sh
 echo "Setting up utils."
-source LowRecoilPions/setup_utils.sh
+source setup_utils.sh
 echo "Setting up environment for MAT"
+
+cd $_CONDOR_SCRATCH_DIR
 
 env
 echo "Which ifdhc "

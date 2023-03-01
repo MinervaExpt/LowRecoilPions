@@ -59,7 +59,7 @@ class Variable2D: public PlotUtils::Variable2DBase<CVUniverse>
       mcTotalHist = new Hist((GetNameX() + "_" + GetNameY() + "_MC").c_str(), GetName().c_str(), GetBinVecX(), GetBinVecY(), mc_error_bands);
       selectedSignalReco = new Hist((GetNameX() + "_" + GetNameY() + "_signal_reco").c_str(), GetName().c_str(), GetBinVecX(), GetBinVecY(), mc_error_bands);
 
-      mc_trueHist = new Hist((GetNameX() + "_" + GetNameY() + "_true_MC").c_str(), GetName().c_str(), GetBinVecX(), GetBinVecY(), mc_error_bands);
+      mc_trueHist = new Hist((GetNameX() + "_" + GetNameY() + "_signal_true").c_str(), GetName().c_str(), GetBinVecX(), GetBinVecY(), mc_error_bands);
    
       //xaxis = new axis(GetBinVecX(), GetNBinsX(), GetBinVecX()[0], GetBinVecX()[GetNBinsX()-1], false);
       
@@ -175,7 +175,7 @@ class Variable2D: public PlotUtils::Variable2DBase<CVUniverse>
 
       if (mcTotalHist->hist) {
                 mcTotalHist->hist->SetDirectory(&file);
-                mcTotalHist->hist->Write((GetNameX() + "_" + GetNameY() + "_data").c_str());
+                mcTotalHist->hist->Write((GetNameX() + "_" + GetNameY() + "_mcreco").c_str());
       }
       if (selectedSignalReco) {
                 selectedSignalReco->hist->SetDirectory(&file);

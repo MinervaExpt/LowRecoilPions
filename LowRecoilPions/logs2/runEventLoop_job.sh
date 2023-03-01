@@ -42,7 +42,7 @@ env >> job_output_${OUTTAG}.log 2>> job_output_${OUTTAG}.err #since file already
 #fi
 
 
-cp -r $INPUT_TAR_DIR_LOCAL/* .
+#cp -r $INPUT_TAR_DIR_LOCAL/* .
 
 export MINERVA_PREFIX=`pwd`/opt
 echo "Printing items in current directory"

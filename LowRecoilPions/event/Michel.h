@@ -11,7 +11,7 @@ class Michel
 {  
  public:
   //constructors
-  Michel(const CVUniverse& univ, int ci);
+  Michel(const CVUniverse& univ, const int ci);
   // Functions
   Michel(){};  // fill in most basic stuff in "generic info" . this is default constructor you need it if you have public data members 
   void DoMoreInitializationAndProcessing(); // fill in more complicated stuff in "generic info"
@@ -58,11 +58,11 @@ class Michel
   std::vector<Cluster> cluster_to_up_match;
   std::vector<Cluster> cluster_to_down_match;
   //3D distances between cluster and Michel 
-  double up_to_cluster_dist3D = 9999.;  // Distance between vertex and cluster that was matched to endpoint 1
-  double down_to_cluster_dist3D = 9999.; // Distance between vertex and cluster matched to endpoint 2
-  double up_clus_michel_dist3D = 9999.; // Distance between Michel endpoint 1 and clusters
-  double down_clus_michel_dist3D = 9999.; // Distance between Michel endpoint 2 and clusters
-  double up_clus_michvtx_dist3D = 9999.; // Distance between the Michel end point 1 that matched to clusters and the vertex - this will be used as pion range
+  double up_to_cluster_dist3D = -9999.;  // Distance between vertex and cluster that was matched to endpoint 1
+  double down_to_cluster_dist3D = -9999.; // Distance between vertex and cluster matched to endpoint 2
+  double up_clus_michel_dist3D = -9999.; // Distance between Michel endpoint 1 and clusters
+  double down_clus_michel_dist3D = -9999.; // Distance between Michel endpoint 2 and clusters
+  double up_clus_michvtx_dist3D = -9999.; // Distance between the Michel end point 1 that matched to clusters and the vertex - this will be used as pion range
   double down_clus_michvtx_dist3D = 9999.; // Distance between the Michel endpoint 2 that matched to clusters and the vertex - this will be used as pion range
   double vtx_michel_timediff = 9999.;
 
@@ -79,21 +79,22 @@ class Michel
   int tuple_idx;  // index of the Michel out of all the michels saved in the tuple
   double Best3Ddist = 9999.; // Best 3D distance out of eitehr a vertex or a cluster match 
   // best 2D distance for the best type of match
-  double best_XZ = 9999.;
-  double best_UZ= 9999.;
-  double best_VZ = 9999.;
+  double best_XZ = -9999.;
+  double best_UZ= -9999.;
+  double best_VZ = -9999.;
   // Want to save the index of the clusters that the Michel best matched to. 
   int xclus_idx; 
   int uclus_idx;
   int vclus_idx;   
   
   //True initial position of the michel  TODO: initial the other Michel truth member data here  (energy, time, momentum etc) 
-  double true_angle = 9999.;
-  double true_initialx = 9999.;
-  double true_initialy = 9999.;
-  double true_initialz = 9999.;
-  double true_e = 9999.;
-  double true_p = 9999.;
+  double true_angle = -9999.;
+  double true_phi = -9999.;
+  double true_initialx = -9999.;
+  double true_initialy = -9999.;
+  double true_initialz = -9999.;
+  double true_e = -9999.;
+  double true_p = -9999.;
   double true_pdg = -1.0;
   int true_parentid = -1;
   int true_parentpdg = -1;
@@ -109,19 +110,25 @@ class Michel
   double true_parent_yf = -9999.;
   double true_parent_zf = -9999.;
   // the following member data were created to investigate my weird convoluted way of geting x and y values. Probably dont need them now. // TODO: check and remove the following member data
-  double best_angle = -9999.; 
-  double up_clus_x = 9999.;
-  double up_clus_y = 9999.;
-  double up_clus_z = 9999.;
-  double down_clus_x = 9999.;
-  double down_clus_y = 9999.;
-  double down_clus_z = 9999.;
-  double up_vtx_x = 9999.;
-  double up_vtx_y = 9999.;
-  double up_vtx_z = 9999.;
-  double down_vtx_x = 9999.;
-  double down_vtx_y = 9999.;
-  double down_vtx_z = 9999.;
+  double best_angle = -9999.;
+  double best_phi = -9999.;
+  double reco_KE = -9999.;
+  double reco_ppi = -9999.;
+  double reco_ppix = -9999.;
+  double reco_ppiy = -9999.;
+  double reco_ppiz = -9999.;  
+  double up_clus_x = -9999.;
+  double up_clus_y = -9999.;
+  double up_clus_z = -9999.;
+  double down_clus_x = -9999.;
+  double down_clus_y = -9999.;
+  double down_clus_z = -9999.;
+  double up_vtx_x = -9999.;
+  double up_vtx_y = -9999.;
+  double up_vtx_z = -9999.;
+  double down_vtx_x = -9999.;
+  double down_vtx_y = -9999.;
+  double down_vtx_z = -9999.;
   double is_overlay = -1;  
   double pionKE = -9999.; 
   // Adding the following member data to determine the true endpoint position of the Michel
@@ -170,20 +177,37 @@ Michel::Michel(const CVUniverse& univ, int ci)
    true_parentpdg = univ.GetVecElemInt("truth_FittedMichel_true_primaryparent_pdg", ci);
    true_parentid = univ.GetVecElemInt("truth_FittedMichel_true_primaryparent_trackID", ci); 
    true_p = univ.GetVecElem("truth_FittedMichel_reco_micheltrajectory_momentum", ci);
-  
+   true_parent_energy = univ.GetVecElem("truth_FittedMichel_true_primaryparent_energy", ci);  
+   true_parent_p = univ.GetVecElem("truth_FittedMichel_true_primaryparent_momentum", ci);
    double true_parentp = univ.GetVecElem("truth_FittedMichel_true_primaryparent_momentum", ci);
    double true_parente = univ.GetVecElem("truth_FittedMichel_true_primaryparent_energy", ci);
-   double mass = mass = sqrt(pow(true_parente,2) - pow(true_parentp, 2));
+   double mass = sqrt(pow(true_parente,2) - pow(true_parentp, 2));
    pionKE = true_parente - mass;
-  
-   double true_parentpx = univ.GetVecElem("truth_FittedMichel_true_primaryparent_momentumx", ci);
-   double true_parentpy = univ.GetVecElem("truth_FittedMichel_true_primaryparent_momentumy", ci);
-   double true_parentpz = univ.GetVecElem("truth_FittedMichel_true_primaryparent_momentumz", ci);
-  
-   TVector3 truep(true_parentpx, true_parentpy, true_parentpz);
-   double true_theta = truep.Theta();
-   true_angle = true_theta;//*TMath::RadToDeg();
+   TVector3 parentfinalpos(true_initialx,     //univ.GetVecElem("truth_FittedMichel_true_primaryparent_finalx", ci), 
+			   true_initialy,     //univ.GetVecElem("truth_FittedMichel_true_primaryparent_finaly", ci),
+			   true_initialz);     //univ.GetVecElem("truth_FittedMichel_true_primaryparent_finalz", ci));
 
+   //TVector3 vtxtruepos(univ.GetTrueIntVtxX(), univ.GetTrueIntVtxY(), univ.GetTrueIntVtxZ());
+
+   //TVector3 positionvec = parentfinalpos - vtxtruepos;
+   //true_angle = univ.thetaWRTBeam(positionvec.X(), positionvec.Y(), positionvec.Z());
+   //true_phi = univ.phiWRTBeam(positionvec.X(), positionvec.Y(), positionvec.Z());
+   //positionvec.RotateX(MinervaUnits::numi_beam_angle_rad);
+ 
+   double parent_px = univ.GetVecElem("truth_FittedMichel_true_primaryparent_momentumx", ci);
+   double parent_py = univ.GetVecElem("truth_FittedMichel_true_primaryparent_momentumy", ci);
+   double parent_pz = univ.GetVecElem("truth_FittedMichel_true_primaryparent_momentumz", ci);
+   const double numi_beam_angle_rad = -0.05887;
+   double pyp = -1.0 *sin( numi_beam_angle_rad )*parent_pz + cos( numi_beam_angle_rad )*parent_py;
+   double pzp = cos( numi_beam_angle_rad )*parent_pz + sin( numi_beam_angle_rad )*parent_py; 
+
+   TVector3 truep(true_parent_px, true_parent_py, true_parent_pz);
+   double true_theta = univ.thetaWRTBeam(parent_px, parent_py, parent_pz); //Hopefully this is with respect to the dang beam; //truep.Theta();
+   true_phi = univ.phiWRTBeam(parent_px, parent_py, parent_pz); // Radians
+   true_angle = true_theta;//*TMath::RadToDeg();
+   true_parent_px = parent_px;//true_parent_p*sin(true_angle)*cos(true_phi);
+   true_parent_py = pyp;//true_parent_p*sin(true_angle)*sin(true_phi);
+   true_parent_pz = pzp;//true_parent_p*cos(true_angle); 
    //if (overlay_fraction < 0.5) std::cout << "True Parent of Michel is PDG: " <<  true_parentpdg <<  " And Parent trackID: "  << true_parentid << std::endl;
    double end1diff = abs(true_initialz - m_z1); // This gives a value for determining how close the reconstructed endpoint of the michel is to the true intial endpoint (the start point of where the michel decayed from) 
    double end2diff = abs(true_initialz - m_z2); // this is for endpoint 2. If you compare this to the endpoint that gets matched to a verted or cluster, you can determine which type of match ends up getting correcct matches or wrong matches. 
@@ -223,7 +247,22 @@ void Michel::GetPionAngle(const CVUniverse& univ){
   
   TVector3 range = endpoint - vtx; 
   double angle = univ.thetaWRTBeam(range.x(), range.y(), range.z()); 
-  this->best_angle = angle;//*TMath::RadToDeg(); // in Degrees
+  double phi = univ.phiWRTBeam(range.x(), range.y(), range.z());
+  this->best_angle = angle;//in Radians   //*TMath::RadToDeg(); // in Degrees
+  this->best_phi = phi; // in Radians
+  double tpi = univ.GetTpiFromRange(this->Best3Ddist);
+  double gamma = tpi/139.57 + 1;
+  double ppi = sqrt(tpi*2*139.57); //MeV
+  double Epi = sqrt(ppi*ppi + 139.57*139.57); 
+  double pz = ppi*cos(angle);
+  double px = ppi*sin(angle)*cos(phi);
+  double py = ppi*sin(angle)*sin(phi);
+  this->reco_KE = tpi;
+  this->reco_ppi = ppi;
+  this->reco_ppix = px;
+  this->reco_ppiy = py;
+  this->reco_ppiz = pz;  
+
 }
 
 //This function will get an integer for the best match type of the Michel.

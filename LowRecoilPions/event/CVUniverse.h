@@ -17,6 +17,7 @@
 #include <iostream>
 #include <chrono>
 #include "PlotUtils/MinervaUniverse.h"
+#include "TVector.h"
 //#include "event/Cluster.h"
 class CVUniverse : public PlotUtils::MinervaUniverse {
 
@@ -95,6 +96,50 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
     return GetPmu()/1000. * cos(GetThetamu());
   }
 
+  double GetMuonVecX() const // MeV/c
+  {
+    return GetMuon4V().Px();
+
+  }
+
+  double GetPXmu() const { return GetMuon4V().Px(); } //MeV
+  double GetPXmuGeV() const { return GetMuon4V().Px()/1000.; } //GeV
+  double GetPYmu() const { return GetMuon4V().Py(); } // MeV
+  double GetPYmuGeV() const { return GetMuon4V().Py()/1000.; } //GeV
+  double GetPZmu() const { return GetMuon4V().Pz(); } //MeV
+  double GetPZmuGeV() const { return GetMuon4V().Pz()/1000.; } //GeV
+
+  double GetPXmuTrue() const {
+        //std::cout << GetVecElem("mc_primFSLepton", 0)  << std::endl;
+   	return GetVecElem("mc_primFSLepton", 0);
+  }
+
+  double GetPYmuTrue() const {
+  	return GetVecElem("mc_primFSLepton", 1);
+  }
+
+  double GetPZmuTrue() const {
+        return GetVecElem("mc_primFSLepton", 1);
+  }
+
+  virtual ROOT::Math::PxPyPzEVector GetPmuTrueWRTBeam() const {
+     
+     TVector3 pmu(GetVecElem("mc_primFSLepton", 0), GetVecElem("mc_primFSLepton", 1), GetVecElem("mc_primFSLepton", 1));
+     //pmu.RotateX(MinervaUnits::numi_beam_angle_rad);
+     const double numi_beam_angle_rad = -0.05887;
+     //double theta = GetThetalepTrue(); //thetaWRTBeam(p3lep.X(), p3lep.Y(), p3lep.Z());
+     //double phi = GetPhilepTrue(); //phiWRTBeam(p3lep.X(), p3lep.Y(), p3lep.Z()); 
+     double px = pmu.X(); //GetPlepTrue()*sin(theta) * cos(phi);  
+     double py =  -1.0 *sin( numi_beam_angle_rad )*pmu.Z() + cos( numi_beam_angle_rad )*pmu.Y();;//GetPlepTrue()*sin(theta) * sin(phi);
+     double pz = cos( numi_beam_angle_rad )*pmu.Z() + sin( numi_beam_angle_rad )*pmu.Y();//GetPlepTrue()*cos(theta);
+     double E = GetElepTrue(); 
+     return ROOT::Math::PxPyPzEVector(px, py, pz, E);
+  }
+
+  double GetMuPxTrue() const { return  GetPmuTrueWRTBeam().Px()/1000.;}
+  double GetMuPyTrue() const { return  GetPmuTrueWRTBeam().Py()/1000.;}
+  double GetMuPzTrue() const { return  GetPmuTrueWRTBeam().Pz()/1000.;}
+  
   double GetMuonP() const
   {
 	return GetPmu()/1000.; //GeV/c
@@ -104,6 +149,9 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
 	return GetPlepTrue()/1000.; //GeV/c
 
   }
+
+
+
   double GetTrueExpq3() const
   {
      return calcq3(GetTrueExperimentersQ2(), GetEnuTrue()/pow(10,3), GetElepTrue()/pow(10,3)); // In GeV
@@ -117,6 +165,17 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
   {
     return GetPlepTrue()/1000. * cos(GetThetalepTrue());
   }
+
+  double GetMuonPxTrue() const //GeV/c
+  {
+    return GetPlepTrue()/1000. * sin(GetThetalepTrue()) * cos(GetPhilepTrue()) ;
+  }
+ 
+  double GetMuonPyTrue() const //GeV/c
+  {
+    return GetPlepTrue()/1000. * sin(GetThetalepTrue()) * sin(GetPhilepTrue()) ;
+  }
+
 
   double GetEmuGeV() const //GeV
   {
@@ -344,7 +403,7 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
        //int npi = GetTrueNPionsinEvent();
        //if (npi == 0) return 1.0;
        double angle = GetTrueAngleHighTpi();
-       double KE = GetTrueHighTpi()/1000.;
+       double KE = GetTrueHighEpi()/1000.; // This is supposed to be the energy of the pion!!!! 
        if (KE < 0) return 1.0;
        else {
 	double weight = GetCoherentPiWeight(angle, KE); //Inputs are in Degrees and GeV
@@ -356,13 +415,13 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
   }
 
    virtual double GetTrueAngleHighTpi() const {
-     int nFSpi = GetTrueNPions();
+     int nFSpi = GetInt("mc_nFSPart");
      double angle = -9999.; //WRTbeam and in degrees
      double pionKE = 0.0;
      int idk = -9999;
      for (int i = 0; i < nFSpi; i++){
          int pdg = GetVecElem("mc_FSPartPDG",i);
-         if(pdg != 211) continue;
+         if(abs(pdg) != 211) continue;
          double energy = GetVecElem("mc_FSPartE", i);
          double mass = 139.569;
          double tpi = energy - mass;
@@ -378,7 +437,7 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
    }
 
    virtual double GetTrueAngleLowTpi() const {
-     int nFSpi = GetTrueNPions();
+     int nFSpi = GetInt("mc_nFSPart");
      double angle = 9999.; //WRTbeam and in degrees
      double pionKE = 9999.;
      int idk = -9999;
@@ -400,19 +459,19 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
    }
    
   
-   virtual double GetTrueHighTpi() const {
-     int nFSpi = GetTrueNPions();
-     double pionKE = -9999.0;
+   virtual double GetTrueHighEpi() const {
+     int nFSpi = GetInt("mc_nFSPart");
+     double pionE = -9999.0;
      for (int i = 0; i < nFSpi; i++){
           int pdg = GetVecElem("mc_FSPartPDG",i);
-          if(pdg != 211) continue;
+          if(abs(pdg) != 211) continue;
           double energy = GetVecElem("mc_FSPartE", i);
-          double mass = 139.569;
-          double tpi = energy - mass;
-          if (tpi >= pionKE) pionKE = tpi;
+          //double mass = 139.569;
+          //double tpi = energy - mass;
+          if (energy >= pionE) pionE = energy;
       }
 
-      return pionKE;
+      return pionE; // MeV
    }
 
 
@@ -470,6 +529,26 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
   virtual int GetNMichels() const{
       return GetInt("FittedMichel_michel_fitPass_sz");
   }
+
+  
+  virtual double GetTpiFromRange(double range) const{
+     std::string f= "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/TpiRange_Mediangraph.root"; //"util/TpiRange_Mediangraph.root";
+     TFile* file = TFile::Open(f.c_str(),"READONLY"); 
+     TGraph* tpirange = nullptr;
+     file->GetObject("FitCurve", tpirange);
+     //TGraph* tpirange = (TGraph*)file->Get("FitCurve");  
+     //tpirange->SetDirectory(nullptr);  
+     double tpiest = tpirange->Eval(range);
+     //std::cout << "The Pion Range is " << range << " mm and the estimated Tpi is: " << tpiest << " MeV" << std::endl; 
+     delete file;
+     tpirange->Clear();
+     delete tpirange;
+     //file->Close();
+     return tpiest; //Tpi in MeV
+
+  }
+
+
 
   virtual std::vector<int> GetTrueFSPDGCodes() const {
      std::vector<int> pdgcodes;
@@ -532,6 +611,9 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
 
  */
 
+
+
+
  
  virtual double GetTrueIntVtxX() const {return GetVecElem("mc_vtx", 0);}
  virtual double GetTrueIntVtxY() const {return GetVecElem("mc_vtx", 1);}
@@ -577,10 +659,17 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
     else if (!IsInPlastic() && !PlotUtils::TargetUtils::Get().InWaterTargetMC(
                             GetTrueIntVtxX(), GetTrueIntVtxY(),
                             GetTrueIntVtxZ(), GetInt("mc_targetZ"))) {
-    return 1.;
+    	 return 1.;
     }
-    else return 1.4368;
+    else{
+	 //std::cout << "Printing Diffractive weight for Event Type: " << GetInt("mc_intType") << ". And the weight is " << 1.4368 << std::endl;
+	 return 1.4368;
+    
+    }
  }
+
+ 
+
 
  virtual int GetTrueNPionsinEvent() const {
      int npion = 0;
@@ -617,7 +706,146 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
       return npart;
  }
 
+ virtual double GetTrueLowestEpiEvent() const{
+    double tpi = 99999.;
+    double Epi = 9999.;
+    int pdgsize = GetInt("mc_nFSPart");
+    for (int i = 0; i< pdgsize; i++)
+        {
+            int pdg = GetVecElem("mc_FSPartPDG", i);
+            if (pdg != 211) continue;
+            double energy = GetVecElem("mc_FSPartE", i);
+            double momentumx = GetVecElem("mc_FSPartPx", i);
+            double momentumy = GetVecElem("mc_FSPartPy", i);
+            double momentumz = GetVecElem("mc_FSPartPz", i);
+            double pionmomentum = TMath::Sqrt(pow(momentumx, 2) + pow(momentumy,2)+pow(momentumz,2));
+	    double pionmass = TMath::Sqrt(pow(energy, 2) - pow(pionmomentum, 2));
+            double KE = energy - pionmass;
+            if (tpi > KE) {
+			tpi = KE;
 
+			Epi = energy;
+	    }
+        }	
+     return Epi;	
+
+ }
+
+ virtual double GetTrueLowestPpiEvent() const{
+    double tpi = 99999.;
+    double Ppi = 9999.;
+    int pdgsize = GetInt("mc_nFSPart");
+    for (int i = 0; i< pdgsize; i++)
+        {
+            int pdg = GetVecElem("mc_FSPartPDG", i);
+            if (pdg != 211) continue;
+            double energy = GetVecElem("mc_FSPartE", i);
+            double momentumx = GetVecElem("mc_FSPartPx", i);
+            double momentumy = GetVecElem("mc_FSPartPy", i);
+            double momentumz = GetVecElem("mc_FSPartPz", i);
+            double pionmomentum = TMath::Sqrt(pow(momentumx, 2) + pow(momentumy,2)+pow(momentumz,2));
+            double pionmass = TMath::Sqrt(pow(energy, 2) - pow(pionmomentum, 2));
+            double KE = energy - pionmass;
+            if (tpi > KE) {
+                        tpi = KE;
+
+                        Ppi = pionmomentum;
+            }
+        }
+     return Ppi;
+
+ }
+
+ virtual double GetTrueThetapiEvent(int i) const{
+      TVector3 pimomentumvec(GetVecElem("mc_FSPartPx", i), GetVecElem("mc_FSPartPz", i),GetVecElem("mc_FSPartPz", i));
+      double angle_wrtb = thetaWRTBeam(pimomentumvec.X(), pimomentumvec.Y(), pimomentumvec.Z()); //rad
+      return angle_wrtb;
+ }
+
+ virtual double GetTruePpizEvent(int i) const{
+       double y = GetVecElem("mc_FSPartPy", i);
+       double z = GetVecElem("mc_FSPartPz", i);
+       double pzp = cos( MinervaUnits::numi_beam_angle_rad )*z + sin( MinervaUnits::numi_beam_angle_rad )*y;
+       return pzp;
+ }
+ 
+ virtual double GetTruePpiyEvent(int i) const{
+       double y = GetVecElem("mc_FSPartPy", i);
+       double z = GetVecElem("mc_FSPartPz", i);
+       double pyp = -1.0 *sin( MinervaUnits::numi_beam_angle_rad)*z + cos( MinervaUnits::numi_beam_angle_rad )*y;
+       return pyp;
+ }
+
+ virtual double GetTruePpiEvent(int i) const{
+	int pdg = GetVecElem("mc_FSPartPDG", i);
+        double energy = GetVecElem("mc_FSPartE", i);
+        double momentumx = GetVecElem("mc_FSPartPx", i);
+        double momentumy = GetVecElem("mc_FSPartPy", i);
+        double momentumz = GetVecElem("mc_FSPartPz", i);
+        double pionmomentum = TMath::Sqrt(pow(momentumx, 2) + pow(momentumy,2)+pow(momentumz,2));
+        //double pionmass = TMath::Sqrt(pow(energy, 2) - pow(pionmomentum, 2));
+        //double KE = energy - pionmass;
+	return pionmomentum;
+ }
+
+ virtual double GetTrueEpiEvent(int i) const{
+        int pdg = GetVecElem("mc_FSPartPDG", i);
+        double energy = GetVecElem("mc_FSPartE", i);
+        double momentumx = GetVecElem("mc_FSPartPx", i);
+        double momentumy = GetVecElem("mc_FSPartPy", i);
+        double momentumz = GetVecElem("mc_FSPartPz", i);
+        double pionmomentum = TMath::Sqrt(pow(momentumx, 2) + pow(momentumy,2)+pow(momentumz,2));
+        double pionmass = TMath::Sqrt(pow(energy, 2) - pow(pionmomentum, 2));
+        double KE = energy - pionmass;
+        return energy;
+ }
+
+ virtual int GetTrueLowestKEPion() const{
+    double tpi = 999999.;
+    int idx = 9999;
+    int pdgsize = GetInt("mc_nFSPart");
+    for (int i = 0; i< pdgsize; i++)
+        {
+            int pdg = GetVecElem("mc_FSPartPDG", i);
+            if (abs(pdg) != 211) continue;
+            double energy = GetVecElem("mc_FSPartE", i);
+            double momentumx = GetVecElem("mc_FSPartPx", i);
+            double momentumy = GetVecElem("mc_FSPartPy", i);
+            double momentumz = GetVecElem("mc_FSPartPz", i);
+            double pionmomentum = TMath::Sqrt(pow(momentumx, 2) + pow(momentumy,2)+pow(momentumz,2));
+	    double pionmass = TMath::Sqrt(pow(energy, 2) - pow(pionmomentum, 2));
+            double KE = energy - pionmass;
+            if (tpi > KE){
+		tpi = KE;
+	        idx = i;
+	    }
+        }
+    return idx;
+ }
+
+
+ virtual int GetTrueHighestKEPion() const{
+    double tpi = -9999.;
+    int idx = 9999;
+    int pdgsize = GetInt("mc_nFSPart");
+    for (int i = 0; i< pdgsize; i++)
+        {
+            int pdg = GetVecElem("mc_FSPartPDG", i);
+            if (abs(pdg) != 211) continue;
+            double energy = GetVecElem("mc_FSPartE", i);
+            double momentumx = GetVecElem("mc_FSPartPx", i);
+            double momentumy = GetVecElem("mc_FSPartPy", i);
+            double momentumz = GetVecElem("mc_FSPartPz", i);
+            double pionmomentum = TMath::Sqrt(pow(momentumx, 2) + pow(momentumy,2)+pow(momentumz,2));
+            double pionmass = TMath::Sqrt(pow(energy, 2) - pow(pionmomentum, 2));
+            double KE = energy - pionmass;
+            if (tpi < KE){
+                tpi = KE;
+                idx = i;
+            }
+        }
+    return idx;
+ }
 
  virtual double GetTrueLowestTpiEvent() const {
     double tpi = 999999.;
@@ -698,7 +926,14 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
       double denom2 = pow(x,2) + pow(pyp,2) + pow(pzp,2);
       if( 0. == denom2 ) return -9999.;
       else return acos(pzp / sqrt(denom2) );
-  } 
+  }
+
+  virtual double phiWRTBeam(double x, double y, double z) const{
+      double pyp = -1.0 *sin( MinervaUnits::numi_beam_angle_rad)*z + cos( MinervaUnits::numi_beam_angle_rad )*y;
+      double phi = atan2(pyp, x);
+
+  }
+ 
 
   virtual double GetTrueTpi() const {
      int nFSpi = GetTrueNPions();

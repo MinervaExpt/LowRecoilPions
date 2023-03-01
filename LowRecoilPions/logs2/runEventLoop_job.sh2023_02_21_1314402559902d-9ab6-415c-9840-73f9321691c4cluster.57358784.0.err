@@ -1,0 +1,63 @@
+22+1 records in
+22+1 records out
+11710106 bytes (12 MB) copied, 0.204214 s, 57.3 MB/s
+Tue Feb 21 19:15:08 UTC 2023 57358784.0@jobsub01.fnal.gov BEGIN EXECUTION runEventLoop_job.sh data_me1A_xrootd_plist.txt mc_me1A_xrootd_plist.txt
+++ date
++ echo Start Tue Feb 21 19:15:08 UTC 2023
++ echo Site:
+++ hostname
+++ uname -a
++ echo 'the worker node is ' sultana-57358784-0-fnpc7566.fnal.gov 'OS: ' Linux sultana-57358784-0-fnpc7566.fnal.gov 3.10.0-1160.81.1.el7.x86_64 '#1' SMP Tue Dec 13 09:53:21 CST 2022 x86_64 x86_64 x86_64 GNU/Linux
+++ whoami
++ echo 'the user id is ' sultana
+++ id
++ echo 'the output of id is ' 'uid=49107(sultana)' 'gid=9767(fnalgrid)' 'groups=9767(fnalgrid),65534(nfsnobody)'
++ set +x
+which: no ifdhc in (/srv/no_xfer/opt/bin:/cvmfs/minerva.opensciencegrid.org/minerva/hep_hpc_products/cmake/v3_7_1/Linux64bit+3.10-2.17/bin:/cvmfs/minerva.opensciencegrid.org/minerva/hep_hpc_products/sqlite/v3_16_02_00a/Linux64bit+3.10-2.17/bin:/cvmfs/minerva.opensciencegrid.org/minerva/hep_hpc_products/python/v2_7_13d/Linux64bit+3.10-2.17/bin:/cvmfs/minerva.opensciencegrid.org/minerva/hep_hpc_products/gcc/v6_3_0/Linux64bit+3.10-2.17/bin:/cvmfs/minerva.opensciencegrid.org/minerva/hep_hpc_products/xrootd/v4_5_0c/Linux64bit+3.10-2.17-e14-prof/bin:/cvmfs/minerva.opensciencegrid.org/minerva/hep_hpc_products/libxml2/v2_9_4b/Linux64bit+3.10-2.17-prof/bin:/cvmfs/minerva.opensciencegrid.org/minerva/hep_hpc_products/fftw/v3_3_6_pl2/Linux64bit+3.10-2.17-prof/bin:/cvmfs/minerva.opensciencegrid.org/minerva/hep_hpc_products/root/v6_10_04d/Linux64bit+3.10-2.17-e14-prof/bin:/cvmfs/minerva.opensciencegrid.org/minerva/hep_hpc_products/ups/v5_2_0/Linux64bit+3.10-2.17/bin:/cvmfs/minerva.opensciencegrid.org/minerva/software_releases/v22r1p1/lcg/external/LCGCMT/LCGCMT_61/LCG_Settings/../../../gccxml/0.9.0_20150423/x86_64-slc7-gcc49-opt/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:.:/srv/no_xfer/opt/bin)
+./runEventLoop_job.sh: line 79: data_me1A_xrootd_plist.txt: command not found
+./runEventLoop_job.sh: line 79: mc_me1A_xrootd_plist.txt: command not found
+Unable to load sec.protocol plugin libXrdSecztn.so
+Ending on a ROOT error message.  No histograms will be produced.
+If the message talks about "TNetXNGFile", this could be a problem with dCache.  The message is:
+TFile::TFile: file /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/lowQ2pi_weights.root does not exist
+
+*** USAGE ***
+runEventLoop <dataPlaylist.txt> <mcPlaylist.txt>
+
+*** Explanation ***
+Reduce MasterAnaDev AnaTuples to event selection histograms to extract a
+single-differential inclusive cross section for the 2021 MINERvA 101 tutorial.
+
+*** The Input Files ***
+Playlist files are plaintext files with 1 file name per line.  Filenames may be
+xrootd URLs or refer to the local filesystem.  The first playlist file's
+entries will be treated like data, and the second playlist's entries must
+have the "Truth" tree to use for calculating the efficiency denominator.
+
+*** Output ***
+Produces a two files, runEventLoopMC.root and runEventLoopData.root, with
+all histograms needed for the ExtractCrossSection program also built by this
+package.  You'll need a .rootlogon.C that loads ROOT object definitions from
+PlotUtils to access systematics information from these files.
+
+*** Environment Variables ***
+Setting up this package appends to PATH and LD_LIBRARY_PATH.  PLOTUTILSROOT,
+MPARAMFILESROOT, and MPARAMFILES must be set according to the setup scripts in
+those packages for systematics and flux reweighters to function.
+If MNV101_SKIP_SYST is defined at all, output histograms will have no error bands.
+This is useful for debugging the CV and running warping studies.
+
+*** Return Codes ***
+0 indicates success.  All histograms are valid only in this case.  Any other
+return code indicates that histograms should not be used.  Error messages
+about what went wrong will be printed to stderr.  So, they'll end up in your
+terminal, but you can separate them from everything else with something like:
+"runEventLoop data.txt mc.txt 2> errors.txt"
+
+./runEventLoop_job.sh: line 81: out_OUT: command not found
+mv: target 'out_OUT' is not a directory
+mv: target 'out_OUT' is not a directory
+mv: cannot stat '*.root': No such file or directory
+gfal-copy error: 2 (No such file or directory) - Could not stat the source: errno reported by local system call No such file or directory
+Perhaps you forgot a -D to indicate destination is a directory? 
+Tue Feb 21 19:15:25 UTC 2023 runEventLoop_job.sh COMPLETED with exit status 1

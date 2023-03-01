@@ -234,9 +234,9 @@ void LoopAndFillEventSelection(
         	} // End of else statement for if Signal 
        } // If event passes PreCuts
        ++unv_count;
+       //delete universe;
       } // End band's universe loop
     } // End Band loop
-  
   //std::cout << "Printing Muon Momentum At End of Entry Loop: " << cvUniv->GetMuonPTTrue() << std::endl;
   //std::cout << "====================================================== ==========" << std::endl;
   } //End entries loop
@@ -575,7 +575,7 @@ int main(const int argc, const char** argv)
 
 
   std::vector<double> ptbins = {0, 0.075, 0.10, 0.15, 0.20, 0.25,0.30,0.35, 0.4, 0.45, 0.50, 0.55, 0.60 , 0.7, 0.80,0.9, 1.};
-  std::vector<double> dansPTBins = {0, 0.075, 0.10, 0.15, 0.20, 0.25,0.30,0.35, 0.4, 0.45, 0.50, 0.55, 0.60 , 0.7, 0.80,0.9, 1.,1.1, 1.2, 1.3, 1.4, 1.5, 2.0, 3.0, 4.0},
+  std::vector<double> dansPTBins = {0.01, 0.015, 0.020, 0.025, 0.030, 0.035, 0.040, 0.045, 0.05, 0.075, 0.10, 0.125, 0.15, 0.175,0.20, 0.25,0.30,0.35, 0.4, 0.45, 0.50, 0.55, 0.60 , 0.7, 0.80,0.9, 1.,1.1, 1.2},// 1.3, 1.4, 1.5, 2.0, 3.0, 4.0},
                       dansPzBins = {1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 6, 7, 8, 9, 10, 15, 20, 40, 60},
                       robsEmuBins = {0,1,2,3,4,5,7,9,12,15,18,22,36,50,75,80},
                       mehreenQ3Bins = {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2},
@@ -601,6 +601,10 @@ int main(const int argc, const char** argv)
     new Variable("pTmu", "p_{T, #mu} [GeV/c]", ptbins, &CVUniverse::GetMuonPT, &CVUniverse::GetMuonPTTrue), //0
     //new Variable("q3", "q3 [GeV]", mehreenQ3Bins, &CVUniverse::Getq3, &CVUniverse::GetTrueQ3), //1
     new Variable("q2", "q2 [GeV^2]", dansPTBins, &CVUniverse::GetQ2Reco, &CVUniverse::GetTrueQ2GeV), //2
+    //new Variable("pxmu" "px_{#mu} [GeV/c]", dansPTBins,&CVUniverse::GetPXmuGeV, &CVUniverse::GetMuPxTrue),
+    //new Variable("pymu" "py_{#mu} [GeV/c]", dansPTBins,&CVUniverse::GetPYmuGeV, &CVUniverse::GetMuPyTrue),
+    //new Variable("pzmu" "px_{#mu} [GeV/c]", dansPTBins,&CVUniverse::GetPZmuGeV, &CVUniverse::GetMuPzTrue),
+
     //new Variable("pzmu", "p_{||, #mu} [GeV/c]", dansPzBins, &CVUniverse::GetMuonPz, &CVUniverse::GetMuonPzTrue),//3
     //new Variable("Emu", "E_{#mu} [GeV]", robsEmuBins, &CVUniverse::GetEmuGeV, &CVUniverse::GetElepTrueGeV),//4
     //new Variable("q3pTdiff","[GeV]", dansPTBins, &CVUniverse::Recoq3pTdiff, &CVUniverse::GetTrueq3pTdiff),//5

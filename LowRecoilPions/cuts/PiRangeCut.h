@@ -6,11 +6,11 @@
 
 template <class CVUniverse, class EVENT>
 
-class RecoilERange: public PlotUtils::Cut<CVUniverse, EVENT>
+class PiRangeCut: public PlotUtils::Cut<CVUniverse, EVENT>
 
 {
   public:
-    RecoilERange(const double min,const double max): PlotUtils::Cut<CVUniverse, EVENT>(std::to_string(min)+"RecoilE reco < " + std::to_string(max)), 
+    PiRangeCut(const double min,const double max): PlotUtils::Cut<CVUniverse, EVENT>(std::to_string(min)+"RecoilE reco < " + std::to_string(max)), 
     fmin(min),
     fmax(max)
     {

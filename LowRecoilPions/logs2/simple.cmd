@@ -5,15 +5,15 @@ universe           = vanilla
 executable         = simple.sh
 arguments          = data_me1A_xrootd_plist.txt mc_me1A_xrootd_plist.txt
 
-output             = runEventLoop_job.sh2023_02_21_131323d13c99b2-9703-41e2-8ba0-b7b1c8b1ffefcluster.$(Cluster).$(Process).out
-error              = runEventLoop_job.sh2023_02_21_131323d13c99b2-9703-41e2-8ba0-b7b1c8b1ffefcluster.$(Cluster).$(Process).err
-log                = runEventLoop_job.sh2023_02_21_131323d13c99b2-9703-41e2-8ba0-b7b1c8b1ffefcluster.$(Cluster).$(Process).log
+output             = runEventLoop_job.sh2023_02_21_1314402559902d-9ab6-415c-9840-73f9321691c4cluster.$(Cluster).$(Process).out
+error              = runEventLoop_job.sh2023_02_21_1314402559902d-9ab6-415c-9840-73f9321691c4cluster.$(Cluster).$(Process).err
+log                = runEventLoop_job.sh2023_02_21_1314402559902d-9ab6-415c-9840-73f9321691c4cluster.$(Cluster).$(Process).log
 
 
 JOBSUBJOBSECTION=$(Process)
 
 
-environment        = CLUSTER=$(Cluster);PROCESS=$(Process);JOBSUBJOBSECTION=$(JOBSUBJOBSECTION);CONDOR_TMP=/nashome/s/sultana/.cache/jobsub_lite/js_2023_02_21_131323_d13c99b2-9703-41e2-8ba0-b7b1c8b1ffef;BEARER_TOKEN_FILE=.condor_creds/minerva.use;CONDOR_EXEC=/tmp;DAGMANJOBID=$(DAGManJobId);GRID_USER=sultana;JOBSUBJOBID=$(CLUSTER).$(PROCESS)@jobsub01.fnal.gov;EXPERIMENT=minerva;IFDH_CP_MAX_RETRIES=1
+environment        = CLUSTER=$(Cluster);PROCESS=$(Process);JOBSUBJOBSECTION=$(JOBSUBJOBSECTION);CONDOR_TMP=/nashome/s/sultana/.cache/jobsub_lite/js_2023_02_21_131440_2559902d-9ab6-415c-9840-73f9321691c4;BEARER_TOKEN_FILE=.condor_creds/minerva.use;CONDOR_EXEC=/tmp;DAGMANJOBID=$(DAGManJobId);GRID_USER=sultana;JOBSUBJOBID=$(CLUSTER).$(PROCESS)@jobsub01.fnal.gov;EXPERIMENT=minerva;IFDH_CP_MAX_RETRIES=1
 rank               = Mips / 2 + Memory
 job_lease_duration = 3600
 notification       = Never
@@ -27,7 +27,7 @@ when_to_transfer_output = ON_EXIT_OR_EVICT
 request_memory = 6144.0
 request_disk = 5242880.0KB
 
-+JobsubClientDN="/DC=org/DC=cilogon/C=US/O=Fermi National Accelerator Laboratory/OU=People/CN=Mehreen Sultana/CN=UID:sultana/CN=2116743901"
++JobsubClientDN="/DC=org/DC=cilogon/C=US/O=Fermi National Accelerator Laboratory/OU=People/CN=Mehreen Sultana/CN=UID:sultana/CN=1956228813"
 +JobsubClientIpAddress="131.225.67.85"
 +JobsubServerVersion="lite_v1_0"
 +JobsubClientVersion="lite_v1_0"

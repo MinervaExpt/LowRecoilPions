@@ -35,4 +35,7 @@ struct MichelEvent {
     int selection = 0; // if 1: event has a michel that is < 150mm in two closest views 
     int ClosestMichelsIsOverlay = -1; // -1: not overlay, 1: overlay
 };
+
+
+
 #endif

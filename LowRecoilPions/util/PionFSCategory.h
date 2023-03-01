@@ -47,6 +47,7 @@ class FSCategory
 	bool sigma = univ.GetTrueIsFSPartInEvent(3222);
 	int qelike = 0;
  	int npions = univ.GetTrueNPionsinEvent();
+	//if (interaction == 4) std::cout << "THIS EVENT IS COH " << std::endl;
  	if (interaction==4 && fForbidden.count(4) == 1 ){ return true;}
 	//else if (interaction==3){return false;}
 	else {
@@ -60,7 +61,7 @@ class FSCategory
 			else if(pdg == 311) k0++;
 		}
                 */
-
+		//if (npions == 1) std::cout << "THIS EVENT HAS 1 PION " << std::endl;
 		if (pion == true && npions >= 1 && k0 == false && pi0 == false && kplus == false && fForbidden.count(9999) == 1) return true;
 		else if (pion == true && npions >= 1 && (k0 == true or pi0 == true or kplus == true ) && fForbidden.count(2) == 1) return true;
 		else if (pion == false && (kplus == true) && fRequired.count(321) == 1 ) return true;

@@ -32,4 +32,9 @@ dateTAG="submitted_`date +%Y_%m_%d_%H_%M`"
 
 #Selection Loop
 
-jobsub_submit --group minerva -role=Analysis --resource-provides=usage_model=DEDICATED,OPPORTUNISTIC --memory=6GB --disk=5GB --expected-lifetime=28h -N 1 -d OUT /pnfs/minerva/scratch/users/sultana/MnvTunev4-3-1_twoDSelection_fullMC_LowQ2_28hRequest_NoPionWeight_${dateTAG}_gridtest/ -e IFDH_CP_MAX_RETRIES=1 -f /pnfs/minerva/resilient/tarballs/sultana_Feb122023_MnvTunev431_LowRecoilPions.tgz file:///minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/runEventLoop_job.sh data_me1A_xrootd_plist.txt mc_me1A_xrootd_plist.txt
+#/minerva/data/users/sultana/tarballs/sultana_Feb212023_LowQ2_NoPionWeight.tgz
+
+
+jobsub_submit --group minerva -role=Analysis --resource-provides=usage_model=DEDICATED,OPPORTUNISTIC --memory=6GB --disk=5GB --expected-lifetime=2h -N 1 -d OUT /pnfs/minerva/scratch/users/sultana/MnvTunev4-3-1_twoDSelection_fullMC_LowQ2_28hRequest_NoPionWeight_${dateTAG}_gridtest/ -e IFDH_CP_MAX_RETRIES=1 --tar_file_name dropbox:///minerva/data/users/sultana/tarballs/sultana_Feb212023_LowQ2_NoPionWeight.tgz --use-cvmfs-dropbox file:///minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/runEventLoop_job.sh data_me1A_xrootd_plist.txt mc_me1A_xrootd_plist.txt
+
+#jobsub_submit --group minerva -role=Analysis --resource-provides=usage_model=DEDICATED,OPPORTUNISTIC --memory=6GB --disk=5GB --expected-lifetime=28h -N 1 -d OUT /pnfs/minerva/scratch/users/sultana/MnvTunev4-3-1_twoDSelection_fullMC_LowQ2_28hRequest_NoPionWeight_${dateTAG}_gridtest/ -e IFDH_CP_MAX_RETRIES=1 -f /pnfs/minerva/resilient/tarballs/sultana_Feb122023_MnvTunev431_LowRecoilPions.tgz file:///minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/runEventLoop_job.sh data_me1A_xrootd_plist.txt mc_me1A_xrootd_plist.txt

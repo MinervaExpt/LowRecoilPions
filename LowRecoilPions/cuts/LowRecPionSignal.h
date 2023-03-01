@@ -110,7 +110,7 @@ namespace truth
       bool checkConstraint(const UNIVERSE& univ) const //override
       {
         double trueE = univ.GetTrueLowestTpiEvent();
-        if (trueE < 350.) return true;
+        if (trueE < 35. || trueE > 350.) return true;
         else return false;
       }
 

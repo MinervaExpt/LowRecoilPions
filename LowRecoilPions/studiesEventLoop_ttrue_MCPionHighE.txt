@@ -496,7 +496,7 @@ int main(const int argc, const char** argv)
   //MnvTunev4.emplace_back(new PlotUtils::COHPionReweighter<CVUniverse, MichelEvent>());
   //MnvTunev4.emplace_back(new PlotUtils::TargetMassReweighter<CVUniverse, MichelEvent>());  
   MnvTunev4.emplace_back(new PlotUtils::MnvTunev431Reweighter<CVUniverse, MichelEvent>()); 
-  //MnvTunev4.emplace_back(new PlotUtils::PionReweighter<CVUniverse,MichelEvent>()); 
+  MnvTunev4.emplace_back(new PlotUtils::PionReweighter<CVUniverse,MichelEvent>()); 
   PlotUtils::Model<CVUniverse, MichelEvent> model(std::move(MnvTunev4));
   
   // Make a map of systematic universes
@@ -716,55 +716,30 @@ int main(const int argc, const char** argv)
 
 
 
-   std::function<double(const CVUniverse&, const MichelEvent&, const int)> t_evttrue = [](const CVUniverse& univ, const MichelEvent& evt, const int whichMichel)
-                                {
-				    double Emu = univ.GetElepTrueGeV(); //GeV
-		 		    double pzmu = univ.GetMuonPzTrue(); // GeV in beam coordinates
-				    double idx = univ.GetTrueLowestKEPion(); //Getting lowest energy pion in event. corresponds with selecting closest michel to vertex. 
-				    if (idx > 9000.) return -9999.;
-				    double Epi = univ.GetTrueEpiEvent(idx)/1000.;
-				    double pzpi = univ.GetTruePpizEvent(idx)/1000.;
-				    double epsub = (Emu - pzmu) + (Epi - pzpi);
-			            double pmux = univ.GetMuonPxTrue(); //GEV
-				    double pmuy = univ.GetMuonPyTrue(); //GeV
-				    double ppix = univ.GetVecElem("mc_FSPartPx", idx)/1000.;
-				    double ppiy = univ.GetTruePpiyEvent(idx)/1000.;
-				    double pxsum = pmux + ppix;
-				    double pysum = pmuy + ppiy;
-				    double pTmag = sqrt(pxsum*pxsum + pysum*pysum);
-				    double t = pow(epsub,2) + pow(pTmag,2);
-				    //std::cout << "TRUE mcFSPart |t| is: " << t << std::endl;
-				    return t;
- 
-				};
-
-
-
    std::function<double(const CVUniverse&, const MichelEvent&, const int)> t_true = [](const CVUniverse& univ, const MichelEvent& evt, const int whichMichel)
                                 {
 				  double Emu = univ.GetElepTrueGeV(); //univ.GetEmuGeV(); // GeV
                                   int    pi_idx = univ.GetTrueHighestKEPion(); //GetTrueLowestKEPion(); // Get the Lowest Energy FS pion in event. 
 				  
- 				  double Epi = evt.m_nmichels[whichMichel].true_parent_energy / 1000.;
+ 				  double Epi = univ.GetTrueEpiEvent(pi_idx)/1000.;//evt.m_nmichels[whichMichel].true_parent_energy / 1000.;
                                    
                                   double plmu = univ.GetMuonPzTrue(); // GeV  - already rotated to beam coordinates
                                   //std::cout << "Printing pZmu TRUE " << plmu << std::endl;
 				  //double angle = evt.m_nmichels[whichMichel].true_angle;
                                   //double p_pi = evt.m_nmichels[whichMichel].true_parent_p/1000.;
-				  double p_pix = evt.m_nmichels[whichMichel].true_parent_px/1000.; //GeV
-                                  double p_piy = evt.m_nmichels[whichMichel].true_parent_py/1000.;
-                                  double p_piz = evt.m_nmichels[whichMichel].true_parent_pz/1000.;
-				  //TVector3 ppi(p_pix, p_piy, p_piz);
-				  //ppi.RotateX(MinervaUnits::numi_beam_angle_rad);
-				  TVector3 ptpi(p_pix, p_piy, 0.0);
-				  double pl_pi = p_piz;
+				  double p_pix = univ.GetVecElem("mc_FSPartPx", pi_idx)/1000.;//evt.m_nmichels[whichMichel].true_parent_px/1000.; //GeV
+                                  double p_piy = univ.GetVecElem("mc_FSPartPy", pi_idx)/1000.;//evt.m_nmichels[whichMichel].true_parent_py/1000.;
+                                  double p_piz = univ.GetVecElem("mc_FSPartPz", pi_idx)/1000.;//evt.m_nmichels[whichMichel].true_parent_pz/1000.;
+				  TVector3 ppi(p_pix, p_piy, p_piz);
+				  ppi.RotateX(MinervaUnits::numi_beam_angle_rad);
+				  TVector3 ptpi(ppi.X(), ppi.Y(), 0.0);   //p_pix, p_piy, 0.0);
+				  double pl_pi = ppi.Z();//p_piz;
   				  double epsub = (Emu - plmu) + (Epi - pl_pi);
                                   TVector3 ptmu(univ.GetMuonPxTrue(), univ.GetMuonPyTrue(), 0.0);
                                   TVector3 pT = ptpi + ptmu;  
 				  double t = pow(epsub,2) + pow((pT.Mag()),2);
 				 
-				  //if (t < 0.1 or t > 1.0) univ.PrintTrueArachneLink();
-				  
+				  //univ.PrintTrueArachneLink();
 				  //std::cout << "Printing the |t| True value : " << t << " FOR MICHEL" << whichMichel << std::endl;
 				  return t;			 
 				};
@@ -783,180 +758,14 @@ int main(const int argc, const char** argv)
                                   double p_muy = univ.GetPYmu()/1000.;
                                   double ppix = evt.m_nmichels[whichMichel].reco_ppix/1000.;
                                   double ppiy = evt.m_nmichels[whichMichel].reco_ppix/1000.;
-                                  
-				  TVector3 ptpi(ppix, ppiy, 0.0);
+                                  TVector3 ptpi(ppix, ppiy, 0.0);
                                   TVector3 ptmu(p_mux, p_muy, 0.0);
                                   TVector3 pT = ptpi + ptmu;
-				  //std::cout << "Printing the 3D Distance value : " << evt.m_nmichels[whichMichel].Best3Ddist << "mm and KE " << tpi << " MeV FOR MICHEL" << whichMichel << std::endl;
+
 				  double t = epsub + pow((pT.Mag()),2);  
                                   //std::cout << "Printing the |t| Reco value : " << t << " FOR MICHEL" << whichMichel << std::endl;
 				  return t;
                                 };
-
-
-   std::function<double(const CVUniverse&, const MichelEvent&, const int)> t_angle1_reco = [](const CVUniverse& univ, const MichelEvent& evt, const int whichMichel)
-                                {
-				  double Emu = univ.GetEmuGeV();
-                                  double tpi = evt.m_nmichels[whichMichel].reco_KE; //MeV 
-                                  double ppi = evt.m_nmichels[whichMichel].reco_ppi; //MeV
-                                  double Epi = sqrt(ppi*ppi + 139.57*139.57)/1000.;//(tpi + 139.57)/1000.;
-                                  double plmu = univ.GetPZmu()/1000.; //  
-				  double pl_pi = evt.m_nmichels[whichMichel].reco_ppiz/1000.; // GeV
-                                  double epsub = pow(((Emu - plmu) + (Epi - pl_pi)), 2);
-                                  double p_mux = univ.GetPXmu()/1000.;
-                                  double p_muy = univ.GetPYmu()/1000.;
-                                  double ppix = evt.m_nmichels[whichMichel].reco_ppix/1000.;
-                                  double ppiy = evt.m_nmichels[whichMichel].reco_ppix/1000.;
-                                  TVector3 ptpi(ppix, ppiy, 0.0);
-                                  TVector3 ptmu(p_mux, p_muy, 0.0);
-                                  TVector3 pT = ptpi + ptmu;
-				  double t = epsub + pow((pT.Mag()),2);
-				  if (cos(evt.m_nmichels[whichMichel].best_angle) < -0.10) return t;
-				  else return -9999.;
-				};
-
-  std::function<double(const CVUniverse&, const MichelEvent&, const int)> t_angle2_reco = [](const CVUniverse& univ, const MichelEvent& evt, const int whichMichel)
-                                {
-				  double Emu = univ.GetEmuGeV();
-                                  double tpi = evt.m_nmichels[whichMichel].reco_KE; //MeV 
-                                  double ppi = evt.m_nmichels[whichMichel].reco_ppi; //MeV
-                                  double Epi = sqrt(ppi*ppi + 139.57*139.57)/1000.;//(tpi + 139.57)/1000.;
-                                  double plmu = univ.GetPZmu()/1000.; //  
-                                  double pl_pi = evt.m_nmichels[whichMichel].reco_ppiz/1000.; // GeV
-                                  double epsub = pow(((Emu - plmu) + (Epi - pl_pi)), 2);
-                                  double p_mux = univ.GetPXmu()/1000.;
-                                  double p_muy = univ.GetPYmu()/1000.;
-                                  double ppix = evt.m_nmichels[whichMichel].reco_ppix/1000.;
-                                  double ppiy = evt.m_nmichels[whichMichel].reco_ppix/1000.;
-                                  TVector3 ptpi(ppix, ppiy, 0.0);
-                                  TVector3 ptmu(p_mux, p_muy, 0.0);
-                                  TVector3 pT = ptpi + ptmu;
-                                  double t = epsub + pow((pT.Mag()),2);
-                                  if (cos(evt.m_nmichels[whichMichel].best_angle) > -0.10 and cos(evt.m_nmichels[whichMichel].best_angle) < 0.10) return t;
-                                  else return -9999.;  
-
-				};
-
-  std::function<double(const CVUniverse&, const MichelEvent&, const int)> t_angle3_reco = [](const CVUniverse& univ, const MichelEvent& evt, const int whichMichel)
-                                {
-                                  double Emu = univ.GetEmuGeV();
-                                  double tpi = evt.m_nmichels[whichMichel].reco_KE; //MeV 
-                                  double ppi = evt.m_nmichels[whichMichel].reco_ppi; //MeV
-                                  double Epi = sqrt(ppi*ppi + 139.57*139.57)/1000.;//(tpi + 139.57)/1000.;
-                                  double plmu = univ.GetPZmu()/1000.; //  
-                                  double pl_pi = evt.m_nmichels[whichMichel].reco_ppiz/1000.; // GeV
-                                  double epsub = pow(((Emu - plmu) + (Epi - pl_pi)), 2);
-                                  double p_mux = univ.GetPXmu()/1000.;
-                                  double p_muy = univ.GetPYmu()/1000.;
-                                  double ppix = evt.m_nmichels[whichMichel].reco_ppix/1000.;
-                                  double ppiy = evt.m_nmichels[whichMichel].reco_ppix/1000.;
-                                  TVector3 ptpi(ppix, ppiy, 0.0);
-                                  TVector3 ptmu(p_mux, p_muy, 0.0);
-                                  TVector3 pT = ptpi + ptmu;
-                                  double t = epsub + pow((pT.Mag()),2);
-                                  if (cos(evt.m_nmichels[whichMichel].best_angle) > .10 and cos(evt.m_nmichels[whichMichel].best_angle) < 0.80) return t;
-                                  else return -9999.;
-
-                                };
-
-   std::function<double(const CVUniverse&, const MichelEvent&, const int)> t_angle4_reco = [](const CVUniverse& univ, const MichelEvent& evt, const int whichMichel)
-                                {
-                                  double Emu = univ.GetEmuGeV();
-                                  double tpi = evt.m_nmichels[whichMichel].reco_KE; //MeV 
-                                  double ppi = evt.m_nmichels[whichMichel].reco_ppi; //MeV
-                                  double Epi = sqrt(ppi*ppi + 139.57*139.57)/1000.;//(tpi + 139.57)/1000.;
-                                  double plmu = univ.GetPZmu()/1000.; //  
-                                  double pl_pi = evt.m_nmichels[whichMichel].reco_ppiz/1000.; // GeV
-                                  double epsub = pow(((Emu - plmu) + (Epi - pl_pi)), 2);
-                                  double p_mux = univ.GetPXmu()/1000.;
-                                  double p_muy = univ.GetPYmu()/1000.;
-                                  double ppix = evt.m_nmichels[whichMichel].reco_ppix/1000.;
-                                  double ppiy = evt.m_nmichels[whichMichel].reco_ppix/1000.;
-                                  TVector3 ptpi(ppix, ppiy, 0.0);
-                                  TVector3 ptmu(p_mux, p_muy, 0.0);
-                                  TVector3 pT = ptpi + ptmu;
-                                  double t = epsub + pow((pT.Mag()),2);
-                                  if (cos(evt.m_nmichels[whichMichel].best_angle) > .80) return t;
-                                  else return -9999.;
-
-                                };
-
-    std::function<double(const CVUniverse&, const MichelEvent&, const int)> t_angle1_true = [](const CVUniverse& univ, const MichelEvent& evt, const int whichMichel)
-                                {
-				  double Emu = univ.GetElepTrueGeV();
-				  int    pi_idx = univ.GetTrueHighestKEPion();
-				  double Epi = evt.m_nmichels[whichMichel].true_parent_energy / 1000.;
-                                  double plmu = univ.GetMuonPzTrue(); // GeV  - already rotated to beam coordinates
-    				  double p_pix = evt.m_nmichels[whichMichel].true_parent_px/1000.; //GeV
-                                  double p_piy = evt.m_nmichels[whichMichel].true_parent_py/1000.;
-                                  double p_piz = evt.m_nmichels[whichMichel].true_parent_pz/1000.;  
-			          TVector3 ptpi(p_pix, p_piy, 0.0);
-                                  double pl_pi = p_piz;
-                                  double epsub = (Emu - plmu) + (Epi - pl_pi);
-                                  TVector3 ptmu(univ.GetMuonPxTrue(), univ.GetMuonPyTrue(), 0.0);
-                                  TVector3 pT = ptpi + ptmu;
-                                  double t = pow(epsub,2) + pow((pT.Mag()),2);
-                                  if (cos(evt.m_nmichels[whichMichel].best_angle) < -0.10 ) return t;
-				  else return -9999.;
-				};
-
-   std::function<double(const CVUniverse&, const MichelEvent&, const int)> t_angle2_true = [](const CVUniverse& univ, const MichelEvent& evt, const int whichMichel)
-                                {
-                                  double Emu = univ.GetElepTrueGeV();
-                                  int    pi_idx = univ.GetTrueHighestKEPion();
-                                  double Epi = evt.m_nmichels[whichMichel].true_parent_energy / 1000.;
-                                  double plmu = univ.GetMuonPzTrue(); // GeV  - already rotated to beam coordinates
-                                  double p_pix = evt.m_nmichels[whichMichel].true_parent_px/1000.; //GeV
-                                  double p_piy = evt.m_nmichels[whichMichel].true_parent_py/1000.;
-                                  double p_piz = evt.m_nmichels[whichMichel].true_parent_pz/1000.;
-                                  TVector3 ptpi(p_pix, p_piy, 0.0);
-                                  double pl_pi = p_piz;
-                                  double epsub = (Emu - plmu) + (Epi - pl_pi);
-                                  TVector3 ptmu(univ.GetMuonPxTrue(), univ.GetMuonPyTrue(), 0.0);
-                                  TVector3 pT = ptpi + ptmu;
-                                  double t = pow(epsub,2) + pow((pT.Mag()),2);
-                                  if (cos(evt.m_nmichels[whichMichel].best_angle) > -0.10 and cos(evt.m_nmichels[whichMichel].best_angle) < 0.10 ) return t;
-				  else return -9999.;
-                                };
-  
-   std::function<double(const CVUniverse&, const MichelEvent&, const int)> t_angle3_true = [](const CVUniverse& univ, const MichelEvent& evt, const int whichMichel)
-                                {
-                                  double Emu = univ.GetElepTrueGeV();
-                                  int    pi_idx = univ.GetTrueHighestKEPion();
-                                  double Epi = evt.m_nmichels[whichMichel].true_parent_energy / 1000.;
-                                  double plmu = univ.GetMuonPzTrue(); // GeV  - already rotated to beam coordinates
-                                  double p_pix = evt.m_nmichels[whichMichel].true_parent_px/1000.; //GeV
-                                  double p_piy = evt.m_nmichels[whichMichel].true_parent_py/1000.;
-                                  double p_piz = evt.m_nmichels[whichMichel].true_parent_pz/1000.;
-                                  TVector3 ptpi(p_pix, p_piy, 0.0);
-                                  double pl_pi = p_piz;
-                                  double epsub = (Emu - plmu) + (Epi - pl_pi);
-                                  TVector3 ptmu(univ.GetMuonPxTrue(), univ.GetMuonPyTrue(), 0.0);
-                                  TVector3 pT = ptpi + ptmu;
-                                  double t = pow(epsub,2) + pow((pT.Mag()),2);
-                                  if (cos(evt.m_nmichels[whichMichel].best_angle) > 0.10 and cos(evt.m_nmichels[whichMichel].best_angle) < 0.80) return t;
-                                  else return -9999.;
-                                };
-
-   std::function<double(const CVUniverse&, const MichelEvent&, const int)> t_angle4_true = [](const CVUniverse& univ, const MichelEvent& evt, const int whichMichel)
-                                {
-                                  double Emu = univ.GetElepTrueGeV();
-                                  int    pi_idx = univ.GetTrueHighestKEPion();
-                                  double Epi = evt.m_nmichels[whichMichel].true_parent_energy / 1000.;
-                                  double plmu = univ.GetMuonPzTrue(); // GeV  - already rotated to beam coordinates
-                                  double p_pix = evt.m_nmichels[whichMichel].true_parent_px/1000.; //GeV
-                                  double p_piy = evt.m_nmichels[whichMichel].true_parent_py/1000.;
-                                  double p_piz = evt.m_nmichels[whichMichel].true_parent_pz/1000.;
-                                  TVector3 ptpi(p_pix, p_piy, 0.0);
-                                  double pl_pi = p_piz;
-                                  double epsub = (Emu - plmu) + (Epi - pl_pi);
-                                  TVector3 ptmu(univ.GetMuonPxTrue(), univ.GetMuonPyTrue(), 0.0);
-                                  TVector3 pT = ptpi + ptmu;
-                                  double t = pow(epsub,2) + pow((pT.Mag()),2);
-                                  if (cos(evt.m_nmichels[whichMichel].best_angle) > .80) return t;
-                                  else return -9999.;
-                                };
-
 
 
    std::function<double(const CVUniverse&, const MichelEvent&, const int)> pz_reco = [](const CVUniverse& univ, const MichelEvent& evt, const int whichMichel)
@@ -1084,20 +893,8 @@ int main(const int argc, const char** argv)
    studies.push_back(new PerMichelVarVecFSPart(epsub_true,"epsub_true", "GeV2",ntbins, tbins, error_bands));
 
    studies.push_back(new PerMichelVarVecFSPart(t_reco,"t_reco", "GeV2",ntbins, tbins, error_bands));
-   studies.push_back(new PerMichelVarVecFSPart(t_angle1_reco,"t_angle1_reco", "GeV2",ntbins, tbins, error_bands));
-   studies.push_back(new PerMichelVarVecFSPart(t_angle2_reco,"t_angle2_reco", "GeV2",ntbins, tbins, error_bands));
-   studies.push_back(new PerMichelVarVecFSPart(t_angle3_reco,"t_angle3_reco", "GeV2",ntbins, tbins, error_bands));   
-   studies.push_back(new PerMichelVarVecFSPart(t_angle4_reco,"t_angle4_reco", "GeV2",ntbins, tbins, error_bands));
-
-   studies.push_back(new PerMichelVarVecFSPart(t_angle1_true,"t_angle1_true", "GeV2",ntbins, tbins, error_bands));
-   studies.push_back(new PerMichelVarVecFSPart(t_angle2_true,"t_angle2_true", "GeV2",ntbins, tbins, error_bands));
-   studies.push_back(new PerMichelVarVecFSPart(t_angle3_true,"t_angle3_true", "GeV2",ntbins, tbins, error_bands));
-   studies.push_back(new PerMichelVarVecFSPart(t_angle4_true,"t_angle4_true", "GeV2",ntbins, tbins, error_bands));
-
-   
-
-   //studies.push_back(new PerMichelVarVecFSPart(t_evttrue,"t_true", "GeV2",ntbins, tbins, error_bands));
-   studies.push_back(new PerMichelVarVecFSPart(t_true,"t_true", "GeV2",ntbins, tbins, error_bands)); 
+   studies.push_back(new PerMichelVarVecFSPart(t_true,"t_true", "GeV2",ntbins, tbins, error_bands));
+ 
    studies.push_back(new PerMichelVarVecFSPart(pz_reco,"pz_reco", "GeV2",npzbins, pzbins, error_bands));
    studies.push_back(new PerMichelVarVecFSPart(pz_true,"pz_true", "GeV2",npzbins, pzbins, error_bands));
 
@@ -1157,11 +954,7 @@ int main(const int argc, const char** argv)
   data_studies.push_back(new PerMichelVarVecFSPart(epsub_reco,"epsub_reco", "GeV2",ntbins, tbins, data_error_bands));   
   data_studies.push_back(new PerMichelVarVecFSPart(pz_reco,"pz_reco", "GeV2",npzbins, pzbins, data_error_bands));
   data_studies.push_back(new PerMichelVarVecFSPart(pt_reco,"pt_reco", "GeV2",npzbins, pzbins, data_error_bands)); 
-  data_studies.push_back(new PerMichelVarVecFSPart(t_angle1_reco,"t_angle1_reco", "GeV2",ntbins, tbins, data_error_bands));
-  data_studies.push_back(new PerMichelVarVecFSPart(t_angle2_reco,"t_angle2_reco", "GeV2",ntbins, tbins, data_error_bands));
-  data_studies.push_back(new PerMichelVarVecFSPart(t_angle3_reco,"t_angle3_reco", "GeV2",ntbins, tbins, data_error_bands));
-  data_studies.push_back(new PerMichelVarVecFSPart(t_angle4_reco,"t_angle4_reco", "GeV2",ntbins, tbins, data_error_bands));  
-
+  
   // Loop entries and fill
   try
   {

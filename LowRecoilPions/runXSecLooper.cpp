@@ -29,6 +29,8 @@ bool isCCInclusiveSignal( ChainWrapper& chw, int entry )
   double pSquare = pow(true_muon_px,2) + pow(pyprime,2) + pow(pzprime,2);
   theta = acos( pzprime / sqrt(pSquare) );
   theta *= 180./3.14159;
+
+  double pT = sqrt(pSquare) * sin(theta);
   int npdg = chw.GetValue("mc_nFSPart", entry);
   int npions = 0;
   for (int i = 0; i < npdg; i++)
@@ -37,7 +39,7 @@ bool isCCInclusiveSignal( ChainWrapper& chw, int entry )
       if (pdg == 211) npions++;	
   }
   //if(!chw.GetValue("truth_is_fiducial",entry)) return false; //Doesn't work for MasterAnaDev tuples.  What does this even mean in the targets anyway? :(
-  if( pzprime >= 1.5 && theta <= 20.0 && npions > 0 ) return true;
+  if( pzprime >= 1.5 && theta <= 20.0 && npions > 0 && pT < 1.0) return true;
   return false;
 
 }
@@ -82,10 +84,14 @@ int main(const int argc, const char** argv)
   double pt_edges[] = { 0.0, 0.075, 0.15, 0.25, 0.325, 0.4, 0.475, 0.55, 0.7, 0.85, 1.0, 1.25, 1.5, 2.5, 4.5 };
   int pt_nbins = 14; 
  
+  double q2_edges[] = {0.01, 0.015, 0.020, 0.025, 0.030, 0.035, 0.040, 0.045, 0.05, 0.075, 0.10, 0.125, 0.15, 0.175,0.20, 0.25,0.30,0.35, 0.4, 0.45, 0.50, 0.55, 0.60 , 0.7, 0.80,0.9, 1.,1.1, 1.2};
+  int q2_nbins = 28; 
+
+
   // Flux-integrated over the range 0.0 to 100.0 GeV
-  MinModDepCCQEXSec* ds_dpT = new MinModDepCCQEXSec("pT");
-  ds_dpT->setBinEdges(pt_nbins, pt_edges);
-  ds_dpT->setVariable(XSec::kPTLep);
+  MinModDepCCQEXSec* ds_dpT = new MinModDepCCQEXSec("q2");
+  ds_dpT->setBinEdges(q2_nbins, q2_edges);
+  ds_dpT->setVariable(XSec::kQ2);
   ds_dpT->setIsFluxIntegrated(true);
   ds_dpT->setDimension(1);
   ds_dpT->setFluxIntLimits(0.0, 100.0);
