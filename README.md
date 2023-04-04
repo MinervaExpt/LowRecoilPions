@@ -1,7 +1,7 @@
 # LowRecoilPions
 Mehreen's Low Recoil Pion Inclusive Analysis (updated MAT framework)
 
-Analysis Code is mainly in LowRecoilPions directory. michelEventLoop.cpp is the one mainly used to output both event level histos and michel level. 
+Analysis Code is mainly in LowRecoilPions directory. twoDEventLoop.cpp is the one mainly used to output for event level histos and studiesEventLoop.cpp is for michel level. 
 
 For MATMINERVA: follow directions in https://github.com/MinervaExpt/MAT-MINERvA
 
