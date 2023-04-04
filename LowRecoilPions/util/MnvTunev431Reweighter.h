@@ -39,7 +39,7 @@ namespace PlotUtils
         double wgt_fsi = univ.GetFSIReWeight();
         double wgt_geant = univ.GetGeantHadronReWeight();
         double wgt_coh = univ.GetCOHPionWeight();
-	double q2Gev = univ.GetQ2True()/1000000.;
+	//double q2Gev = univ.GetQ2True()/1000000.;
 	if(univ.GetInt("mc_intType") == 4){
 	  //std::cout << "Printing Scale APplied ot COH events in MnvTuneReweighter: " << 1.4 << std::endl;
           wgt_diff = 1.436;

@@ -47,14 +47,14 @@ class RemoveSignalEvents: public PlotUtils::Cut<UNIVERSE, EVENT>
         //if(upvtx[0] < m_maxDistance && upvtx[1] < m_maxDistance) evt.m_allmichels[i].passable_matchtype.at(0) = 1;
 	//if(downvtx[0] < m_maxDistance && downvtx[1] < m_maxDistance) evt.m_allmichels[i].passable_matchtype.at(1) = 2;       
  
-        if (upvtxXZ < m_maxDistance && (upvtxUZ < m_maxDistance || upvtxVZ < m_maxDistance)) break;
-        else if (upvtxUZ < m_maxDistance && (upvtxXZ < m_maxDistance || upvtxVZ < m_maxDistance)) break;
-        else if (upvtxVZ < m_maxDistance && (upvtxXZ < m_maxDistance || upvtxUZ < m_maxDistance)) break;
+        if (upvtxXZ < m_maxDistance && (upvtxUZ < m_maxDistance || upvtxVZ < m_maxDistance)) return false;
+        else if (upvtxUZ < m_maxDistance && (upvtxXZ < m_maxDistance || upvtxVZ < m_maxDistance)) return false;
+        else if (upvtxVZ < m_maxDistance && (upvtxXZ < m_maxDistance || upvtxUZ < m_maxDistance)) return false;
         else evt.m_allmichels[i].passable_matchtype.at(0) = -1;
 
-        if (downvtxXZ < m_maxDistance && (downvtxUZ < m_maxDistance || downvtxVZ < m_maxDistance)) break;
-        else if (downvtxUZ < m_maxDistance && (downvtxXZ < m_maxDistance || downvtxVZ < m_maxDistance)) break;
-        else if (downvtxVZ < m_maxDistance && (downvtxXZ < m_maxDistance || downvtxUZ < m_maxDistance)) break;
+        if (downvtxXZ < m_maxDistance && (downvtxUZ < m_maxDistance || downvtxVZ < m_maxDistance)) return false;
+        else if (downvtxUZ < m_maxDistance && (downvtxXZ < m_maxDistance || downvtxVZ < m_maxDistance)) return false;
+        else if (downvtxVZ < m_maxDistance && (downvtxXZ < m_maxDistance || downvtxUZ < m_maxDistance)) return false;
         else evt.m_allmichels[i].passable_matchtype.at(1) = -1;
 
         /*

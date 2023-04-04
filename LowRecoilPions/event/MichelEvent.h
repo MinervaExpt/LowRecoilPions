@@ -18,6 +18,7 @@ struct MichelEvent {
     std::vector<Michel> m_nmichelspass; // if some distance cut is applied, we can store the michels that passed for this event in here
     std::vector<Michel> m_sidebandpass;
     std::vector<Michel> m_allmichels; // All Michels after the hasMichel Cut
+    double nclusters = -1;
     double best_x = 9999.;
     double best_y = 9999.;
     double best_z = 9999.;

@@ -80,6 +80,7 @@ enum ErrorCodes
 #include "cuts/Distance2DSideband.h"
 #include "cuts/RecoilERange.h"
 #include "cuts/PmuCut.h"
+#include "cuts/PzmuCut.h"
 #include "cuts/WexpRecoCut.h"
 #include "event/SetDistanceMichelSideband.h"
 #include "event/SetDistanceMichelSelection.h"
@@ -114,6 +115,7 @@ enum ErrorCodes
 #include "util/COHPionReweighter.h"
 #include "util/TargetMassReweighter.h"
 #include "util/MnvTunev431Reweighter.h"
+#include "util/BkgSigReweighter.h"
 #pragma GCC diagnostic pop
 
 //ROOT includes
@@ -150,8 +152,11 @@ void LoopAndFillEventSelection(
     //MichelEvent cvEvent;
     cvUniv->SetEntry(i);
     MichelEvent cvEvent;
-    model.SetEntry(*cvUniv, cvEvent);
-    const double cvWeight =model.GetWeight(*cvUniv, cvEvent);// TODO: Put this model weight back. model.GetWeight(*cvUniv, cvEvent); 
+    model.SetEntry(*cvUniv, cvEvent); 
+    const double cvWeight = model.GetWeight(*cvUniv, cvEvent);// TODO: Put this model weight back. model.GetWeight(*cvUniv, cvEvent); 
+    const auto cvCutResults =  michelcuts.isMCSelected(*cvUniv, cvEvent, cvWeight);
+    //if (!cvCutResults.all()) continue;
+ 
     //std::cout << "Printing Muon Momentum At Beginning of Entry Loop: " << cvUniv->GetMuonPTTrue() << std::endl;
     //std::cout << " ============================================================= " << std::endl;
     //=========================================
@@ -168,11 +173,14 @@ void LoopAndFillEventSelection(
         //if (universe->ShortName() != "cv") continue;
         // Tell the Event which entry in the TChain it's looking at
         universe->SetEntry(i);
-        MichelEvent myevent;
+        MichelEvent myevent;// = cvEvent; //Use MichelEvent from CV so you dont have to redo michel matches
+        if (universe->ShortName() != "cv") myevent = cvEvent;
+        //std::cout << " Printing universe name " << universe->ShortName() << std::endl;
         const auto cutResults = michelcuts.isMCSelected(*universe, myevent, cvWeight);
 	//const auto cutResults = michelcuts.isDataSelected(*universe, myevent);       
         //if (universe->ShortName() != "cv") continue;
-	if (!cutResults.all()) continue;
+        if (!cutResults.all()) continue;
+        
         const double weight2 = model.GetWeight(*universe, myevent);
 	if (cutResults.all()){
 
@@ -331,7 +339,7 @@ void LoopAndFillEffDenom( PlotUtils::ChainWrapper* truth,
       for (auto universe : truth_band_universes)
       {
        // std::cout << "Starting Loop over band universe " << std::endl;
-        MichelEvent myevent; //Only used to keep the Model happy
+        MichelEvent myevent;// = cvEVent; //Only used to keep the Model happy
         //std::cout << "Set Michel Event " << std::endl;
         // Tell the Event which entry in the TChain it's looking at
         universe->SetEntry(i);
@@ -476,17 +484,16 @@ int main(const int argc, const char** argv)
 
   //const double minZ = 5980, maxZ = 8590.07, apothem = 850.; // All in mm
   const double minZ = 5980, maxZ = 8422, apothem = 850; //All in mm
+  preCuts.emplace_back(new reco::IsNeutrino<CVUniverse, MichelEvent>());
   preCuts.emplace_back(new reco::ZRange<CVUniverse, MichelEvent>("Tracker", minZ, maxZ));
   preCuts.emplace_back(new reco::Apothem<CVUniverse, MichelEvent>(apothem));
-  //preCuts.emplace_back(new reco::ZRange<CVUniverse, MichelEvent>("Tracker", minZ, maxZ));
   preCuts.emplace_back(new reco::MaxMuonAngle<CVUniverse, MichelEvent>(20.));
   preCuts.emplace_back(new reco::HasMINOSMatch<CVUniverse, MichelEvent>());
   preCuts.emplace_back(new reco::NoDeadtime<CVUniverse, MichelEvent>(1, "Deadtime"));
-  preCuts.emplace_back(new reco::IsNeutrino<CVUniverse, MichelEvent>());
-  //preCuts.emplace_back(new Q3RangeReco<CVUniverse, MichelEvent>(0.0,1.2));
   preCuts.emplace_back(new PTRangeReco<CVUniverse, MichelEvent>(0.0,1.0));
   preCuts.emplace_back(new RecoilERange<CVUniverse, MichelEvent>(0.0,1.0));
   preCuts.emplace_back(new PmuCut<CVUniverse, MichelEvent>(1.5));
+  preCuts.emplace_back(new PzmuCut<CVUniverse, MichelEvent>(20.));
   preCuts.emplace_back(new hasMichel<CVUniverse, MichelEvent>());
    
   preCuts.emplace_back(new BestMichelDistance2D<CVUniverse, MichelEvent>(150.));
@@ -516,8 +523,9 @@ int main(const int argc, const char** argv)
   phaseSpace.emplace_back(new truth::PZMuMin<CVUniverse>(1500.));
   phaseSpace.emplace_back(new truth::pTRangeLimit<CVUniverse>(0., 1.0));
   phaseSpace.emplace_back(new truth::pMuCut<CVUniverse>(1.5));
+  phaseSpace.emplace_back(new truth::pzMuCut<CVUniverse>(20.));
   phaseSpace.emplace_back(new truth::EavailCut<CVUniverse>());
-
+  //phaseSpace.emplace_back(new truth::TpiCut<CVUniverse>());
   PlotUtils::Cutter<CVUniverse, MichelEvent> mycuts(std::move(preCuts), std::move(sidebands) , std::move(signalDefinition),std::move(phaseSpace));
 /*  
   std::vector<std::unique_ptr<PlotUtils::Reweighter<CVUniverse, MichelEvent>>> MnvTunev1;
@@ -548,6 +556,7 @@ int main(const int argc, const char** argv)
   MnvTunev4.emplace_back(new PlotUtils::MnvTunev431Reweighter<CVUniverse, MichelEvent>());
   //MnvTunev4.emplace_back(new PlotUtils::TargetMassReweighter<CVUniverse, MichelEvent>()); 
   //MnvTunev4.emplace_back(new PlotUtils::PionReweighter<CVUniverse,MichelEvent>());
+  //MnvTunev4.emplace_back(new PlotUtils::BkgSigReweighter<CVUniverse,MichelEvent>());
   PlotUtils::Model<CVUniverse, MichelEvent> model(std::move(MnvTunev4));
   
    
@@ -573,12 +582,12 @@ int main(const int argc, const char** argv)
   if(doSystematics) truth_bands = GetStandardSystematics(options.m_truth);
   truth_bands["cv"] = {new CVUniverse(options.m_truth)};
 
-
+  //std::vector<double> muthetabins = {-1.2,-1, -.80, -.70, -.60, -.50, -.40, -.30, -.20, -.10, .10, .20, .30, .40,.50,.60,.70,.80,.90,1.,1.2};
   std::vector<double> ptbins = {0, 0.075, 0.10, 0.15, 0.20, 0.25,0.30,0.35, 0.4, 0.45, 0.50, 0.55, 0.60 , 0.7, 0.80,0.9, 1.};
   std::vector<double> dansPTBins = {0.01, 0.015, 0.020, 0.025, 0.030, 0.035, 0.040, 0.045, 0.05, 0.075, 0.10, 0.125, 0.15, 0.175,0.20, 0.25,0.30,0.35, 0.4, 0.45, 0.50, 0.55, 0.60 , 0.7, 0.80,0.9, 1.,1.1, 1.2},// 1.3, 1.4, 1.5, 2.0, 3.0, 4.0},
-                      dansPzBins = {1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 6, 7, 8, 9, 10, 15, 20, 40, 60},
+                      dansPzBins = {1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 6, 7, 8, 9, 10, 15, 20},//, 40, 60},
                       robsEmuBins = {0,1,2,3,4,5,7,9,12,15,18,22,36,50,75,80},
-                      mehreenQ3Bins = {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2},
+                      mehreenQ3Bins = {0.0, 0.2, 0.4, 0.6, 0.8, 1.0},// 1.2},
 		      mehreenpmubins = {0.0, 0.5, 1.0, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 6, 7, 8, 9, 10, 15, 20, 40}, 
 		     robsRecoilBins;
   
@@ -601,6 +610,7 @@ int main(const int argc, const char** argv)
     new Variable("pTmu", "p_{T, #mu} [GeV/c]", ptbins, &CVUniverse::GetMuonPT, &CVUniverse::GetMuonPTTrue), //0
     //new Variable("q3", "q3 [GeV]", mehreenQ3Bins, &CVUniverse::Getq3, &CVUniverse::GetTrueQ3), //1
     new Variable("q2", "q2 [GeV^2]", dansPTBins, &CVUniverse::GetQ2Reco, &CVUniverse::GetTrueQ2GeV), //2
+    
     //new Variable("pxmu" "px_{#mu} [GeV/c]", dansPTBins,&CVUniverse::GetPXmuGeV, &CVUniverse::GetMuPxTrue),
     //new Variable("pymu" "py_{#mu} [GeV/c]", dansPTBins,&CVUniverse::GetPYmuGeV, &CVUniverse::GetMuPyTrue),
     //new Variable("pzmu" "px_{#mu} [GeV/c]", dansPTBins,&CVUniverse::GetPZmuGeV, &CVUniverse::GetMuPzTrue),
@@ -628,8 +638,9 @@ int main(const int argc, const char** argv)
  };
 
  std::vector<Variable2D*> vars2D;
- vars2D.push_back(new Variable2D(*vars[2], *vars[1]));// q3bins vs Eavail
+ //vars2D.push_back(new Variable2D(*vars[2], *vars[1]));// q3bins vs Eavail
  vars2D.push_back(new Variable2D(*vars[2], *vars[0]));// pTbins vs Eavail
+ vars2D.push_back(new Variable2D(*vars[5], *vars[0]));//pTbins vs q2 
  //vars2D.push_back(new Variable2D(*vars[6], *vars[10]));// Wexp vs Eavail
  //vars2D.push_back(new Variable2D(*vars[11], *vars[10])); // Wexp vs q3
  //vars2D.push_back(new Variable2D(*vars[9], *vars[9])); // q2 vs q0 (eHadronic)
@@ -746,6 +757,12 @@ int main(const int argc, const char** argv)
       //Always use MC number of nucleons for cross section
       auto nNucleons = new TParameter<double>((var->GetName() + "_fiducial_nucleons").c_str(), targetInfo.GetTrackerNNucleons(minZ, maxZ, true, apothem));
       nNucleons->Write();
+    }
+    for(const auto& var: vars2D)
+    {
+      auto nNucleons = new TParameter<double>((var->GetName() + "_fiducial_nucleons").c_str(), targetInfo.GetTrackerNNucleons(minZ, maxZ, true, apothem));
+      nNucleons->Write();
+      util::GetFluxIntegral(*error_bands["cv"].front(), var->efficiencyNumerator->hist)->Write((var->GetName() + "_reweightedflux_integrated").c_str()); 
     }
     
     std::cout << "Writing Data Results" << std::endl;

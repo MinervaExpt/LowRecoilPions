@@ -1,3 +1,4 @@
-source opt/bin/setupROOT6OnGPVMs.sh
-source opt/bin/setup.sh
-source opt/bin/setup_MAT_IncPions.sh
+source ${INSTALL_DIR}/bin/setupROOT6OnGPVMs.sh
+source ${INSTALL_DIR}/bin/setup.sh
+source ${INSTALL_DIR}/bin/setup_MAT_IncPions.sh
+source ${INSTALL_DIR}/bin/setup_UnfoldUtils.sh

@@ -80,6 +80,7 @@ enum ErrorCodes
 #include "cuts/Distance2DSideband.h"
 #include "cuts/RecoilERange.h"
 #include "cuts/PmuCut.h"
+#include "cuts/PzmuCut.h"
 #include "event/SetDistanceMichelSideband.h"
 #include "event/SetDistanceMichelSelection.h"
 #include "event/GetClosestMichel.h"
@@ -112,6 +113,7 @@ enum ErrorCodes
 #include "util/COHPionReweighter.h"
 #include "util/TargetMassReweighter.h"
 #include "util/MnvTunev431Reweighter.h"
+#include "util/BkgSigReweighter.h"
 #pragma GCC diagnostic pop
 
 //ROOT includes
@@ -169,8 +171,8 @@ void LoopAndFillEventSelection(
     cvUniv->SetEntry(i);
     MichelEvent cvEvent;
     model.SetEntry(*cvUniv, cvEvent);
-    const double cvWeight =model.GetWeight(*cvUniv, cvEvent);// TODO: Put this model weight back. model.GetWeight(*cvUniv, cvEvent);
-    //michelcuts.isMCSelected(*cvUniv, cvEvent, cvWeight);  // Hacking event loop so cutter doesn't screw up Michel Event for Vertical Universes 
+    const double cvWeight = model.GetWeight(*cvUniv, cvEvent);// TODO: Put this model weight back. model.GetWeight(*cvUniv, cvEvent);
+    auto cvCutResults =michelcuts.isMCSelected(*cvUniv, cvEvent, cvWeight);  // Hacking event loop so cutter doesn't screw up Michel Event for Vertical Universes 
     //=========================================
     // Systematics loop(s)
     //=========================================
@@ -182,20 +184,23 @@ void LoopAndFillEventSelection(
       {
         // Tell the Event which entry in the TChain it's looking at
         universe->SetEntry(i);
-       // std::cout << "THIS IS THE START OF UNIVERSE " << universe->ShortName() << " ===================== \n" << std::endl;
+        std::cout << "THIS IS THE START OF UNIVERSE " << universe->ShortName() << " ===================== \n" << std::endl;
         //if (universe->ShortName() != "cv") continue;
-        MichelEvent myevent; // make sure your event is inside the error band loop. 
+        MichelEvent myevent;
+        //if (universe->ShortName() != "cv") myevent = cvEvent; // make sure your event is inside the error band loop. 
         
-        //if(universe->IsVerticalOnly()) myevent = cvEvent; // Hacking event loop so cutter doesn't screw up Michel Event for Vertical Universes 
+        if(universe->IsVerticalOnly()) myevent = cvEvent; // Hacking event loop so cutter doesn't screw up Michel Event for Vertical Universes 
         //if (universe->ShortName() != "cv") continue;
-        const double weight2 = model.GetWeight(*universe, myevent); 
+        //const double weight2 = model.GetWeight(*universe, myevent); 
+        //std::cout << " Printing universe name " << universe->ShortName() << std::endl;
         const auto cutResults = michelcuts.isMCSelected(*universe, myevent, cvWeight);
         //const auto cutResults = michelcuts.isDataSelected(*universe, myevent);       
         //if (universe->ShortName() != "cv") continue;
 	if (!cutResults.all()) continue;
         if (cutResults.all()){
+            const double weight2 = model.GetWeight(*universe, myevent); 
             //std::cout << "Universe Name: " << universe->ShortName() << " Weight is : " << weight2 << std::endl; 
-            
+            //std::cout << "THIS IS A SELECTED EVENT " << std::endl; 
             for(auto& study: studies) study->SelectedSignal(*universe, myevent, weight2);
             const bool isSignal = michelcuts.isSignal(*universe, weight2);
             if(isSignal){ 
@@ -415,7 +420,7 @@ int main(const int argc, const char** argv)
   PlotUtils::MinervaUniverse::SetNuEConstraint(true);
   PlotUtils::MinervaUniverse::SetPlaylist(options.m_plist_string); //TODO: Infer this from the files somehow?
   PlotUtils::MinervaUniverse::SetAnalysisNuPDG(14);
-  PlotUtils::MinervaUniverse::SetNFluxUniverses(500);
+  PlotUtils::MinervaUniverse::SetNFluxUniverses(100);
   PlotUtils::MinervaUniverse::SetZExpansionFaReweight(false);
 
 
@@ -429,27 +434,46 @@ int main(const int argc, const char** argv)
   //Now that we've defined what a cross section is, decide which sample and model
   //we're extracting a cross section for.
   PlotUtils::Cutter<CVUniverse, MichelEvent>::reco_t  preCuts;
+  PlotUtils::Cutter<CVUniverse, MichelEvent>::reco_t energyCuts;
+  PlotUtils::Cutter<CVUniverse, MichelEvent>::reco_t michelCuts;
   PlotUtils::Cutter<CVUniverse, MichelEvent>::reco_t  sidebands;
   PlotUtils::Cutter<CVUniverse, MichelEvent>::truth_t signalDefinition, phaseSpace;
 
   //const double minZ = 5980, maxZ = 8590.07, apothem = 850.; // All in mm
   const double minZ = 5980, maxZ = 8422, apothem = 850; //All in mm
-  //preCuts.emplace_back(new reco::ZRange<CVUniverse, MichelEvent>("Tracker", minZ, maxZ));
-  preCuts.emplace_back(new reco::Apothem<CVUniverse, MichelEvent>(apothem));
+  preCuts.emplace_back(new reco::IsNeutrino<CVUniverse, MichelEvent>());
   preCuts.emplace_back(new reco::ZRange<CVUniverse, MichelEvent>("Tracker", minZ, maxZ));
-  preCuts.emplace_back(new reco::MaxMuonAngle<CVUniverse, MichelEvent>(20.));
+  preCuts.emplace_back(new reco::Apothem<CVUniverse, MichelEvent>(apothem));
+  preCuts.emplace_back(new reco::MaxMuonAngle<CVUniverse, MichelEvent>(13));
   preCuts.emplace_back(new reco::HasMINOSMatch<CVUniverse, MichelEvent>());
   preCuts.emplace_back(new reco::NoDeadtime<CVUniverse, MichelEvent>(1, "Deadtime"));
-  preCuts.emplace_back(new reco::IsNeutrino<CVUniverse, MichelEvent>());
-  //preCuts.emplace_back(new Q3RangeReco<CVUniverse, MichelEvent>(0.0,1.2));
   preCuts.emplace_back(new PTRangeReco<CVUniverse, MichelEvent>(0.0,1.0));
   preCuts.emplace_back(new RecoilERange<CVUniverse, MichelEvent>(0.0,1.0));
   preCuts.emplace_back(new PmuCut<CVUniverse, MichelEvent>(1.5));
+  preCuts.emplace_back(new PzmuCut<CVUniverse, MichelEvent>(20.));
   preCuts.emplace_back(new hasMichel<CVUniverse, MichelEvent>());
-  //preCuts.emplace_back(new Distance2DSideband<CVUniverse, MichelEvent>(500.));
-  
+
   preCuts.emplace_back(new BestMichelDistance2D<CVUniverse, MichelEvent>(150.));
   preCuts.emplace_back(new GetClosestMichel<CVUniverse, MichelEvent>(0));
+  //nosidebands.emplace_back(new BestMichelDistance2D<CVUniverse, MichelEv
+ 
+  /*
+
+  energyCuts.emplace_back(new reco::IsNeutrino<CVUniverse, MichelEvent>());
+  energyCuts.emplace_back(new reco::ZRange<CVUniverse, MichelEvent>("Tracker", minZ, maxZ));
+  energyCuts.emplace_back(new reco::Apothem<CVUniverse, MichelEvent>(apothem));
+  energyCuts.emplace_back(new reco::MaxMuonAngle<CVUniverse, MichelEvent>(20.));
+  energyCuts.emplace_back(new reco::HasMINOSMatch<CVUniverse, MichelEvent>());
+  energyCuts.emplace_back(new reco::NoDeadtime<CVUniverse, MichelEvent>(1, "Deadtime"));
+  energyCuts.emplace_back(new PTRangeReco<CVUniverse, MichelEvent>(0.0,1.0));
+  energyCuts.emplace_back(new RecoilERange<CVUniverse, MichelEvent>(0.0,1.0));
+  energyCuts.emplace_back(new PmuCut<CVUniverse, MichelEvent>(1.5));
+  energyCuts.emplace_back(new PzmuCut<CVUniverse, MichelEvent>(20.));
+
+  michelCuts.emplace_back(new hasMichel<CVUniverse, MichelEvent>());
+  michelCuts.emplace_back(new BestMichelDistance2D<CVUniverse, MichelEvent>(150.));
+  michelCuts.emplace_back(new GetClosestMichel<CVUniverse, MichelEvent>(0)); 
+  */
 
 
   TFile* mc_MichelStudies = TFile::Open("studiesMC.root", "RECREATE");
@@ -462,14 +486,19 @@ int main(const int argc, const char** argv)
   
   phaseSpace.emplace_back(new truth::ZRange<CVUniverse>("Tracker", minZ, maxZ));
   phaseSpace.emplace_back(new truth::Apothem<CVUniverse>(apothem));
-  phaseSpace.emplace_back(new truth::MuonAngle<CVUniverse>(20.));
+  phaseSpace.emplace_back(new truth::MuonAngle<CVUniverse>(13));
   phaseSpace.emplace_back(new truth::PZMuMin<CVUniverse>(1500.));
   phaseSpace.emplace_back(new truth::pTRangeLimit<CVUniverse>(0., 1.0));
+  phaseSpace.emplace_back(new truth::pzMuCut<CVUniverse>(20.));
   phaseSpace.emplace_back(new truth::pMuCut<CVUniverse>(1.5)); 
   phaseSpace.emplace_back(new truth::EavailCut<CVUniverse>()); 
+  //phaseSpace.emplace_back(new truth::TpiCut<CVUniverse>());
   //phaseSpace.emplace_back(new truth::q0RangeLimit<CVUniverse>(0.0, .7));
 
   PlotUtils::Cutter<CVUniverse, MichelEvent> mycuts(std::move(preCuts), std::move(sidebands) , std::move(signalDefinition),std::move(phaseSpace));
+
+  
+
  
   /* 
   std::vector<std::unique_ptr<PlotUtils::Reweighter<CVUniverse, MichelEvent>>> MnvTunev1;
@@ -497,6 +526,7 @@ int main(const int argc, const char** argv)
   //MnvTunev4.emplace_back(new PlotUtils::TargetMassReweighter<CVUniverse, MichelEvent>());  
   MnvTunev4.emplace_back(new PlotUtils::MnvTunev431Reweighter<CVUniverse, MichelEvent>()); 
   //MnvTunev4.emplace_back(new PlotUtils::PionReweighter<CVUniverse,MichelEvent>()); 
+  //MnvTunev4.emplace_back(new PlotUtils::BkgSigReweighter<CVUniverse,MichelEvent>());
   PlotUtils::Model<CVUniverse, MichelEvent> model(std::move(MnvTunev4));
   
   // Make a map of systematic universes
@@ -529,8 +559,9 @@ int main(const int argc, const char** argv)
                       robsEmuBins = {0,1,2,3,4,5,7,9,12,15,18,22,36,50,75,80},
                       mehreenQ3Bins = {0.001, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4},
 		      robsRecoilBins;
-  
-   
+
+  std::vector<double> nclusbins = {0,1, 5, 15, 25, 50, 75, 100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 1000};  
+  int nclusterbins = nclusbins.size() -1; 
   int nq3mbins = mehreenQ3Bins.size() -1; 
   std::vector<double> tpibins = {1., 4., 8., 12., 16., 20., 24., 28., 32., 36., 40., 46., 52.,60., 70., 80., 100., 125.,150., 175., 200., 225., 250., 275., 300., 350., 400., 500., 700.,1000.};//, 1300., 1600., 2000.};   
    std::vector<double> rangebins = {1., 8., 16., 24., 32., 40., 50., 65., 80.,95., 110., 140., 170., 200., 230., 260., 290., 310., 360., 400., 450., 500., 550., 600., 650., 700., 800., 900., 1000., 1200., 1400., 1800., 2400.};
@@ -543,6 +574,14 @@ int main(const int argc, const char** argv)
 
   std::vector<Study*> studies;
   std::vector<Study*> sideband_studies; 
+ 
+  std::function<double(const CVUniverse&, const MichelEvent&, const int)> getnclusters = [](const CVUniverse& univ, const MichelEvent& evt, const int whichMichel)
+				{
+					double nclus = univ.GetNonMuonClusters(); //evt.m_nmichels[whichMichel].nnonmuclusters; //(double)univ.GetNClusters();
+					//std::cout << "Printing n clusters " << nclus << std::endl;
+					return nclus;
+					//else{ return -100;}
+				};
    
   std::function<double(const CVUniverse&, const MichelEvent&)> getq3 = [](const CVUniverse& univ, const MichelEvent& evt)
                                  {
@@ -706,9 +745,9 @@ int main(const int argc, const char** argv)
 				  //std::cout << "Printing pz mu true " << univ.GetMuPzTrue() << std::endl;
 				  //std::cout << "Print pz mu true MAT " << univ.GetMuonPzTrue() << std::endl;
 				  double plmu = univ.GetMuonPzTrue(); // GeV rotated 
-				  double angle = evt.m_nmichels[whichMichel].true_angle;
-				  double p_pi = evt.m_nmichels[whichMichel].true_parent_p/1000.;
-				  double pl_pi = p_pi*cos(angle);
+				  //double angle = evt.m_nmichels[whichMichel].true_angle;
+				  //double p_pi = evt.m_nmichels[whichMichel].true_parent_p/1000.;
+				  double pl_pi = evt.m_nmichels[whichMichel].true_parent_pz/1000.;// p_pi*cos(angle);
 				  double epsub = (Emu - plmu) + (Epi - pl_pi);
 				  //std::cout << "Printing TRUE (Emu - plmu) + (Epi - pzpi) " << epsub << " FOR MICHEL" << whichMichel << std::endl;
 				  return pow(epsub,2); 
@@ -716,11 +755,11 @@ int main(const int argc, const char** argv)
 
 
 
-   std::function<double(const CVUniverse&, const MichelEvent&, const int)> t_evttrue = [](const CVUniverse& univ, const MichelEvent& evt, const int whichMichel)
+   std::function<double(const CVUniverse&, const MichelEvent&, const int)> t_true = [](const CVUniverse& univ, const MichelEvent& evt, const int whichMichel)
                                 {
 				    double Emu = univ.GetElepTrueGeV(); //GeV
 		 		    double pzmu = univ.GetMuonPzTrue(); // GeV in beam coordinates
-				    double idx = univ.GetTrueLowestKEPion(); //Getting lowest energy pion in event. corresponds with selecting closest michel to vertex. 
+				    double idx = univ.GetTrueHighestKEPion();// GetTrueLowestKEPion(); //Getting lowest energy pion in event. corresponds with selecting closest michel to vertex. 
 				    if (idx > 9000.) return -9999.;
 				    double Epi = univ.GetTrueEpiEvent(idx)/1000.;
 				    double pzpi = univ.GetTruePpizEvent(idx)/1000.;
@@ -733,14 +772,15 @@ int main(const int argc, const char** argv)
 				    double pysum = pmuy + ppiy;
 				    double pTmag = sqrt(pxsum*pxsum + pysum*pysum);
 				    double t = pow(epsub,2) + pow(pTmag,2);
-				    //std::cout << "TRUE mcFSPart |t| is: " << t << std::endl;
+				    //std::cout << "TRUE Emu = " << Emu << " plmu = " << pzmu << " Epi = " << Epi << " pl_pi = " << ppix << std::endl;
+ 				    //std::cout << "TRUE mcFSPart |t| is: " << t << std::endl;
 				    return t;
  
 				};
 
 
 
-   std::function<double(const CVUniverse&, const MichelEvent&, const int)> t_true = [](const CVUniverse& univ, const MichelEvent& evt, const int whichMichel)
+   std::function<double(const CVUniverse&, const MichelEvent&, const int)> t_truth = [](const CVUniverse& univ, const MichelEvent& evt, const int whichMichel)
                                 {
 				  double Emu = univ.GetElepTrueGeV(); //univ.GetEmuGeV(); // GeV
                                   int    pi_idx = univ.GetTrueHighestKEPion(); //GetTrueLowestKEPion(); // Get the Lowest Energy FS pion in event. 
@@ -766,6 +806,8 @@ int main(const int argc, const char** argv)
 				  //if (t < 0.1 or t > 1.0) univ.PrintTrueArachneLink();
 				  
 				  //std::cout << "Printing the |t| True value : " << t << " FOR MICHEL" << whichMichel << std::endl;
+                                 // std::cout << "TRUE Emu = " << Emu << " plmu = " << plmu << " Epi = " << Epi << " pl_pi = " << pl_pi << std::endl;
+                                  //std::cout << "TRUE pmux = " << univ.GetMuonPxTrue() << " pmuy = " << univ.GetMuonPyTrue() << " ppix = " << p_pix << " ppiy = " << p_piy << std::endl;
 				  return t;			 
 				};
 
@@ -774,7 +816,7 @@ int main(const int argc, const char** argv)
 				  double Emu = univ.GetEmuGeV();
                                   double tpi = evt.m_nmichels[whichMichel].reco_KE; //MeV 
                                   double ppi = evt.m_nmichels[whichMichel].reco_ppi; //MeV
-			          double Epi = sqrt(ppi*ppi + 139.57*139.57)/1000.;//(tpi + 139.57)/1000.;
+			          double Epi = evt.m_nmichels[whichMichel].reco_Epi/1000.; //(tpi + 139.57)/1000.;
                                   double plmu = univ.GetPZmu()/1000.; // GeV
                                   //std::cout << "Printing pZmu RECO " << plmu << std::endl;
 				  double pl_pi = evt.m_nmichels[whichMichel].reco_ppiz/1000.; // GeV
@@ -789,7 +831,9 @@ int main(const int argc, const char** argv)
                                   TVector3 pT = ptpi + ptmu;
 				  //std::cout << "Printing the 3D Distance value : " << evt.m_nmichels[whichMichel].Best3Ddist << "mm and KE " << tpi << " MeV FOR MICHEL" << whichMichel << std::endl;
 				  double t = epsub + pow((pT.Mag()),2);  
-                                  //std::cout << "Printing the |t| Reco value : " << t << " FOR MICHEL" << whichMichel << std::endl;
+                                  //std::cout << "\n Printing the |t| Reco value : " << t << " FOR MICHEL" << whichMichel << std::endl;
+				  //std::cout << "Emu = " << Emu << " plmu = " << plmu << " Epi = " << Epi << " pl_pi = " << pl_pi << std::endl;
+				  //std::cout << "pmux = " << p_mux << " pmuy = " << p_muy << " ppix = " << ppix << " ppiy = " << ppiy << std::endl;
 				  return t;
                                 };
 
@@ -811,7 +855,7 @@ int main(const int argc, const char** argv)
                                   TVector3 ptmu(p_mux, p_muy, 0.0);
                                   TVector3 pT = ptpi + ptmu;
 				  double t = epsub + pow((pT.Mag()),2);
-				  if (cos(evt.m_nmichels[whichMichel].best_angle) < -0.10) return t;
+				  if (cos(evt.m_nmichels[whichMichel].Best3Ddist) < 150.) return t;
 				  else return -9999.;
 				};
 
@@ -832,7 +876,7 @@ int main(const int argc, const char** argv)
                                   TVector3 ptmu(p_mux, p_muy, 0.0);
                                   TVector3 pT = ptpi + ptmu;
                                   double t = epsub + pow((pT.Mag()),2);
-                                  if (cos(evt.m_nmichels[whichMichel].best_angle) > -0.10 and cos(evt.m_nmichels[whichMichel].best_angle) < 0.10) return t;
+                                  if (cos(evt.m_nmichels[whichMichel].Best3Ddist) > 150. and cos(evt.m_nmichels[whichMichel].Best3Ddist) < 250.) return t;
                                   else return -9999.;  
 
 				};
@@ -854,7 +898,7 @@ int main(const int argc, const char** argv)
                                   TVector3 ptmu(p_mux, p_muy, 0.0);
                                   TVector3 pT = ptpi + ptmu;
                                   double t = epsub + pow((pT.Mag()),2);
-                                  if (cos(evt.m_nmichels[whichMichel].best_angle) > .10 and cos(evt.m_nmichels[whichMichel].best_angle) < 0.80) return t;
+                                  if (cos(evt.m_nmichels[whichMichel].Best3Ddist) > 250. and cos(evt.m_nmichels[whichMichel].Best3Ddist) < 500.) return t;
                                   else return -9999.;
 
                                 };
@@ -876,7 +920,7 @@ int main(const int argc, const char** argv)
                                   TVector3 ptmu(p_mux, p_muy, 0.0);
                                   TVector3 pT = ptpi + ptmu;
                                   double t = epsub + pow((pT.Mag()),2);
-                                  if (cos(evt.m_nmichels[whichMichel].best_angle) > .80) return t;
+                                  if (cos(evt.m_nmichels[whichMichel].Best3Ddist) > 500.) return t;
                                   else return -9999.;
 
                                 };
@@ -1010,6 +1054,38 @@ int main(const int argc, const char** argv)
                                {
                                   return univ.GetMuonPzTrue();
                                };
+   
+   std::function<double(const CVUniverse&, const MichelEvent&, const int)> michel_XZ = [](const CVUniverse& univ, const MichelEvent& evt, const int whichMichel)
+                                 {
+                                   double twoDdist = evt.m_nmichels[whichMichel].best_XZ;
+                                   if (evt.m_nmichels[whichMichel].bestview == 1) return abs(twoDdist);
+				   else return -9999.;
+                                 };
+
+
+   std::function<double(const CVUniverse&, const MichelEvent&, const int)> michel_UZ = [](const CVUniverse& univ, const MichelEvent& evt, const int whichMichel)
+                                 {
+                                   double twoDdist = evt.m_nmichels[whichMichel].best_UZ;
+                                   if (evt.m_nmichels[whichMichel].bestview == 2) return abs(twoDdist);
+                                   else return -9999.;
+				 };
+
+  
+   std::function<double(const CVUniverse&, const MichelEvent&, const int)> michel_VZ = [](const CVUniverse& univ, const MichelEvent& evt, const int whichMichel)
+                                 {
+                                   double twoDdist = evt.m_nmichels[whichMichel].best_VZ;
+                                   if (evt.m_nmichels[whichMichel].bestview == 3) return abs(twoDdist);
+                                   else return -9999.; 
+                                 };   
+
+   std::function<double(const CVUniverse&, const MichelEvent&, const int)> best_2D = [](const CVUniverse& univ, const MichelEvent& evt, const int whichMichel)
+                                 {
+                                   double twoDdist = 99999.;
+				   if (evt.m_nmichels[whichMichel].bestview == 1) twoDdist =  evt.m_nmichels[whichMichel].best_XZ;
+				   else if (evt.m_nmichels[whichMichel].bestview == 2) twoDdist =  evt.m_nmichels[whichMichel].best_UZ;
+				   else if(evt.m_nmichels[whichMichel].bestview == 3) twoDdist =  evt.m_nmichels[whichMichel].best_VZ;
+                                   return abs(twoDdist);
+                                 };
 
 
    std::vector<double> anglebins = {-1.2,-1, -.80, -.70, -.60, -.50, -.40, -.30, -.20, -.10, .10, .20, .30, .40,.50,.60,.70,.80,.90,1.,1.2};
@@ -1068,6 +1144,7 @@ int main(const int argc, const char** argv)
    eVarConfig2D etpiconfig{"ePion_KE", "MeV", nbinstpi, tpibins};
    //std::vector<double> anglebins = {-1.2,-1, -.80, -.70, -.60, -.50, -.40, -.30, -.20, -.10, .10, .20, .30, .40,.50,.60,.70,.80,.90,1.,1.2};
    int nbinsangle = anglebins.size() -1;
+   //studies.push_back(new PerMichelVarVecFSPart(getnclusters, "nonmu_clusters", "n_clusters",  nclusterbins, nclusbins, error_bands));
    studies.push_back(new PerMichelVarVecFSPart(pion_angle, "pion_angle", "cos(#theta)", nbinsangle,anglebins, error_bands));
    studies.push_back(new PerMichelVarVecFSPart(pion_angle_range1, "pion_angle_range1", "cos(#theta)", nbinsangle,anglebins, error_bands));
    studies.push_back(new PerMichelVarVecFSPart(pion_angle_range2, "pion_angle_range2", "cos(#theta)", nbinsangle,anglebins, error_bands));
@@ -1076,7 +1153,7 @@ int main(const int argc, const char** argv)
 
    studies.push_back(new PerMichelVarVecFSPart(permichel_range, "permichel_pirange", "mm", nbinsrange, rangebins, error_bands));
    studies.push_back(new PerMichelVarVecFSPart(permichel_tpi,"permichel_tpi", "MeV", nbinstpi, tpibins, error_bands));
- 
+   
    studies.push_back(new PerMichelVarVecFSPart(ptsum_reco,"ptsum_reco", "GeV2",ntbins, tbins, error_bands)); 
    studies.push_back(new PerMichelVarVecFSPart(epsub_reco,"epsub_reco", "GeV2",ntbins, tbins, error_bands));
    
@@ -1084,28 +1161,29 @@ int main(const int argc, const char** argv)
    studies.push_back(new PerMichelVarVecFSPart(epsub_true,"epsub_true", "GeV2",ntbins, tbins, error_bands));
 
    studies.push_back(new PerMichelVarVecFSPart(t_reco,"t_reco", "GeV2",ntbins, tbins, error_bands));
-   studies.push_back(new PerMichelVarVecFSPart(t_angle1_reco,"t_angle1_reco", "GeV2",ntbins, tbins, error_bands));
-   studies.push_back(new PerMichelVarVecFSPart(t_angle2_reco,"t_angle2_reco", "GeV2",ntbins, tbins, error_bands));
-   studies.push_back(new PerMichelVarVecFSPart(t_angle3_reco,"t_angle3_reco", "GeV2",ntbins, tbins, error_bands));   
-   studies.push_back(new PerMichelVarVecFSPart(t_angle4_reco,"t_angle4_reco", "GeV2",ntbins, tbins, error_bands));
+   //studies.push_back(new PerMichelVarVecFSPart(t_angle1_reco,"t_angle1_reco", "GeV2",ntbins, tbins, error_bands));
+   //studies.push_back(new PerMichelVarVecFSPart(t_angle2_reco,"t_angle2_reco", "GeV2",ntbins, tbins, error_bands));
+   //studies.push_back(new PerMichelVarVecFSPart(t_angle3_reco,"t_angle3_reco", "GeV2",ntbins, tbins, error_bands));   
+   //studies.push_back(new PerMichelVarVecFSPart(t_angle4_reco,"t_angle4_reco", "GeV2",ntbins, tbins, error_bands));
 
-   studies.push_back(new PerMichelVarVecFSPart(t_angle1_true,"t_angle1_true", "GeV2",ntbins, tbins, error_bands));
-   studies.push_back(new PerMichelVarVecFSPart(t_angle2_true,"t_angle2_true", "GeV2",ntbins, tbins, error_bands));
-   studies.push_back(new PerMichelVarVecFSPart(t_angle3_true,"t_angle3_true", "GeV2",ntbins, tbins, error_bands));
-   studies.push_back(new PerMichelVarVecFSPart(t_angle4_true,"t_angle4_true", "GeV2",ntbins, tbins, error_bands));
+   //studies.push_back(new PerMichelVarVecFSPart(t_angle1_true,"t_angle1_true", "GeV2",ntbins, tbins, error_bands));
+   //studies.push_back(new PerMichelVarVecFSPart(t_angle2_true,"t_angle2_true", "GeV2",ntbins, tbins, error_bands));
+   //studies.push_back(new PerMichelVarVecFSPart(t_angle3_true,"t_angle3_true", "GeV2",ntbins, tbins, error_bands));
+   //studies.push_back(new PerMichelVarVecFSPart(t_angle4_true,"t_angle4_true", "GeV2",ntbins, tbins, error_bands));
 
    
 
-   //studies.push_back(new PerMichelVarVecFSPart(t_evttrue,"t_true", "GeV2",ntbins, tbins, error_bands));
+   //studies.push_back(new PerMichelVarVecFSPart(t_evttrue,"t_evttrue", "GeV2",ntbins, tbins, error_bands));
    studies.push_back(new PerMichelVarVecFSPart(t_true,"t_true", "GeV2",ntbins, tbins, error_bands)); 
    studies.push_back(new PerMichelVarVecFSPart(pz_reco,"pz_reco", "GeV2",npzbins, pzbins, error_bands));
    studies.push_back(new PerMichelVarVecFSPart(pz_true,"pz_true", "GeV2",npzbins, pzbins, error_bands));
 
    studies.push_back(new PerMichelVarVecFSPart(pt_reco,"pt_reco", "GeV2",npzbins, pzbins, error_bands));
    studies.push_back(new PerMichelVarVecFSPart(pt_true,"pt_true", "GeV2",npzbins, pzbins, error_bands));
-
+   
+  
    studies.push_back(new PerMichel2DVarbin(pion_angle, true_angle, recoangleconfig, trueangleconfig, error_bands)); 
-
+   /*
    studies.push_back(new PerMichel2DVarbin(ptsum_reco, ptsum_true, ptconfig, pttconfig, error_bands));
    studies.push_back(new PerMichel2DVarbin(epsub_reco, epsub_true, epsubconfig, epsubttconfig, error_bands));
   
@@ -1116,6 +1194,7 @@ int main(const int argc, const char** argv)
    studies.push_back(new PerMichel2DVarbin(pmuy_reco, pmuy_true, pymuconfig, pymutconfig, error_bands));
    studies.push_back(new PerMichel2DVarbin(pmux_reco, pmux_true, pxmuconfig, pxmutconfig, error_bands));
    studies.push_back(new PerMichel2DVarbin(t_reco, t_true, tconfig, ttconfig, error_bands));
+   */
    studies.push_back(new PerMichel2DVarbin(permichel_tpi, permichel_range, tpiconfig, rangeconfig, error_bands));
    //studies.push_back(new PerMichel2DVarbin(permichel_range, permichel_tpi, rangeconfig,tpiconfig, error_bands));
   
@@ -1132,10 +1211,12 @@ int main(const int argc, const char** argv)
    
    studies.push_back(new PerMichelEvent2DVarbin(event_angle, getpT, angleconfig, pTconfig, error_bands));
    studies.push_back(new PerMichelEvent2DVarbin(event_range, getpT, erangeconfig, pTconfig, error_bands));
-
-
-
+   studies.push_back(new PerMichelVarVecFSPart(best_2D, "best_2D", "mm", nbinsrange, rangebins, error_bands)); 
+   studies.push_back(new PerMichelVarVecFSPart(michel_XZ, "best_XZ", "mm", nbinsrange, rangebins, error_bands));
+   studies.push_back(new PerMichelVarVecFSPart(michel_UZ, "best_UZ", "mm", nbinsrange, rangebins, error_bands));
+   studies.push_back(new PerMichelVarVecFSPart(michel_VZ, "best_VZ", "mm", nbinsrange, rangebins, error_bands));
 // Set Up Data Universe
+
 
   CVUniverse* data_universe = new CVUniverse(options.m_data);
   std::vector<CVUniverse*> data_band = {data_universe};
@@ -1157,10 +1238,16 @@ int main(const int argc, const char** argv)
   data_studies.push_back(new PerMichelVarVecFSPart(epsub_reco,"epsub_reco", "GeV2",ntbins, tbins, data_error_bands));   
   data_studies.push_back(new PerMichelVarVecFSPart(pz_reco,"pz_reco", "GeV2",npzbins, pzbins, data_error_bands));
   data_studies.push_back(new PerMichelVarVecFSPart(pt_reco,"pt_reco", "GeV2",npzbins, pzbins, data_error_bands)); 
-  data_studies.push_back(new PerMichelVarVecFSPart(t_angle1_reco,"t_angle1_reco", "GeV2",ntbins, tbins, data_error_bands));
-  data_studies.push_back(new PerMichelVarVecFSPart(t_angle2_reco,"t_angle2_reco", "GeV2",ntbins, tbins, data_error_bands));
-  data_studies.push_back(new PerMichelVarVecFSPart(t_angle3_reco,"t_angle3_reco", "GeV2",ntbins, tbins, data_error_bands));
-  data_studies.push_back(new PerMichelVarVecFSPart(t_angle4_reco,"t_angle4_reco", "GeV2",ntbins, tbins, data_error_bands));  
+  //data_studies.push_back(new PerMichelVarVecFSPart(t_angle1_reco,"t_angle1_reco", "GeV2",ntbins, tbins, data_error_bands));
+  //data_studies.push_back(new PerMichelVarVecFSPart(t_angle2_reco,"t_angle2_reco", "GeV2",ntbins, tbins, data_error_bands));
+  //data_studies.push_back(new PerMichelVarVecFSPart(t_angle3_reco,"t_angle3_reco", "GeV2",ntbins, tbins, data_error_bands));
+  //data_studies.push_back(new PerMichelVarVecFSPart(t_angle4_reco,"t_angle4_reco", "GeV2",ntbins, tbins, data_error_bands)); 
+  
+  //data_studies.push_back(new PerMichelVarVecFSPart(getnclusters, "nonmu_clusters", "n_clusters",  nclusterbins, nclusbins, data_error_bands));
+  data_studies.push_back(new PerMichelVarVecFSPart(michel_XZ, "best_XZ", "mm", nbinsrange, rangebins, data_error_bands));
+  data_studies.push_back(new PerMichelVarVecFSPart(michel_UZ, "best_UZ", "mm", nbinsrange, rangebins, data_error_bands));
+  data_studies.push_back(new PerMichelVarVecFSPart(michel_VZ, "best_VZ", "mm", nbinsrange, rangebins, data_error_bands));
+  data_studies.push_back(new PerMichelVarVecFSPart(best_2D, "best_2D", "mm", nbinsrange, rangebins, data_error_bands));
 
   // Loop entries and fill
   try
@@ -1168,8 +1255,8 @@ int main(const int argc, const char** argv)
     CVUniverse::SetTruth(true);
     LoopAndFillEventSelection(options.m_mc, error_bands, studies, sideband_studies, mycuts, model);
     std::cout << "MC cut summary:\n" << mycuts << "\n";
-    //mycuts.resetStats();
-    CVUniverse::SetTruth(true);
+    mycuts.resetStats();
+    //CVUniverse::SetTruth(true);
     //LoopAndFillEffDenom(options.m_truth, truth_bands, vars, vars2D,studies, mycuts, model);
     //options.PrintMacroConfiguration(argv[0]);
     //std::cout << "Sideband Cut Summary:\n" << mysides << "\n";

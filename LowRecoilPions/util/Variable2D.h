@@ -147,15 +147,18 @@ class Variable2D: public PlotUtils::Variable2DBase<CVUniverse>
 
       m_backgroundHists->visit([&file](Hist& categ)
                                     {
+      				      categ.SyncCVHistos();
                                       categ.hist->SetDirectory(&file);
                                       categ.hist->Write(); //TODO: Or let the TFile destructor do this the "normal" way?                                                                                           
                                     });
       m_MChists->visit([&file](Hist& categ)
                                     {
+				      categ.SyncCVHistos(); 
                                       categ.hist->SetDirectory(&file);
                                       categ.hist->Write(); //TODO: Or let the TFile destructor do this the "normal" way?                                                                                           
                                     });
       fSignalByPionsInVar->visit([&file](auto& Hist) {
+						    Hist.SyncCVHistos();
                                                     Hist.hist->SetDirectory(&file);
 						    Hist.hist->Write();
                                                 });
@@ -163,21 +166,24 @@ class Variable2D: public PlotUtils::Variable2DBase<CVUniverse>
 
 
       if (dataHist->hist) {
+		dataHist->SyncCVHistos();
                 dataHist->hist->SetDirectory(&file);
                 dataHist->hist->Write();
       }
 
       if (mc_trueHist->hist){
-
+     		mc_trueHist->SyncCVHistos();         
 		mc_trueHist->hist->SetDirectory(&file);
  		mc_trueHist->hist->Write();
       }
 
       if (mcTotalHist->hist) {
+                mcTotalHist->SyncCVHistos();
                 mcTotalHist->hist->SetDirectory(&file);
                 mcTotalHist->hist->Write((GetNameX() + "_" + GetNameY() + "_mcreco").c_str());
       }
       if (selectedSignalReco) {
+       		selectedSignalReco->SyncCVHistos();
                 selectedSignalReco->hist->SetDirectory(&file);
                 selectedSignalReco->hist->Write();
       }
@@ -212,8 +218,13 @@ class Variable2D: public PlotUtils::Variable2DBase<CVUniverse>
       if(mresp)
       {
         mresp->hist->SetDirectory(&file);
-	mresp->hist->Write((GetNameX() + "_" + GetNameY() + "_migration").c_str());
-	
+	mresp->hist->Write((GetNameX() + "_" + GetNameY() + "_mresp").c_str());
+        mresp->GetMigrationMatrix()->SetDirectory(&file);
+	mresp->GetMigrationMatrix()->Write((GetNameX() + "_" + GetNameY() + "_migration").c_str());	
+        mresp->GetTruth2D()->SetDirectory(&file);
+	mresp->GetTruth2D()->Write((GetNameX() + "_" + GetNameY() + "_truth2D").c_str());
+        mresp->GetReco2D()->SetDirectory(&file);
+	mresp->GetReco2D()->Write((GetNameX() + "_" + GetNameY() + "_reco2D").c_str());
       }
 
 
@@ -235,7 +246,9 @@ class Variable2D: public PlotUtils::Variable2DBase<CVUniverse>
       if(efficiencyNumerator) efficiencyNumerator->SyncCVHistos();
       if(efficiencyDenominator) efficiencyDenominator->SyncCVHistos();
       if(mresp) mresp->SyncCVHistos();
-      //if(recoMinusTrueTBins) recoMinusTrueTBins->SyncCVHistos();
+      if(mc_trueHist) mc_trueHist->SyncCVHistos();
+     
+       //if(recoMinusTrueTBins) recoMinusTrueTBins->SyncCVHistos();
       //if(recoMinusTrueRBins) recoMinusTrueRBins->SyncCVHistos();
       //if(biasMCReco) biasMCReco->SyncCVHistos();
     }

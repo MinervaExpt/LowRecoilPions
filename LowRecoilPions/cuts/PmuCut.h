@@ -20,7 +20,7 @@ class PmuCut: public PlotUtils::Cut<CVUniverse, EVENT>
     {
       const double preco = univ.GetMuonP();
       const double pz = univ.GetMuonPz();
-      return (preco > fpMin && pz > fpMin); 
+      return (preco > fpMin && preco < 20.0); 
     }
 
 };
