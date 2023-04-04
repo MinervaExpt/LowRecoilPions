@@ -1,0 +1,78 @@
+v3_1:
+
+Remove plain http support; now http only.
+
+Feature #22775: Support https only
+Feature #23171: Change default checksum to adler32
+
+v3_0:
+
+Supports python 3 - works with 2.6, 2.7, 3.3+ (only properly tested on 3.6)
+
+Bug #19492: 'samweb delete-definition' always returns exit status 1
+Bug #20719: Some commands that previously worked can give an ambiguous option error
+Feature #17224: Support python 3
+Feature #20717: Add list users by group command
+Feature #20718: Put the string "prestage" at the beginning of prestage project names
+Feature #20720: Add support for passing a unique identifier to project processes
+
+v2_2:
+
+Remove support for for python 2.4 and 2.5
+New snapshot-info command
+Add max-age and no-empty options to take snapshot command
+Add state and station arguments to list-projects command
+
+v2_1:
+
+New verify-file-checksum command which will compare a local file against the checksum in the database. Supports sha512, sha256, sha1, md5, adler32 and enstore checksums
+New list-file-locations command which gets all files and their locations either in a given dataset, a dimension query, or matching a location prefix
+Add --expand-query option to list-files to dump the equivalent query after expansions and rewriting
+Add --basic option to get-metadata; this returns a limited subset of the metadata (name, id, create date and user, size, checksum) so should be faster
+Experimental bash completion script in util/command_completion.bash . Source it and command completion should work with the subcommand names.
+
+API changes:
+New samweb.verifyFileChecksum() function
+New samweb.listFilesAndLocations() function
+New samweb.expandDims() function
+New samweb.modifyMetadata() function for updating the metadata of muliple files in one operation
+samweb.getMetadata*() functions gain a basic=boolean argument
+New samweb.getMetadataIterator() and samweb.locateFilesIterator() API functions; these provide a more efficient way of looping through a large list of file names to get metadata or locations
+
+Other changes and fixes:
+
+HTTP compression is now enabled for some operations. This may improve performance over slow/high latency links when returning large responses. (If you used the python requests library with earlier versions then compression was already used.)
+
+Bug #11034: create-definition shouldn't send user name unless it's specifically set
+Bug #13740: With python 2.7.9+, if X509_USER_PROXY is set to an invalid value, initializing the client object fails even when SSL isn't being used
+Feature #15628: Add remove groups ability to modify-user
+Feature #15678: If SAM_EXPERIMENT is not set, but EXPERIMENT is then use the latter
+
+v2_0:
+
+The file-checksum command now prints the new format checksum instead of the legacy
+format, and has the option to use multiple algorithms.
+
+Bug #7528: start-process gives no way to override the username
+Bug #7575: Ungraceful handling of SIGPIPE
+Bug #8280: SSL connections fail on python 2.7.9
+Bug #9855: Cert/key authentication with environment variables crashes.
+Feature #7568: Add environment variables to control host and ports
+Feature #7569: Support new checksum formats
+Feature #7928: Add socket timeout
+Feature #8591: Add set-process-file-status command and interface
+Feature #8592: Use GRID_USER to guess the username if it is set
+
+v1_9:
+
+All commands now accept a --timezone/-z option.
+The file-lineage command will filter out retired files by default, and now has
+a --showretired flag which displays them.
+The file-checksum command can now read data from standard input by giving the
+source argument as '-' (useful if the file you're interested in is not on local
+disk, but has some way of dumping it to std out).
+
+Bug #6893: Inconsistent exception handling
+Bug #6900: file-lineage command doesn't filter retired files
+Feature #6892: Send requested timezone information to server
+Feature #6894: Allow file-checksum command to read from standard input

@@ -1,0 +1,33 @@
+<lcgdict>
+  <!-- PlotUtils objects -->
+  <class name="PlotUtils::AnaBinning" />
+
+  <!-- PlotUtils weight classes-->
+  <class name="PlotUtils::weight_2p2h" />
+  <class name="PlotUtils::weightRPA" />
+  <class name="PlotUtils::weightLowQ2Pi" />
+  <class name="PlotUtils::weightDIS" />
+  <class name="PlotUtils::weightZExp" />
+
+
+  <class name="PlotUtils::TargetUtils" />
+  <class name="PlotUtils::POTCounter" />
+  <!-- PlotUtils systematic universes classes (new sys framework)-->
+  <class name="PlotUtils::MinervaUniverse" />
+
+  <!-- PlotUtils standalone systematics functions (new sys framework)-->	
+  <function name="PlotUtils::GetGenieSystematics" />
+  <function name="PlotUtils::GetGenieSystematicsMap" />
+  <function name="PlotUtils::GetMuonSystematicsMap" />
+  <function name="PlotUtils::GetAngleSystematicsMap" />
+  <function name="PlotUtils::GetRecoilSystematicsMap" />
+  <function name="PlotUtils::GetResolutionSystematicsMap" />
+  <function name="PlotUtils::GetAngleSystematics" />
+  <function name="PlotUtils::nuEnergyCCQE" />
+  <function name="PlotUtils::qSquaredCCQE" />
+  <function name="PlotUtils::struckNucleonMass" />
+  <function name="PlotUtils::W" />
+  <function name="PlotUtils::WSquared" />
+  <function name="PlotUtils::xBjorken" />
+</lcgdict>
+

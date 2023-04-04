@@ -1,0 +1,51 @@
+
+{
+	"sources" : 
+	[
+		
+		{
+			"file" : "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/CMakeFiles/MAT-MINERvA"
+		},
+		
+		{
+			"file" : "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/CMakeFiles/MAT-MINERvA.rule"
+		},
+		
+		{
+			"file" : "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/CMakeFiles/MAT-MINERvA-complete.rule"
+		},
+		
+		{
+			"file" : "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/MAT-MINERvA-prefix/src/MAT-MINERvA-stamp/MAT-MINERvA-install.rule"
+		},
+		
+		{
+			"file" : "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/MAT-MINERvA-prefix/src/MAT-MINERvA-stamp/MAT-MINERvA-mkdir.rule"
+		},
+		
+		{
+			"file" : "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/MAT-MINERvA-prefix/src/MAT-MINERvA-stamp/MAT-MINERvA-download.rule"
+		},
+		
+		{
+			"file" : "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/MAT-MINERvA-prefix/src/MAT-MINERvA-stamp/MAT-MINERvA-patch.rule"
+		},
+		
+		{
+			"file" : "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/MAT-MINERvA-prefix/src/MAT-MINERvA-stamp/MAT-MINERvA-configure.rule"
+		},
+		
+		{
+			"file" : "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/MAT-MINERvA-prefix/src/MAT-MINERvA-stamp/MAT-MINERvA-build.rule"
+		},
+		
+		{
+			"file" : "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/MAT-MINERvA-prefix/src/MAT-MINERvA-stamp/MAT-MINERvA-skip-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : [ "MAT-MINERvA" ],
+		"name" : "MAT-MINERvA"
+	}
+}

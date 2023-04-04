@@ -1,0 +1,14 @@
+/fife/local/scratch/uploads/minerva/sultana/2023-01-19_233445.829134_9897
+
+/fife/local/scratch/uploads/minerva/sultana/2023-01-19_233445.829134_9897/runEventLoop_job.sh_20230119_233447_2131375_0_1_.cmd
+
+submitting....
+
+Submitting job(s).
+
+1 job(s) submitted to cluster 65568345.
+
+JobsubJobId of first job: 65568345.0@jobsub02.fnal.gov
+
+Use job id 65568345.0@jobsub02.fnal.gov to retrieve output
+

@@ -341,6 +341,47 @@ namespace ROOT {
 } // end of namespace ROOT
 
 namespace ROOT {
+   static TClass *PlotUtilscLcLHyperDimLinearizer_Dictionary();
+   static void PlotUtilscLcLHyperDimLinearizer_TClassManip(TClass*);
+   static void delete_PlotUtilscLcLHyperDimLinearizer(void *p);
+   static void deleteArray_PlotUtilscLcLHyperDimLinearizer(void *p);
+   static void destruct_PlotUtilscLcLHyperDimLinearizer(void *p);
+
+   // Function generating the singleton type initializer
+   static TGenericClassInfo *GenerateInitInstanceLocal(const ::PlotUtils::HyperDimLinearizer*)
+   {
+      ::PlotUtils::HyperDimLinearizer *ptr = 0;
+      static ::TVirtualIsAProxy* isa_proxy = new ::TIsAProxy(typeid(::PlotUtils::HyperDimLinearizer));
+      static ::ROOT::TGenericClassInfo 
+         instance("PlotUtils::HyperDimLinearizer", "HyperDimLinearizer.h", 9,
+                  typeid(::PlotUtils::HyperDimLinearizer), ::ROOT::Internal::DefineBehavior(ptr, ptr),
+                  &PlotUtilscLcLHyperDimLinearizer_Dictionary, isa_proxy, 4,
+                  sizeof(::PlotUtils::HyperDimLinearizer) );
+      instance.SetDelete(&delete_PlotUtilscLcLHyperDimLinearizer);
+      instance.SetDeleteArray(&deleteArray_PlotUtilscLcLHyperDimLinearizer);
+      instance.SetDestructor(&destruct_PlotUtilscLcLHyperDimLinearizer);
+      return &instance;
+   }
+   TGenericClassInfo *GenerateInitInstance(const ::PlotUtils::HyperDimLinearizer*)
+   {
+      return GenerateInitInstanceLocal((::PlotUtils::HyperDimLinearizer*)0);
+   }
+   // Static variable to force the class initialization
+   static ::ROOT::TGenericClassInfo *_R__UNIQUE_DICT_(Init) = GenerateInitInstanceLocal((const ::PlotUtils::HyperDimLinearizer*)0x0); R__UseDummy(_R__UNIQUE_DICT_(Init));
+
+   // Dictionary for non-ClassDef classes
+   static TClass *PlotUtilscLcLHyperDimLinearizer_Dictionary() {
+      TClass* theClass =::ROOT::GenerateInitInstanceLocal((const ::PlotUtils::HyperDimLinearizer*)0x0)->GetClass();
+      PlotUtilscLcLHyperDimLinearizer_TClassManip(theClass);
+   return theClass;
+   }
+
+   static void PlotUtilscLcLHyperDimLinearizer_TClassManip(TClass* ){
+   }
+
+} // end of namespace ROOT
+
+namespace ROOT {
    static TClass *PlotUtilscLcLPOTCounter_Dictionary();
    static void PlotUtilscLcLPOTCounter_TClassManip(TClass*);
    static void *new_PlotUtilscLcLPOTCounter(void *p = 0);
@@ -505,6 +546,20 @@ namespace ROOT {
 } // end of namespace ROOT for class ::PlotUtils::MinervaUniverse
 
 namespace ROOT {
+   // Wrapper around operator delete
+   static void delete_PlotUtilscLcLHyperDimLinearizer(void *p) {
+      delete ((::PlotUtils::HyperDimLinearizer*)p);
+   }
+   static void deleteArray_PlotUtilscLcLHyperDimLinearizer(void *p) {
+      delete [] ((::PlotUtils::HyperDimLinearizer*)p);
+   }
+   static void destruct_PlotUtilscLcLHyperDimLinearizer(void *p) {
+      typedef ::PlotUtils::HyperDimLinearizer current_t;
+      ((current_t*)p)->~current_t();
+   }
+} // end of namespace ROOT for class ::PlotUtils::HyperDimLinearizer
+
+namespace ROOT {
    // Wrappers around operator new
    static void *new_PlotUtilscLcLPOTCounter(void *p) {
       return  p ? ::new((::ROOT::Internal::TOperatorNewHelper*)p) ::PlotUtils::POTCounter : new ::PlotUtils::POTCounter;
@@ -545,6 +600,7 @@ namespace PlotUtils{class __attribute__((annotate("$clingAutoload$weightDIS.h"))
 namespace PlotUtils{class __attribute__((annotate("$clingAutoload$weightZExp.h")))  weightZExp;}
 namespace PlotUtils{class __attribute__((annotate("$clingAutoload$utilities/TargetUtils.h")))  __attribute__((annotate("$clingAutoload$MinervaUniverse.h")))  TargetUtils;}
 namespace PlotUtils{class __attribute__((annotate("$clingAutoload$MinervaUniverse.h")))  MinervaUniverse;}
+namespace PlotUtils{class __attribute__((annotate("$clingAutoload$HyperDimLinearizer.h")))  HyperDimLinearizer;}
 namespace PlotUtils{class __attribute__((annotate("$clingAutoload$POTCounter.h")))  POTCounter;}
 )DICTFWDDCLS";
     static const char* payloadCode = R"DICTPAYLOAD(
@@ -573,13 +629,13 @@ namespace PlotUtils{class __attribute__((annotate("$clingAutoload$POTCounter.h")
 #endif
 
 #define _BACKWARD_BACKWARD_WARNING_H
-#ifndef MATMINERVADICT_H 
+#ifndef MATMINERVADICT_H
 #define MATMINERVADICT_H 1
 
 // Include files for PlotUtils dictionary.
 
 /** @file PlotUtilsDict.h
- *  
+ *
  *
  *  @author Jeremy Wolcott <jwolcott@fnal.gov>
  *  @date   2012-11-25
@@ -611,6 +667,7 @@ namespace PlotUtils{class __attribute__((annotate("$clingAutoload$POTCounter.h")
 #include "MichelSystematics.h"
 #include "AngleSystematics.h"
 #include "ResponseSystematics.h"
+#include "HyperDimLinearizer.h"
 
 //Utils
 #include "TargetUtils.h"
@@ -631,10 +688,10 @@ namespace PlotUtils{class __attribute__((annotate("$clingAutoload$POTCounter.h")
 #endif
 #endif // MATMINERVADICT_H
 
-
 #undef  _BACKWARD_BACKWARD_WARNING_H
 )DICTPAYLOAD";
     static const char* classesHeaders[]={
+"PlotUtils::HyperDimLinearizer", payloadCode, "@",
 "PlotUtils::MinervaUniverse", payloadCode, "@",
 "PlotUtils::POTCounter", payloadCode, "@",
 "PlotUtils::TargetUtils", payloadCode, "@",

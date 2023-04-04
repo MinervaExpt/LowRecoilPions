@@ -1,8 +1,10 @@
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/bin/twoDEventLoopFull
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/bin/studiesEventLoop
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/bin/twoDEventLoop
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/bin/studiesEventLoopSide
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/bin/twoDEventLoopSide
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/bin/ExtractCrossSection
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/bin/ExtractCrossSection2D
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/bin/runXSecLooper
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/bin/backgroundStack.py
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/bin/runTransWarp.sh

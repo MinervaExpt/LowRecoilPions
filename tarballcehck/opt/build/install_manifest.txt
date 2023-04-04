@@ -1,0 +1,2 @@
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/bin/setup.sh
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/bin/setupROOT6OnGPVMs.sh

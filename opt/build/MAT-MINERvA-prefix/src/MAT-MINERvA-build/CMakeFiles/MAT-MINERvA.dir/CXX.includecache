@@ -1375,6 +1375,8 @@ AngleSystematics.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/MAT-MINERvA/dict/AngleSystematics.h
 ResponseSystematics.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/MAT-MINERvA/dict/ResponseSystematics.h
+HyperDimLinearizer.h
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/MAT-MINERvA/dict/HyperDimLinearizer.h
 TargetUtils.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/MAT-MINERvA/dict/TargetUtils.h
 POTCounter.h
@@ -2319,6 +2321,8 @@ AngleSystematics.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/MAT-MINERvA-prefix/src/MAT-MINERvA-build/AngleSystematics.h
 ResponseSystematics.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/MAT-MINERvA-prefix/src/MAT-MINERvA-build/ResponseSystematics.h
+HyperDimLinearizer.h
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/MAT-MINERvA-prefix/src/MAT-MINERvA-build/HyperDimLinearizer.h
 TargetUtils.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/MAT-MINERvA-prefix/src/MAT-MINERvA-build/TargetUtils.h
 POTCounter.h
@@ -2451,6 +2455,16 @@ string
 -
 sstream
 -
+
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/HyperDimLinearizer.h
+vector
+-
+iostream
+-
+utility
+-
+PlotUtils/MnvH2D.h
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/PlotUtils/MnvH2D.h
 
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/MichelSystematics.cxx
 universes/MichelSystematics.h

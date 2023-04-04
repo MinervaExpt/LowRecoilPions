@@ -18,7 +18,7 @@ weightLowQ2Pi::weightLowQ2Pi()
     h_cvweight_shift_MENU1PI(nullptr)
 {
   char *mparalocation = std::getenv("MPARAMFILESROOT");
-  std::string f = std::string(mparalocation) + "/data/Reweight/lowQ2pi_weights.root";
+  std::string f = "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/lowQ2pi_weights.root"; //std::string(mparalocation) + "/data/Reweight/lowQ2pi_weights.root";
   read(f);
 }
 
@@ -71,8 +71,7 @@ double weightLowQ2Pi::getWeight(const double Q2 /*(GeV/c)^2*/, std::string chann
     return cvweight + shift*cvweight_shift;
   }
     
-
-  if (Q2 < 0.0 || Q2 >= 0.7) {
+  else if (Q2 < 0.0 || Q2 >= 0.7) {
     cvweight = 1.0;
     cvweight_shift = 0.0;
   }

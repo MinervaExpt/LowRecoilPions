@@ -27,8 +27,7 @@ namespace PlotUtils
         //Check for incompatible Reweighters
         for(auto whichWeighter = weighters.begin(); whichWeighter != weighters.end(); ++whichWeighter)
         {
-         // std::cout << "Checking for incompatible Reweighters " << std::endl;
-  	  for(auto otherWeighter = std::next(whichWeighter); otherWeighter != weighters.end(); ++otherWeighter)
+          for(auto otherWeighter = std::next(whichWeighter); otherWeighter != weighters.end(); ++otherWeighter)
           {
             if(!(*whichWeighter)->IsCompatible(**otherWeighter) || !(*otherWeighter)->IsCompatible(**whichWeighter)) throw std::runtime_error("Reweighters named " + (*whichWeighter)->GetName() + " and " + (*otherWeighter)->GetName() + " are not compatible!");
           }
@@ -37,7 +36,6 @@ namespace PlotUtils
         //Sort Reweighters by whether they need to check IsVerticalOnly()
         for(auto& weighter: weighters)
         {
-	 // std::cout << " Checking to see if Reco Dependant or Truth Only Weighters" << std::endl;
           if(weighter->DependsReco()) fDependsRecoWeighters.push_back(std::move(weighter));
           else fDependsTruthOnlyWeighters.push_back(std::move(weighter));
         }
@@ -45,11 +43,8 @@ namespace PlotUtils
 
       void SetEntry(const UNIVERSE& univ, const EVENT& event)
       {
-        
-   	//std::cout << "Setting Entry if CV truth only weight inside Model " << std::endl;
         fCVTruthOnlyWeight = 1;
         for(const auto& weighter: fDependsTruthOnlyWeighters) fCVTruthOnlyWeight *= weighter->GetWeight(univ, event);
-        //std::cout << "Setting Entry if CV Depends on Reco only weight inside Model " << std::endl;
 
         fCVDependsRecoWeight = 1;
         for(const auto& weighter: fDependsRecoWeighters) fCVDependsRecoWeight *= weighter->GetWeight(univ, event);
@@ -61,8 +56,7 @@ namespace PlotUtils
 
         if(!univ.IsVerticalOnly())
         {
-           //std::cout << "Getting Weights for Reco Dependant Reweighters " << std::endl;
-	   for(const auto& weighter: fDependsRecoWeighters) weight *= weighter->GetWeight(univ, event);
+          for(const auto& weighter: fDependsRecoWeighters) weight *= weighter->GetWeight(univ, event);
         }
         else weight *= fCVDependsRecoWeight;
 

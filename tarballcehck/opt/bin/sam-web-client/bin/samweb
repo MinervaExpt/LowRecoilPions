@@ -1,0 +1,15 @@
+#! /bin/sh
+
+# trampoline script to run samweb
+# Try to find a system python; if there is one clean the environment and use it
+# else just use whatever we can find on the path without sanitizing it
+
+for p in /usr/bin/python3 /usr/bin/python2 /usr/bin/python /bin/python3 /bin/python2 /bin/python; do
+    if [ -x $p ]; then
+        unset LD_LIBRARY_PATH
+        unset LD_PRELOAD
+        exec ${p} -ES "$(type -p $0).py" "$@"
+    fi
+done
+
+exec python "$(type -p $0).py" "$@"

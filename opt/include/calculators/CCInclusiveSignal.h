@@ -65,9 +65,7 @@ namespace truth
     private:
       bool checkConstraint(const UNIVERSE& univ) const override
       {
-         //std::cout << "Printing True Lepton Angle " << univ.GetThetalepTrue() << std::endl;
-         
-         return univ.GetThetalepTrue() < fMax;//*TMath::Pi()/180.;
+        return univ.GetThetalepTrue() <= fMax;
       }
 
       const double fMax;

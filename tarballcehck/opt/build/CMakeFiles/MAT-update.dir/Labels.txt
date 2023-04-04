@@ -1,0 +1,8 @@
+# Target labels
+ MAT
+# Source files and their labels
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/CMakeFiles/MAT-update
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/CMakeFiles/MAT-update.rule
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/MAT-prefix/src/MAT-stamp/MAT-update.rule
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/MAT-prefix/src/MAT-stamp/MAT-download.rule
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/MAT-prefix/src/MAT-stamp/MAT-mkdir.rule

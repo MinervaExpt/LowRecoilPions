@@ -1,0 +1,54 @@
+Mon Jan 23 16:41:39 UTC 2023 BEGIN WRAPFILE COPY-IN /storage/local/data1/condor/execute/dir_4802/jsb_tmp/ifdh.sh cp -D /pnfs/minerva/resilient/tarballs/sultana_Jan202023_LowRecoilPions.tgz /storage/local/data1/condor/execute/dir_4802/no_xfer/0/TRANSFERRED_INPUT_FILES/
+Copying 0 bytes https://fndca1.fnal.gov:2880/minerva/resilient/tarballs/sultana_Jan202023_LowRecoilPions.tgz => file:///storage/local/data1/condor/execute/dir_4802/no_xfer/0/TRANSFERRED_INPUT_FILES/sultana_Jan202023_LowRecoilPions.tgz
+Mon Jan 23 16:41:41 UTC 2023 FINISHED WRAPFILE COPY-IN /storage/local/data1/condor/execute/dir_4802/jsb_tmp/ifdh.sh cp -D /pnfs/minerva/resilient/tarballs/sultana_Jan202023_LowRecoilPions.tgz /storage/local/data1/condor/execute/dir_4802/no_xfer/0/TRANSFERRED_INPUT_FILES/
+Mon Jan 23 16:41:42 UTC 2023 65655403.0@jobsub02.fnal.gov BEGIN EXECUTION runEventLoop_job.sh data_me1A_xrootd_plist.txt mc_me1A_xrootd_plist.txt
+++ date
++ echo Start Mon Jan 23 16:41:42 UTC 2023
++ echo Site:
+++ hostname
+++ uname -a
++ echo 'the worker node is ' sultana-65655403-0-fnpc8011.fnal.gov 'OS: ' Linux sultana-65655403-0-fnpc8011.fnal.gov 3.10.0-1160.80.1.el7.x86_64 '#1' SMP Wed Nov 2 16:40:42 CDT 2022 x86_64 x86_64 x86_64 GNU/Linux
+++ whoami
++ echo 'the user id is ' sultana
+++ id
++ echo 'the output of id is ' 'uid=49107(sultana)' 'gid=9767(fnalgrid)' 'groups=9767(fnalgrid),5111(e875),9553(nova),9555(e-938)'
++ set +x
+LowRecoilPions/setup_utils.sh: line 3: opt/bin/setup_MAT_Inc.sh: No such file or directory
+Tue Jan 24 15:32:20 UTC 2023 runEventLoop_job.sh COMPLETED with exit status 0
+gfal-mkdir error: 13 (Permission denied) - (Neon): SSL handshake failed: Connection timed out during SSL handshake
+Tue Jan 24 15:33:54 2023
+ program: unset PYTHONHOME PYTHONPATH LD_LIBRARY_PATH GFAL_PLUGIN_DIR; gfal-mkdir https://fndca1.fnal.gov:2880/minerva/scratch/users/sultana/MnvTunev4-3-1_submitted_2023_01_23_10_37_gridtestexited status 13
+delaying 2 ...
+Tue Jan 24 15:33:56 2023
+ retrying...
+gfal-mkdir error: 13 (Permission denied) - (Neon): SSL handshake failed: Connection timed out during SSL handshake
+Tue Jan 24 15:34:57 UTC 2023 BEGIN WRAPFILE COPY-OUT /storage/local/data1/condor/execute/dir_4802/jsb_tmp/ifdh.sh cp -D /storage/local/data1/condor/execute/dir_4802/no_xfer/0/OUT/Dump_runEventLoop.txt /storage/local/data1/condor/execute/dir_4802/no_xfer/0/OUT/job_output_01_23_2023_16_41_65655403.0.err /storage/local/data1/condor/execute/dir_4802/no_xfer/0/OUT/job_output_01_23_2023_16_41_65655403.0.log /storage/local/data1/condor/execute/dir_4802/no_xfer/0/OUT/runEventLoopData.root /storage/local/data1/condor/execute/dir_4802/no_xfer/0/OUT/runEventLoopMC.root /storage/local/data1/condor/execute/dir_4802/no_xfer/0/OUT/runEventLoopTime.txt /storage/local/data1/condor/execute/dir_4802/no_xfer/0/OUT/tarTime.txt /pnfs/minerva/scratch/users/sultana/MnvTunev4-3-1_submitted_2023_01_23_10_37_gridtest
+Copying 0 bytes file:///storage/local/data1/condor/execute/dir_4802/no_xfer/0/OUT/Dump_runEventLoop.txt => https://fndca1.fnal.gov:2880/minerva/scratch/users/sultana/MnvTunev4-3-1_submitted_2023_01_23_10_37_gridtest/Dump_runEventLoop.txt
+Copying 0 bytes file:///storage/local/data1/condor/execute/dir_4802/no_xfer/0/OUT/job_output_01_23_2023_16_41_65655403.0.err => https://fndca1.fnal.gov:2880/minerva/scratch/users/sultana/MnvTunev4-3-1_submitted_2023_01_23_10_37_gridtest/job_output_01_23_2023_16_41_65655403.0.err
+gfal-copy error: 24 (Too many open files) - TRANSFER ERROR: Copy failed (streamed). Last attempt: (Neon): SSL handshake failed: Connection timed out during SSL handshake (destination)
+Tue Jan 24 15:38:09 2023
+ program: www_cp.sh  /storage/local/data1/condor/execute/dir_4802/no_xfer/0/OUT/job_output_01_23_2023_16_41_65655403.0.err https://fndca1.fnal.gov:2880/minerva/scratch/users/sultana/MnvTunev4-3-1_submitted_2023_01_23_10_37_gridtest/job_output_01_23_2023_16_41_65655403.0.errexited status 24
+delaying 26 ...
+Tue Jan 24 15:38:35 2023
+ retrying...
+Copying 0 bytes file:///storage/local/data1/condor/execute/dir_4802/no_xfer/0/OUT/job_output_01_23_2023_16_41_65655403.0.err => https://fndca1.fnal.gov:2880/minerva/scratch/users/sultana/MnvTunev4-3-1_submitted_2023_01_23_10_37_gridtest/job_output_01_23_2023_16_41_65655403.0.err
+gfal-copy error: 24 (Too many open files) - TRANSFER ERROR: Copy failed (streamed). Last attempt: (Neon): SSL handshake failed: Connection timed out during SSL handshake (destination)
+Tue Jan 24 15:40:39 2023
+ program: www_cp.sh  /storage/local/data1/condor/execute/dir_4802/no_xfer/0/OUT/job_output_01_23_2023_16_41_65655403.0.err https://fndca1.fnal.gov:2880/minerva/scratch/users/sultana/MnvTunev4-3-1_submitted_2023_01_23_10_37_gridtest/job_output_01_23_2023_16_41_65655403.0.errexited status 24
+delaying 25 ...
+Tue Jan 24 15:41:04 2023
+ retrying...
+Copying 0 bytes file:///storage/local/data1/condor/execute/dir_4802/no_xfer/0/OUT/job_output_01_23_2023_16_41_65655403.0.err => https://fndca1.fnal.gov:2880/minerva/scratch/users/sultana/MnvTunev4-3-1_submitted_2023_01_23_10_37_gridtest/job_output_01_23_2023_16_41_65655403.0.err
+gfal-copy error: 24 (Too many open files) - TRANSFER ERROR: Copy failed (streamed). Last attempt: (Neon): SSL handshake failed: Connection timed out during SSL handshake (destination)
+Tue Jan 24 15:42:31 2023
+ program: www_cp.sh  /storage/local/data1/condor/execute/dir_4802/no_xfer/0/OUT/job_output_01_23_2023_16_41_65655403.0.err https://fndca1.fnal.gov:2880/minerva/scratch/users/sultana/MnvTunev4-3-1_submitted_2023_01_23_10_37_gridtest/job_output_01_23_2023_16_41_65655403.0.errexited status 24
+delaying 87 ...
+Tue Jan 24 15:43:58 2023
+ retrying...
+Copying 0 bytes file:///storage/local/data1/condor/execute/dir_4802/no_xfer/0/OUT/job_output_01_23_2023_16_41_65655403.0.err => https://fndca1.fnal.gov:2880/minerva/scratch/users/sultana/MnvTunev4-3-1_submitted_2023_01_23_10_37_gridtest/job_output_01_23_2023_16_41_65655403.0.err
+Copying 0 bytes file:///storage/local/data1/condor/execute/dir_4802/no_xfer/0/OUT/job_output_01_23_2023_16_41_65655403.0.log => https://fndca1.fnal.gov:2880/minerva/scratch/users/sultana/MnvTunev4-3-1_submitted_2023_01_23_10_37_gridtest/job_output_01_23_2023_16_41_65655403.0.log
+Copying 0 bytes file:///storage/local/data1/condor/execute/dir_4802/no_xfer/0/OUT/runEventLoopData.root => https://fndca1.fnal.gov:2880/minerva/scratch/users/sultana/MnvTunev4-3-1_submitted_2023_01_23_10_37_gridtest/runEventLoopData.root
+Copying 0 bytes file:///storage/local/data1/condor/execute/dir_4802/no_xfer/0/OUT/runEventLoopMC.root => https://fndca1.fnal.gov:2880/minerva/scratch/users/sultana/MnvTunev4-3-1_submitted_2023_01_23_10_37_gridtest/runEventLoopMC.root
+Copying 0 bytes file:///storage/local/data1/condor/execute/dir_4802/no_xfer/0/OUT/runEventLoopTime.txt => https://fndca1.fnal.gov:2880/minerva/scratch/users/sultana/MnvTunev4-3-1_submitted_2023_01_23_10_37_gridtest/runEventLoopTime.txt
+Copying 0 bytes file:///storage/local/data1/condor/execute/dir_4802/no_xfer/0/OUT/tarTime.txt => https://fndca1.fnal.gov:2880/minerva/scratch/users/sultana/MnvTunev4-3-1_submitted_2023_01_23_10_37_gridtest/tarTime.txt
+Tue Jan 24 15:45:40 UTC 2023 FINISHED WRAPFILE COPY-OUT /storage/local/data1/condor/execute/dir_4802/jsb_tmp/ifdh.sh cp -D /storage/local/data1/condor/execute/dir_4802/no_xfer/0/OUT/Dump_runEventLoop.txt /storage/local/data1/condor/execute/dir_4802/no_xfer/0/OUT/job_output_01_23_2023_16_41_65655403.0.err /storage/local/data1/condor/execute/dir_4802/no_xfer/0/OUT/job_output_01_23_2023_16_41_65655403.0.log /storage/local/data1/condor/execute/dir_4802/no_xfer/0/OUT/runEventLoopData.root /storage/local/data1/condor/execute/dir_4802/no_xfer/0/OUT/runEventLoopMC.root /storage/local/data1/condor/execute/dir_4802/no_xfer/0/OUT/runEventLoopTime.txt /storage/local/data1/condor/execute/dir_4802/no_xfer/0/OUT/tarTime.txt /pnfs/minerva/scratch/users/sultana/MnvTunev4-3-1_submitted_2023_01_23_10_37_gridtest

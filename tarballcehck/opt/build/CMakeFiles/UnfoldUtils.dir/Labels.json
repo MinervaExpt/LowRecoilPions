@@ -1,0 +1,51 @@
+
+{
+	"sources" : 
+	[
+		
+		{
+			"file" : "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/CMakeFiles/UnfoldUtils"
+		},
+		
+		{
+			"file" : "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/CMakeFiles/UnfoldUtils.rule"
+		},
+		
+		{
+			"file" : "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/CMakeFiles/UnfoldUtils-complete.rule"
+		},
+		
+		{
+			"file" : "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/UnfoldUtils-prefix/src/UnfoldUtils-stamp/UnfoldUtils-install.rule"
+		},
+		
+		{
+			"file" : "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/UnfoldUtils-prefix/src/UnfoldUtils-stamp/UnfoldUtils-mkdir.rule"
+		},
+		
+		{
+			"file" : "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/UnfoldUtils-prefix/src/UnfoldUtils-stamp/UnfoldUtils-download.rule"
+		},
+		
+		{
+			"file" : "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/UnfoldUtils-prefix/src/UnfoldUtils-stamp/UnfoldUtils-patch.rule"
+		},
+		
+		{
+			"file" : "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/UnfoldUtils-prefix/src/UnfoldUtils-stamp/UnfoldUtils-configure.rule"
+		},
+		
+		{
+			"file" : "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/UnfoldUtils-prefix/src/UnfoldUtils-stamp/UnfoldUtils-build.rule"
+		},
+		
+		{
+			"file" : "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/UnfoldUtils-prefix/src/UnfoldUtils-stamp/UnfoldUtils-skip-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : [ "UnfoldUtils" ],
+		"name" : "UnfoldUtils"
+	}
+}

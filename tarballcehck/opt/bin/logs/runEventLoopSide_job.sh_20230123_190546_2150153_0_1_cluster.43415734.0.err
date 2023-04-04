@@ -1,0 +1,27 @@
+Tue Jan 24 01:06:39 UTC 2023 BEGIN WRAPFILE COPY-IN /storage/local/data1/condor/execute/dir_1033/jsb_tmp/ifdh.sh cp -D /pnfs/minerva/resilient/tarballs/sultana_Jan232023_LowRecoilPions.tgz /storage/local/data1/condor/execute/dir_1033/no_xfer/0/TRANSFERRED_INPUT_FILES/
+Copying 0 bytes https://fndca1.fnal.gov:2880/minerva/resilient/tarballs/sultana_Jan232023_LowRecoilPions.tgz => file:///storage/local/data1/condor/execute/dir_1033/no_xfer/0/TRANSFERRED_INPUT_FILES/sultana_Jan232023_LowRecoilPions.tgz
+Tue Jan 24 01:06:41 UTC 2023 FINISHED WRAPFILE COPY-IN /storage/local/data1/condor/execute/dir_1033/jsb_tmp/ifdh.sh cp -D /pnfs/minerva/resilient/tarballs/sultana_Jan232023_LowRecoilPions.tgz /storage/local/data1/condor/execute/dir_1033/no_xfer/0/TRANSFERRED_INPUT_FILES/
+Tue Jan 24 01:06:41 UTC 2023 43415734.0@jobsub03.fnal.gov BEGIN EXECUTION runEventLoopSide_job.sh data_me1A_xrootd_plist.txt mc1_me1A_xrootd_plist.txt
+++ date
++ echo Start Tue Jan 24 01:06:41 UTC 2023
++ echo Site:
+++ hostname
+++ uname -a
++ echo 'the worker node is ' sultana-43415734-0-fnpc8028.fnal.gov 'OS: ' Linux sultana-43415734-0-fnpc8028.fnal.gov 3.10.0-1160.80.1.el7.x86_64 '#1' SMP Wed Nov 2 16:40:42 CDT 2022 x86_64 x86_64 x86_64 GNU/Linux
+++ whoami
++ echo 'the user id is ' sultana
+++ id
++ echo 'the output of id is ' 'uid=49107(sultana)' 'gid=9767(fnalgrid)' 'groups=9767(fnalgrid),5111(e875),9553(nova),9555(e-938)'
++ set +x
+LowRecoilPions/setup_utils.sh: line 3: opt/bin/setup_MAT_Inc.sh: No such file or directory
+terminate called after throwing an instance of 'ROOT::warning'
+  what():  TFile::Open: no url specified
+mv: cannot stat '*.root': No such file or directory
+Tue Jan 24 01:06:48 UTC 2023 runEventLoopSide_job.sh COMPLETED with exit status 1
+Tue Jan 24 01:06:49 UTC 2023 BEGIN WRAPFILE COPY-OUT /storage/local/data1/condor/execute/dir_1033/jsb_tmp/ifdh.sh cp -D /storage/local/data1/condor/execute/dir_1033/no_xfer/0/OUT/Dump_runEventLoop.txt /storage/local/data1/condor/execute/dir_1033/no_xfer/0/OUT/job_output_01_24_2023_01_06_43415734.0.err /storage/local/data1/condor/execute/dir_1033/no_xfer/0/OUT/job_output_01_24_2023_01_06_43415734.0.log /storage/local/data1/condor/execute/dir_1033/no_xfer/0/OUT/runEventLoopTime.txt /storage/local/data1/condor/execute/dir_1033/no_xfer/0/OUT/tarTime.txt /pnfs/minerva/scratch/users/sultana/MnvTunev4-3-1_twoDSideband_submitted_2023_01_23_19_05_gridtest
+Copying 0 bytes file:///storage/local/data1/condor/execute/dir_1033/no_xfer/0/OUT/Dump_runEventLoop.txt => https://fndca1.fnal.gov:2880/minerva/scratch/users/sultana/MnvTunev4-3-1_twoDSideband_submitted_2023_01_23_19_05_gridtest/Dump_runEventLoop.txt
+Copying 0 bytes file:///storage/local/data1/condor/execute/dir_1033/no_xfer/0/OUT/job_output_01_24_2023_01_06_43415734.0.err => https://fndca1.fnal.gov:2880/minerva/scratch/users/sultana/MnvTunev4-3-1_twoDSideband_submitted_2023_01_23_19_05_gridtest/job_output_01_24_2023_01_06_43415734.0.err
+Copying 0 bytes file:///storage/local/data1/condor/execute/dir_1033/no_xfer/0/OUT/job_output_01_24_2023_01_06_43415734.0.log => https://fndca1.fnal.gov:2880/minerva/scratch/users/sultana/MnvTunev4-3-1_twoDSideband_submitted_2023_01_23_19_05_gridtest/job_output_01_24_2023_01_06_43415734.0.log
+Copying 0 bytes file:///storage/local/data1/condor/execute/dir_1033/no_xfer/0/OUT/runEventLoopTime.txt => https://fndca1.fnal.gov:2880/minerva/scratch/users/sultana/MnvTunev4-3-1_twoDSideband_submitted_2023_01_23_19_05_gridtest/runEventLoopTime.txt
+Copying 0 bytes file:///storage/local/data1/condor/execute/dir_1033/no_xfer/0/OUT/tarTime.txt => https://fndca1.fnal.gov:2880/minerva/scratch/users/sultana/MnvTunev4-3-1_twoDSideband_submitted_2023_01_23_19_05_gridtest/tarTime.txt
+Tue Jan 24 01:06:52 UTC 2023 FINISHED WRAPFILE COPY-OUT /storage/local/data1/condor/execute/dir_1033/jsb_tmp/ifdh.sh cp -D /storage/local/data1/condor/execute/dir_1033/no_xfer/0/OUT/Dump_runEventLoop.txt /storage/local/data1/condor/execute/dir_1033/no_xfer/0/OUT/job_output_01_24_2023_01_06_43415734.0.err /storage/local/data1/condor/execute/dir_1033/no_xfer/0/OUT/job_output_01_24_2023_01_06_43415734.0.log /storage/local/data1/condor/execute/dir_1033/no_xfer/0/OUT/runEventLoopTime.txt /storage/local/data1/condor/execute/dir_1033/no_xfer/0/OUT/tarTime.txt /pnfs/minerva/scratch/users/sultana/MnvTunev4-3-1_twoDSideband_submitted_2023_01_23_19_05_gridtest

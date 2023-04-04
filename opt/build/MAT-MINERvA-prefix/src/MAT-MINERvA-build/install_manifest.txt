@@ -41,8 +41,6 @@
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/TargetUtils.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/AMUDISReweighter.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/BodekRitchieReweighter.h
-/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/DiffractiveReweighter.h
-/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/DiffractiveWeighter.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/FSIReweighter.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/FluxAndCVReweighter.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/GENIEReweighter.h
@@ -53,10 +51,8 @@
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/MKReweighter.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/MinosMuonEfficiencyCorrection.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/MnvHadronReweight.h
-/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/MnvTunev4.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/Model.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/NeutronInelasticReweighter.h
-/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/PionReweighter.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/RPAReweighter.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/Reweighter.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/SuSAFromValencia2p2hReweighter.h
@@ -181,8 +177,6 @@
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/utilities/TargetUtils.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/weighters/AMUDISReweighter.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/weighters/BodekRitchieReweighter.h
-/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/weighters/DiffractiveReweighter.h
-/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/weighters/DiffractiveWeighter.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/weighters/FSIReweighter.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/weighters/FluxAndCVReweighter.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/weighters/GENIEReweighter.h
@@ -193,10 +187,8 @@
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/weighters/MKReweighter.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/weighters/MinosMuonEfficiencyCorrection.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/weighters/MnvHadronReweight.h
-/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/weighters/MnvTunev4.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/weighters/Model.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/weighters/NeutronInelasticReweighter.h
-/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/weighters/PionReweighter.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/weighters/RPAReweighter.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/weighters/Reweighter.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/weighters/SuSAFromValencia2p2hReweighter.h

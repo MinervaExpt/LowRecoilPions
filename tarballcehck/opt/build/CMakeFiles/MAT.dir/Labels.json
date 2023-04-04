@@ -1,0 +1,51 @@
+
+{
+	"sources" : 
+	[
+		
+		{
+			"file" : "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/CMakeFiles/MAT"
+		},
+		
+		{
+			"file" : "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/CMakeFiles/MAT.rule"
+		},
+		
+		{
+			"file" : "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/CMakeFiles/MAT-complete.rule"
+		},
+		
+		{
+			"file" : "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/MAT-prefix/src/MAT-stamp/MAT-install.rule"
+		},
+		
+		{
+			"file" : "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/MAT-prefix/src/MAT-stamp/MAT-mkdir.rule"
+		},
+		
+		{
+			"file" : "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/MAT-prefix/src/MAT-stamp/MAT-download.rule"
+		},
+		
+		{
+			"file" : "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/MAT-prefix/src/MAT-stamp/MAT-patch.rule"
+		},
+		
+		{
+			"file" : "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/MAT-prefix/src/MAT-stamp/MAT-configure.rule"
+		},
+		
+		{
+			"file" : "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/MAT-prefix/src/MAT-stamp/MAT-build.rule"
+		},
+		
+		{
+			"file" : "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/MAT-prefix/src/MAT-stamp/MAT-skip-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : [ "MAT" ],
+		"name" : "MAT"
+	}
+}

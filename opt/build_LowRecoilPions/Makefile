@@ -179,6 +179,19 @@ runXSecLooper/fast:
 .PHONY : runXSecLooper/fast
 
 #=============================================================================
+# Target rules for targets named ExtractCrossSection2D
+
+# Build rule for target.
+ExtractCrossSection2D: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 ExtractCrossSection2D
+.PHONY : ExtractCrossSection2D
+
+# fast build rule for target.
+ExtractCrossSection2D/fast:
+	$(MAKE) -f CMakeFiles/ExtractCrossSection2D.dir/build.make CMakeFiles/ExtractCrossSection2D.dir/build
+.PHONY : ExtractCrossSection2D/fast
+
+#=============================================================================
 # Target rules for targets named studiesEventLoop
 
 # Build rule for target.
@@ -190,6 +203,19 @@ studiesEventLoop: cmake_check_build_system
 studiesEventLoop/fast:
 	$(MAKE) -f CMakeFiles/studiesEventLoop.dir/build.make CMakeFiles/studiesEventLoop.dir/build
 .PHONY : studiesEventLoop/fast
+
+#=============================================================================
+# Target rules for targets named twoDEventLoopFull
+
+# Build rule for target.
+twoDEventLoopFull: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 twoDEventLoopFull
+.PHONY : twoDEventLoopFull
+
+# fast build rule for target.
+twoDEventLoopFull/fast:
+	$(MAKE) -f CMakeFiles/twoDEventLoopFull.dir/build.make CMakeFiles/twoDEventLoopFull.dir/build
+.PHONY : twoDEventLoopFull/fast
 
 #=============================================================================
 # Target rules for targets named ContinuousSubmit
@@ -647,6 +673,33 @@ ExtractCrossSection.cpp.s:
 	$(MAKE) -f CMakeFiles/ExtractCrossSection.dir/build.make CMakeFiles/ExtractCrossSection.dir/ExtractCrossSection.cpp.s
 .PHONY : ExtractCrossSection.cpp.s
 
+ExtractCrossSection2D.o: ExtractCrossSection2D.cpp.o
+
+.PHONY : ExtractCrossSection2D.o
+
+# target to build an object file
+ExtractCrossSection2D.cpp.o:
+	$(MAKE) -f CMakeFiles/ExtractCrossSection2D.dir/build.make CMakeFiles/ExtractCrossSection2D.dir/ExtractCrossSection2D.cpp.o
+.PHONY : ExtractCrossSection2D.cpp.o
+
+ExtractCrossSection2D.i: ExtractCrossSection2D.cpp.i
+
+.PHONY : ExtractCrossSection2D.i
+
+# target to preprocess a source file
+ExtractCrossSection2D.cpp.i:
+	$(MAKE) -f CMakeFiles/ExtractCrossSection2D.dir/build.make CMakeFiles/ExtractCrossSection2D.dir/ExtractCrossSection2D.cpp.i
+.PHONY : ExtractCrossSection2D.cpp.i
+
+ExtractCrossSection2D.s: ExtractCrossSection2D.cpp.s
+
+.PHONY : ExtractCrossSection2D.s
+
+# target to generate assembly for a file
+ExtractCrossSection2D.cpp.s:
+	$(MAKE) -f CMakeFiles/ExtractCrossSection2D.dir/build.make CMakeFiles/ExtractCrossSection2D.dir/ExtractCrossSection2D.cpp.s
+.PHONY : ExtractCrossSection2D.cpp.s
+
 runXSecLooper.o: runXSecLooper.cpp.o
 
 .PHONY : runXSecLooper.o
@@ -755,6 +808,33 @@ twoDEventLoop.cpp.s:
 	$(MAKE) -f CMakeFiles/twoDEventLoop.dir/build.make CMakeFiles/twoDEventLoop.dir/twoDEventLoop.cpp.s
 .PHONY : twoDEventLoop.cpp.s
 
+twoDEventLoopFull.o: twoDEventLoopFull.cpp.o
+
+.PHONY : twoDEventLoopFull.o
+
+# target to build an object file
+twoDEventLoopFull.cpp.o:
+	$(MAKE) -f CMakeFiles/twoDEventLoopFull.dir/build.make CMakeFiles/twoDEventLoopFull.dir/twoDEventLoopFull.cpp.o
+.PHONY : twoDEventLoopFull.cpp.o
+
+twoDEventLoopFull.i: twoDEventLoopFull.cpp.i
+
+.PHONY : twoDEventLoopFull.i
+
+# target to preprocess a source file
+twoDEventLoopFull.cpp.i:
+	$(MAKE) -f CMakeFiles/twoDEventLoopFull.dir/build.make CMakeFiles/twoDEventLoopFull.dir/twoDEventLoopFull.cpp.i
+.PHONY : twoDEventLoopFull.cpp.i
+
+twoDEventLoopFull.s: twoDEventLoopFull.cpp.s
+
+.PHONY : twoDEventLoopFull.s
+
+# target to generate assembly for a file
+twoDEventLoopFull.cpp.s:
+	$(MAKE) -f CMakeFiles/twoDEventLoopFull.dir/build.make CMakeFiles/twoDEventLoopFull.dir/twoDEventLoopFull.cpp.s
+.PHONY : twoDEventLoopFull.cpp.s
+
 twoDEventLoopSide.o: twoDEventLoopSide.cpp.o
 
 .PHONY : twoDEventLoopSide.o
@@ -793,8 +873,10 @@ help:
 	@echo "... list_install_components"
 	@echo "... edit_cache"
 	@echo "... runXSecLooper"
+	@echo "... ExtractCrossSection2D"
 	@echo "... rebuild_cache"
 	@echo "... studiesEventLoop"
+	@echo "... twoDEventLoopFull"
 	@echo "... ContinuousSubmit"
 	@echo "... ContinuousCoverage"
 	@echo "... ExtractCrossSection"
@@ -833,6 +915,9 @@ help:
 	@echo "... ExtractCrossSection.o"
 	@echo "... ExtractCrossSection.i"
 	@echo "... ExtractCrossSection.s"
+	@echo "... ExtractCrossSection2D.o"
+	@echo "... ExtractCrossSection2D.i"
+	@echo "... ExtractCrossSection2D.s"
 	@echo "... runXSecLooper.o"
 	@echo "... runXSecLooper.i"
 	@echo "... runXSecLooper.s"
@@ -845,6 +930,9 @@ help:
 	@echo "... twoDEventLoop.o"
 	@echo "... twoDEventLoop.i"
 	@echo "... twoDEventLoop.s"
+	@echo "... twoDEventLoopFull.o"
+	@echo "... twoDEventLoopFull.i"
+	@echo "... twoDEventLoopFull.s"
 	@echo "... twoDEventLoopSide.o"
 	@echo "... twoDEventLoopSide.i"
 	@echo "... twoDEventLoopSide.s"

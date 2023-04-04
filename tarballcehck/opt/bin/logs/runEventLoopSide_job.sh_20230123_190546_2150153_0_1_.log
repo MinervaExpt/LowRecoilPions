@@ -1,0 +1,269 @@
+000 (43415734.000.000) 2023-01-23 19:05:46 Job submitted from host: <131.225.240.53:9615?addrs=131.225.240.53-9615&alias=jobsub03.fnal.gov&noUDP&sock=schedd_2743_0c5e>
+...
+028 (43415734.000.000) 2023-01-23 19:05:46 Job ad information event triggered.
+Cluster = 43415734
+EventTime = "2023-01-23T19:05:46.091"
+EventTypeNumber = 28
+JOB_GLIDEIN_ClusterId = "$$(GLIDEIN_ClusterId:Unknown)"
+JOB_GLIDEIN_Entry_Name = "$$(GLIDEIN_Entry_Name:Unknown)"
+JOB_GLIDEIN_Factory = "$$(GLIDEIN_Factory:Unknown)"
+JOB_GLIDEIN_Name = "$$(GLIDEIN_Name:Unknown)"
+JOB_GLIDEIN_ProcId = "$$(GLIDEIN_ProcId:Unknown)"
+JOB_GLIDEIN_Schedd = "$$(GLIDEIN_Schedd:Unknown)"
+JOB_GLIDEIN_Site = "$$(GLIDEIN_Site:Unknown)"
+JOB_GLIDEIN_SiteWMS = "$$(GLIDEIN_SiteWMS:Unknown)"
+JOB_GLIDEIN_SiteWMS_JobId = "$$(GLIDEIN_SiteWMS_JobId:Unknown)"
+JOB_GLIDEIN_SiteWMS_Queue = "$$(GLIDEIN_SiteWMS_Queue:Unknown)"
+JOB_GLIDEIN_SiteWMS_Slot = "$$(GLIDEIN_SiteWMS_Slot:Unknown)"
+JOB_Site = "$$(GLIDEIN_Site:Unknown)"
+MyType = "SubmitEvent"
+Proc = 0
+SubmitHost = "<131.225.240.53:9615?addrs=131.225.240.53-9615&alias=jobsub03.fnal.gov&noUDP&sock=schedd_2743_0c5e>"
+Subproc = 0
+TriggerEventTypeName = "ULOG_SUBMIT"
+TriggerEventTypeNumber = 0
+...
+040 (43415734.000.000) 2023-01-23 19:06:37 Started transferring input files
+	Transferring to host: <131.225.167.209:9618?addrs=131.225.167.209-9618&alias=fnpc8028.fnal.gov&noUDP&sock=slot1_16_20522_5afc_12918>
+...
+028 (43415734.000.000) 2023-01-23 19:06:37 Job ad information event triggered.
+Cluster = 43415734
+EventTime = "2023-01-23T19:06:37.634"
+EventTypeNumber = 28
+Host = "<131.225.167.209:9618?addrs=131.225.167.209-9618&alias=fnpc8028.fnal.gov&noUDP&sock=slot1_16_20522_5afc_12918>"
+JOB_GLIDEIN_ClusterId = "Unknown"
+JOB_GLIDEIN_Entry_Name = "Unknown"
+JOB_GLIDEIN_Factory = "Unknown"
+JOB_GLIDEIN_Name = "Unknown"
+JOB_GLIDEIN_ProcId = "Unknown"
+JOB_GLIDEIN_Schedd = "Unknown"
+JOB_GLIDEIN_Site = "FermiGrid"
+JOB_GLIDEIN_SiteWMS = "Unknown"
+JOB_GLIDEIN_SiteWMS_JobId = "Unknown"
+JOB_GLIDEIN_SiteWMS_Queue = "Unknown"
+JOB_GLIDEIN_SiteWMS_Slot = "Unknown"
+JOB_Site = "FermiGrid"
+MyType = "FileTransferEvent"
+Proc = 0
+Subproc = 0
+TriggerEventTypeName = "ULOG_FILE_TRANSFER"
+TriggerEventTypeNumber = 40
+Type = 2
+...
+040 (43415734.000.000) 2023-01-23 19:06:37 Finished transferring input files
+...
+028 (43415734.000.000) 2023-01-23 19:06:37 Job ad information event triggered.
+Cluster = 43415734
+EventTime = "2023-01-23T19:06:37.687"
+EventTypeNumber = 28
+JOB_GLIDEIN_ClusterId = "Unknown"
+JOB_GLIDEIN_Entry_Name = "Unknown"
+JOB_GLIDEIN_Factory = "Unknown"
+JOB_GLIDEIN_Name = "Unknown"
+JOB_GLIDEIN_ProcId = "Unknown"
+JOB_GLIDEIN_Schedd = "Unknown"
+JOB_GLIDEIN_Site = "FermiGrid"
+JOB_GLIDEIN_SiteWMS = "Unknown"
+JOB_GLIDEIN_SiteWMS_JobId = "Unknown"
+JOB_GLIDEIN_SiteWMS_Queue = "Unknown"
+JOB_GLIDEIN_SiteWMS_Slot = "Unknown"
+JOB_Site = "FermiGrid"
+MyType = "FileTransferEvent"
+Proc = 0
+Subproc = 0
+TriggerEventTypeName = "ULOG_FILE_TRANSFER"
+TriggerEventTypeNumber = 40
+Type = 3
+...
+001 (43415734.000.000) 2023-01-23 19:06:37 Job executing on host: <131.225.167.209:9618?addrs=131.225.167.209-9618&alias=fnpc8028.fnal.gov&noUDP&sock=startd_20475_b9b6>
+...
+028 (43415734.000.000) 2023-01-23 19:06:37 Job ad information event triggered.
+Cluster = 43415734
+EventTime = "2023-01-23T19:06:37.781"
+EventTypeNumber = 28
+ExecuteHost = "<131.225.167.209:9618?addrs=131.225.167.209-9618&alias=fnpc8028.fnal.gov&noUDP&sock=startd_20475_b9b6>"
+JOB_GLIDEIN_ClusterId = "Unknown"
+JOB_GLIDEIN_Entry_Name = "Unknown"
+JOB_GLIDEIN_Factory = "Unknown"
+JOB_GLIDEIN_Name = "Unknown"
+JOB_GLIDEIN_ProcId = "Unknown"
+JOB_GLIDEIN_Schedd = "Unknown"
+JOB_GLIDEIN_Site = "FermiGrid"
+JOB_GLIDEIN_SiteWMS = "Unknown"
+JOB_GLIDEIN_SiteWMS_JobId = "Unknown"
+JOB_GLIDEIN_SiteWMS_Queue = "Unknown"
+JOB_GLIDEIN_SiteWMS_Slot = "Unknown"
+JOB_Site = "FermiGrid"
+MyType = "ExecuteEvent"
+Proc = 0
+Subproc = 0
+TriggerEventTypeName = "ULOG_EXECUTE"
+TriggerEventTypeNumber = 1
+...
+006 (43415734.000.000) 2023-01-23 19:06:46 Image size of job updated: 10
+	3  -  MemoryUsage of job (MB)
+	3804  -  ResidentSetSize of job (KB)
+...
+028 (43415734.000.000) 2023-01-23 19:06:46 Job ad information event triggered.
+Cluster = 43415734
+EventTime = "2023-01-23T19:06:46.309"
+EventTypeNumber = 28
+JOB_GLIDEIN_ClusterId = "Unknown"
+JOB_GLIDEIN_Entry_Name = "Unknown"
+JOB_GLIDEIN_Factory = "Unknown"
+JOB_GLIDEIN_Name = "Unknown"
+JOB_GLIDEIN_ProcId = "Unknown"
+JOB_GLIDEIN_Schedd = "Unknown"
+JOB_GLIDEIN_Site = "FermiGrid"
+JOB_GLIDEIN_SiteWMS = "Unknown"
+JOB_GLIDEIN_SiteWMS_JobId = "Unknown"
+JOB_GLIDEIN_SiteWMS_Queue = "Unknown"
+JOB_GLIDEIN_SiteWMS_Slot = "Unknown"
+JOB_Site = "FermiGrid"
+MemoryUsage = 3
+MyType = "JobImageSizeEvent"
+Proc = 0
+ResidentSetSize = 3804
+Size = 10
+Subproc = 0
+TriggerEventTypeName = "ULOG_IMAGE_SIZE"
+TriggerEventTypeNumber = 6
+...
+006 (43415734.000.000) 2023-01-23 19:06:54 Image size of job updated: 10
+	7  -  MemoryUsage of job (MB)
+	7960  -  ResidentSetSize of job (KB)
+...
+028 (43415734.000.000) 2023-01-23 19:06:54 Job ad information event triggered.
+Cluster = 43415734
+EventTime = "2023-01-23T19:06:54.246"
+EventTypeNumber = 28
+JOB_GLIDEIN_ClusterId = "Unknown"
+JOB_GLIDEIN_Entry_Name = "Unknown"
+JOB_GLIDEIN_Factory = "Unknown"
+JOB_GLIDEIN_Name = "Unknown"
+JOB_GLIDEIN_ProcId = "Unknown"
+JOB_GLIDEIN_Schedd = "Unknown"
+JOB_GLIDEIN_Site = "FermiGrid"
+JOB_GLIDEIN_SiteWMS = "Unknown"
+JOB_GLIDEIN_SiteWMS_JobId = "Unknown"
+JOB_GLIDEIN_SiteWMS_Queue = "Unknown"
+JOB_GLIDEIN_SiteWMS_Slot = "Unknown"
+JOB_Site = "FermiGrid"
+MemoryUsage = 7
+MyType = "JobImageSizeEvent"
+Proc = 0
+ResidentSetSize = 7960
+Size = 10
+Subproc = 0
+TriggerEventTypeName = "ULOG_IMAGE_SIZE"
+TriggerEventTypeNumber = 6
+...
+040 (43415734.000.000) 2023-01-23 19:06:54 Started transferring output files
+...
+028 (43415734.000.000) 2023-01-23 19:06:54 Job ad information event triggered.
+Cluster = 43415734
+EventTime = "2023-01-23T19:06:54.304"
+EventTypeNumber = 28
+JOB_GLIDEIN_ClusterId = "Unknown"
+JOB_GLIDEIN_Entry_Name = "Unknown"
+JOB_GLIDEIN_Factory = "Unknown"
+JOB_GLIDEIN_Name = "Unknown"
+JOB_GLIDEIN_ProcId = "Unknown"
+JOB_GLIDEIN_Schedd = "Unknown"
+JOB_GLIDEIN_Site = "FermiGrid"
+JOB_GLIDEIN_SiteWMS = "Unknown"
+JOB_GLIDEIN_SiteWMS_JobId = "Unknown"
+JOB_GLIDEIN_SiteWMS_Queue = "Unknown"
+JOB_GLIDEIN_SiteWMS_Slot = "Unknown"
+JOB_Site = "FermiGrid"
+MyType = "FileTransferEvent"
+Proc = 0
+Subproc = 0
+TriggerEventTypeName = "ULOG_FILE_TRANSFER"
+TriggerEventTypeNumber = 40
+Type = 5
+...
+040 (43415734.000.000) 2023-01-23 19:06:54 Finished transferring output files
+...
+028 (43415734.000.000) 2023-01-23 19:06:54 Job ad information event triggered.
+Cluster = 43415734
+EventTime = "2023-01-23T19:06:54.310"
+EventTypeNumber = 28
+JOB_GLIDEIN_ClusterId = "Unknown"
+JOB_GLIDEIN_Entry_Name = "Unknown"
+JOB_GLIDEIN_Factory = "Unknown"
+JOB_GLIDEIN_Name = "Unknown"
+JOB_GLIDEIN_ProcId = "Unknown"
+JOB_GLIDEIN_Schedd = "Unknown"
+JOB_GLIDEIN_Site = "FermiGrid"
+JOB_GLIDEIN_SiteWMS = "Unknown"
+JOB_GLIDEIN_SiteWMS_JobId = "Unknown"
+JOB_GLIDEIN_SiteWMS_Queue = "Unknown"
+JOB_GLIDEIN_SiteWMS_Slot = "Unknown"
+JOB_Site = "FermiGrid"
+MyType = "FileTransferEvent"
+Proc = 0
+Subproc = 0
+TriggerEventTypeName = "ULOG_FILE_TRANSFER"
+TriggerEventTypeNumber = 40
+Type = 6
+...
+005 (43415734.000.000) 2023-01-23 19:06:54 Job terminated.
+	(1) Normal termination (return value 1)
+		Usr 0 00:00:02, Sys 0 00:00:01  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:02, Sys 0 00:00:01  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	261138  -  Run Bytes Sent By Job
+	12470  -  Run Bytes Received By Job
+	261138  -  Total Bytes Sent By Job
+	12470  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated 
+	   Cpus                 :        0        1         1 
+	   Disk (KB)            :    71851 15728640  17481029 
+	   Memory (MB)          :        7     4096      4096 
+
+	Job terminated of its own accord at 2023-01-24T01:06:54Z.
+...
+028 (43415734.000.000) 2023-01-23 19:06:54 Job ad information event triggered.
+Cluster = 43415734
+Cpus = 1
+CpusUsage = 0.0
+Disk = 17481029
+DiskUsage = 71851
+EventTime = "2023-01-23T19:06:54.958"
+EventTypeNumber = 28
+JOB_GLIDEIN_ClusterId = "Unknown"
+JOB_GLIDEIN_Entry_Name = "Unknown"
+JOB_GLIDEIN_Factory = "Unknown"
+JOB_GLIDEIN_Name = "Unknown"
+JOB_GLIDEIN_ProcId = "Unknown"
+JOB_GLIDEIN_Schedd = "Unknown"
+JOB_GLIDEIN_Site = "FermiGrid"
+JOB_GLIDEIN_SiteWMS = "Unknown"
+JOB_GLIDEIN_SiteWMS_JobId = "Unknown"
+JOB_GLIDEIN_SiteWMS_Queue = "Unknown"
+JOB_GLIDEIN_SiteWMS_Slot = "Unknown"
+JOB_Site = "FermiGrid"
+Memory = 4096
+MemoryUsage = 7
+MyType = "JobTerminatedEvent"
+Proc = 0
+ReceivedBytes = 12470.0
+RequestCpus = 1
+RequestDisk = 15728640
+RequestMemory = 4096
+ReturnValue = 1
+RunLocalUsage = "Usr 0 00:00:00, Sys 0 00:00:00"
+RunRemoteUsage = "Usr 0 00:00:02, Sys 0 00:00:01"
+SentBytes = 261138.0
+Subproc = 0
+TerminatedNormally = true
+ToE = [ When = 1674522414; HowCode = 0; How = "OF_ITS_OWN_ACCORD"; Who = "itself" ]
+TotalLocalUsage = "Usr 0 00:00:00, Sys 0 00:00:00"
+TotalReceivedBytes = 12470.0
+TotalRemoteUsage = "Usr 0 00:00:02, Sys 0 00:00:01"
+TotalSentBytes = 261138.0
+TriggerEventTypeName = "ULOG_JOB_TERMINATED"
+TriggerEventTypeNumber = 5
+...

@@ -1,0 +1,2 @@
+/pnfs/minerva/persistent/users/zdar//Merged_mc_ana_me1A_DualVertex_p3/MasterAnaDev_mc_AnaTuple_run00110001_Playlist.root
+/pnfs/minerva/persistent/users/zdar//Merged_mc_ana_me1A_DualVertex_p3/MasterAnaDev_mc_AnaTuple_run00110002_Playlist.root

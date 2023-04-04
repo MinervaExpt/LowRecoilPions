@@ -1,0 +1,31 @@
+
+{
+	"sources" : 
+	[
+		
+		{
+			"file" : "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/CMakeFiles/MAT-update"
+		},
+		
+		{
+			"file" : "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/CMakeFiles/MAT-update.rule"
+		},
+		
+		{
+			"file" : "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/MAT-prefix/src/MAT-stamp/MAT-update.rule"
+		},
+		
+		{
+			"file" : "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/MAT-prefix/src/MAT-stamp/MAT-download.rule"
+		},
+		
+		{
+			"file" : "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/MAT-prefix/src/MAT-stamp/MAT-mkdir.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : [ "MAT" ],
+		"name" : "MAT-update"
+	}
+}

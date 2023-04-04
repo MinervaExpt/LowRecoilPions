@@ -1,0 +1,13 @@
+# Target labels
+ MAT-MINERvA
+# Source files and their labels
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/CMakeFiles/MAT-MINERvA
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/CMakeFiles/MAT-MINERvA.rule
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/CMakeFiles/MAT-MINERvA-complete.rule
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/MAT-MINERvA-prefix/src/MAT-MINERvA-stamp/MAT-MINERvA-install.rule
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/MAT-MINERvA-prefix/src/MAT-MINERvA-stamp/MAT-MINERvA-mkdir.rule
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/MAT-MINERvA-prefix/src/MAT-MINERvA-stamp/MAT-MINERvA-download.rule
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/MAT-MINERvA-prefix/src/MAT-MINERvA-stamp/MAT-MINERvA-patch.rule
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/MAT-MINERvA-prefix/src/MAT-MINERvA-stamp/MAT-MINERvA-configure.rule
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/MAT-MINERvA-prefix/src/MAT-MINERvA-stamp/MAT-MINERvA-build.rule
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/MAT-MINERvA-prefix/src/MAT-MINERvA-stamp/MAT-MINERvA-skip-update.rule
