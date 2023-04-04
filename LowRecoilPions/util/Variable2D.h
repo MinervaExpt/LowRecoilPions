@@ -218,8 +218,13 @@ class Variable2D: public PlotUtils::Variable2DBase<CVUniverse>
       if(mresp)
       {
         mresp->hist->SetDirectory(&file);
-	mresp->hist->Write((GetNameX() + "_" + GetNameY() + "_migration").c_str());
-	
+	mresp->hist->Write((GetNameX() + "_" + GetNameY() + "_mresp").c_str());
+        mresp->GetMigrationMatrix()->SetDirectory(&file);
+	mresp->GetMigrationMatrix()->Write((GetNameX() + "_" + GetNameY() + "_migration").c_str());	
+        mresp->GetTruth2D()->SetDirectory(&file);
+	mresp->GetTruth2D()->Write((GetNameX() + "_" + GetNameY() + "_truth2D").c_str());
+        mresp->GetReco2D()->SetDirectory(&file);
+	mresp->GetReco2D()->Write((GetNameX() + "_" + GetNameY() + "_reco2D").c_str());
       }
 
 
