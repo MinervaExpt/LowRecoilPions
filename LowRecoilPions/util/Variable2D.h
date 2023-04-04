@@ -107,6 +107,8 @@ class Variable2D: public PlotUtils::Variable2DBase<CVUniverse>
         const bool clear_bands = false;
   	//migrationH->PopVertErrorBand("cv");
 	mresp = new Hist(migrationH, univs, clear_bands);
+        mig_reco = new Hist(h_reco, univs, clear_bands);
+        mig_truth = new Hist(h_truth, univs, clear_bands);
     } 
     
 
@@ -121,6 +123,7 @@ class Variable2D: public PlotUtils::Variable2DBase<CVUniverse>
     Hist* mcTotalHist;
     Hist* selectedSignalReco;
     Hist* mc_trueHist;
+    
 
     //Adding Response Matrix for 2D Unfolding needs
     MResponse m_response;
@@ -128,6 +131,8 @@ class Variable2D: public PlotUtils::Variable2DBase<CVUniverse>
     std::map<std::string,MinervaUnfold::MnvResponse*>::iterator mnv_itr;
     std::map<std::string,MinervaUnfold::MnvResponse*>::iterator mnv_itr2;
     Hist* mresp;
+    Hist* mig_reco;
+    Hist* mig_truth;
     MnvH2D *migrationH = NULL;
     MnvH2D *h_reco = NULL;
     MnvH2D *h_truth = NULL;
@@ -218,13 +223,11 @@ class Variable2D: public PlotUtils::Variable2DBase<CVUniverse>
       if(mresp)
       {
         mresp->hist->SetDirectory(&file);
-	mresp->hist->Write((GetNameX() + "_" + GetNameY() + "_mresp").c_str());
-        mresp->GetMigrationMatrix()->SetDirectory(&file);
-	mresp->GetMigrationMatrix()->Write((GetNameX() + "_" + GetNameY() + "_migration").c_str());	
-        mresp->GetTruth2D()->SetDirectory(&file);
-	mresp->GetTruth2D()->Write((GetNameX() + "_" + GetNameY() + "_truth2D").c_str());
-        mresp->GetReco2D()->SetDirectory(&file);
-	mresp->GetReco2D()->Write((GetNameX() + "_" + GetNameY() + "_reco2D").c_str());
+	mresp->hist->Write((GetNameX() + "_" + GetNameY() + "_migration").c_str());
+        mig_reco->hist->SetDirectory(&file);
+	mig_reco->hist->Write((GetNameX() + "_" + GetNameY() + "_truth2D").c_str());
+        mig_truth->hist->SetDirectory(&file);
+	mig_truth->hist->Write((GetNameX() + "_" + GetNameY() + "_reco2D").c_str());
       }
 
 
