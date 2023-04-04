@@ -67,7 +67,8 @@ class Michel
   double vtx_michel_timediff = 9999.;
 
   double overlay_fraction = -1.0; // Overlay fraction of the Michel, Default if Data. 0 if MC 1 if Data... (maybe some events in between?)
-  int nclusters = 0; // number of (non-muon) clusters in the primary event
+  int nclusters = -1; // number of (non-muon) clusters in the primary event
+  int nnonmuclusters = 0.0;
   int vtx_endpoint = 0; //1 or 2 for which Michel end point is closest
   int clus_endpoint = 0; // 1 or 2 for which Michel endpoint is closest
   // best matching stuff
@@ -82,10 +83,11 @@ class Michel
   double best_XZ = -9999.;
   double best_UZ= -9999.;
   double best_VZ = -9999.;
+  int bestview = -1; // 1 = XZ, 2 = UZ, 3 = VZ
   // Want to save the index of the clusters that the Michel best matched to. 
-  int xclus_idx; 
-  int uclus_idx;
-  int vclus_idx;   
+  int xclus_idx = -1; 
+  int uclus_idx = -1;
+  int vclus_idx = -1;   
   
   //True initial position of the michel  TODO: initial the other Michel truth member data here  (energy, time, momentum etc) 
   double true_angle = -9999.;
@@ -112,6 +114,7 @@ class Michel
   // the following member data were created to investigate my weird convoluted way of geting x and y values. Probably dont need them now. // TODO: check and remove the following member data
   double best_angle = -9999.;
   double best_phi = -9999.;
+  double reco_Epi = -9999.;
   double reco_KE = -9999.;
   double reco_ppi = -9999.;
   double reco_ppix = -9999.;
@@ -163,7 +166,8 @@ Michel::Michel(const CVUniverse& univ, int ci)
   m_u2 = univ.GetVecElem("FittedMichel_michel_u2", ci);
   m_z2 = univ.GetVecElem("FittedMichel_michel_z2", ci);
   m_v2 = univ.GetVecElem("FittedMichel_michel_v2", ci); 
-  nclusters = univ.GetInt("cluster_view_sz");
+  nclusters = univ.GetInt("cluster_view_sz"); 
+  //std::cout << "N clusters are (from Michel.h) " << nclusters;
   //nclusters = univ.GetInt("FittedMichel_cluster_view_sz");	
   overlay_fraction = univ.GetVecElem("FittedMichel_michel_datafraction", ci); 
 
@@ -183,16 +187,23 @@ Michel::Michel(const CVUniverse& univ, int ci)
    double true_parente = univ.GetVecElem("truth_FittedMichel_true_primaryparent_energy", ci);
    double mass = sqrt(pow(true_parente,2) - pow(true_parentp, 2));
    pionKE = true_parente - mass;
-   TVector3 parentfinalpos(true_initialx,     //univ.GetVecElem("truth_FittedMichel_true_primaryparent_finalx", ci), 
-			   true_initialy,     //univ.GetVecElem("truth_FittedMichel_true_primaryparent_finaly", ci),
-			   true_initialz);     //univ.GetVecElem("truth_FittedMichel_true_primaryparent_finalz", ci));
+   TVector3 parentfinalpos(univ.GetVecElem("truth_FittedMichel_true_primaryparent_finalx", ci), 
+			   univ.GetVecElem("truth_FittedMichel_true_primaryparent_finaly", ci),
+			   univ.GetVecElem("truth_FittedMichel_true_primaryparent_finalz", ci));
 
-   //TVector3 vtxtruepos(univ.GetTrueIntVtxX(), univ.GetTrueIntVtxY(), univ.GetTrueIntVtxZ());
+   TVector3 parentinitialpos(univ.GetVecElem("truth_FittedMichel_true_primaryparent_initialx", ci),                     
+                           univ.GetVecElem("truth_FittedMichel_true_primaryparent_initialy", ci),
+                           univ.GetVecElem("truth_FittedMichel_true_primaryparent_initialz", ci));
+   
+   
+   TVector3 dispvec = parentfinalpos - parentinitialpos;
+
+    //TVector3 vtxtruepos(univ.GetTrueIntVtxX(), univ.GetTrueIntVtxY(), univ.GetTrueIntVtxZ());
 
    //TVector3 positionvec = parentfinalpos - vtxtruepos;
    //true_angle = univ.thetaWRTBeam(positionvec.X(), positionvec.Y(), positionvec.Z());
    //true_phi = univ.phiWRTBeam(positionvec.X(), positionvec.Y(), positionvec.Z());
-   //positionvec.RotateX(MinervaUnits::numi_beam_angle_rad);
+   dispvec.RotateX(MinervaUnits::numi_beam_angle_rad);
  
    double parent_px = univ.GetVecElem("truth_FittedMichel_true_primaryparent_momentumx", ci);
    double parent_py = univ.GetVecElem("truth_FittedMichel_true_primaryparent_momentumy", ci);
@@ -203,7 +214,11 @@ Michel::Michel(const CVUniverse& univ, int ci)
 
    TVector3 truep(true_parent_px, true_parent_py, true_parent_pz);
    double true_theta = univ.thetaWRTBeam(parent_px, parent_py, parent_pz); //Hopefully this is with respect to the dang beam; //truep.Theta();
-   true_phi = univ.phiWRTBeam(parent_px, parent_py, parent_pz); // Radians
+   //int sign = (parent_px < 0.) ? -1:1;
+
+   //TVector3 unitvec = dispvec.Unit(); 
+   truep.RotateX(MinervaUnits::numi_beam_angle_rad);
+   true_phi = dispvec.Phi();//univ.phiWRTBeam(parent_px, parent_py, parent_pz); // Radians
    true_angle = true_theta;//*TMath::RadToDeg();
    true_parent_px = parent_px;//true_parent_p*sin(true_angle)*cos(true_phi);
    true_parent_py = pyp;//true_parent_p*sin(true_angle)*sin(true_phi);
@@ -211,8 +226,11 @@ Michel::Michel(const CVUniverse& univ, int ci)
    //if (overlay_fraction < 0.5) std::cout << "True Parent of Michel is PDG: " <<  true_parentpdg <<  " And Parent trackID: "  << true_parentid << std::endl;
    double end1diff = abs(true_initialz - m_z1); // This gives a value for determining how close the reconstructed endpoint of the michel is to the true intial endpoint (the start point of where the michel decayed from) 
    double end2diff = abs(true_initialz - m_z2); // this is for endpoint 2. If you compare this to the endpoint that gets matched to a verted or cluster, you can determine which type of match ends up getting correcct matches or wrong matches. 
-  
-
+   //std::cout << "\n ============================== \n" << std::endl;
+   //if(univ.GetInt("mc_intType") == 4) std::cout << "THIS IS A COHERENT EVENT " << std::endl;
+   //univ.PrintTrueArachneLink();  
+   //std::cout << "The True Angle theta is " << true_theta*180/M_PI << std::endl; 
+   //std::cout << "The True Angle Phi is " << true_phi*180/M_PI << "\n" << std::endl;
 
    if (overlay_fraction > 0.5) trueEndpoint = 0;
    else if (true_parentpdg == 211 && end1diff < end2diff) trueEndpoint = 1;
@@ -220,10 +238,12 @@ Michel::Michel(const CVUniverse& univ, int ci)
   }
   if (is_fitted == 1) { // Do theMatching for Fitted Michels
        DoesMichelMatchVtx(univ); //GEts info for Vtx Match
-       DoesMichelMatchClus(univ); // Gets info for ClusterMatch
-       GetBestMatch();     
+       //std::cout << "Now doing Cluster matching for universe " << univ.ShortName()  << std::endl;
+       if (nclusters > 0) DoesMichelMatchClus(univ); // Gets info for ClusterMatch
+       //GetBestMatch();   // Needs to be commented out since this part is done by the cut BestDistance2D.h  
        GetPionAngle(univ);
   }
+  //else (this->delete;)
 
    
  
@@ -245,24 +265,47 @@ void Michel::GetPionAngle(const CVUniverse& univ){
   else if (this->BestMatch == 2 || this->BestMatch == 4) endpoint.SetXYZ(this->m_x2, this->m_y2, this->m_z2);
   else endpoint.SetXYZ(9999., 9999., 9999.);
   
-  TVector3 range = endpoint - vtx; 
+
+  
+ 
+  //double time = this->vtx_michel_timediff;
+  //TLorentzVector pipath = (range, time);
+  //double tpi = univ.GetTpiFromRange(this->Best3Ddist);
+  //double Epi = tpi + 139.57;
+  //double ppi = sqrt(tpi*2*139.57); //MeV
+  //pipath.SetE(Epi);
+
+  //pipath.RotateX(MinervaUnits::numi_beam_angle_rad);
+  TVector3 range = endpoint - vtx;
   double angle = univ.thetaWRTBeam(range.x(), range.y(), range.z()); 
-  double phi = univ.phiWRTBeam(range.x(), range.y(), range.z());
+  double xyp = -1.0 *sin( MinervaUnits::numi_beam_angle_rad + 0.00000001 )*range.z() + cos( MinervaUnits::numi_beam_angle_rad + 0.00000001)*range.y();
+  double phiangle = std::atan2(xyp,range.x());
+  range.RotateX(MinervaUnits::numi_beam_angle_rad);
+  double phi = phiangle; //range.Phi();//univ.phiWRTBeam(range.x(), range.y(), range.z());
+   
+  //std::cout << "The Theta calculated using displacement vector: " << angle*180/M_PI << std::endl;
+  //std::cout << "The Phi calculated using rotated displacement vector: " << phi*180/M_PI << std::endl;
+  //std::cout << "This is the MICHEL X Y Z endpoint ( " << endpoint.X() << ", " << endpoint.Y() << ", " << endpoint.Z() << ") at time " << this->time << std::endl;
+  //std::cout << "This is the VERTEX X Y Z point ( " << vtx_x << " , " << vtx_y << ", " << vtx_z << ") " << std::endl;
   this->best_angle = angle;//in Radians   //*TMath::RadToDeg(); // in Degrees
+  
   this->best_phi = phi; // in Radians
+  /*
   double tpi = univ.GetTpiFromRange(this->Best3Ddist);
   double gamma = tpi/139.57 + 1;
-  double ppi = sqrt(tpi*2*139.57); //MeV
-  double Epi = sqrt(ppi*ppi + 139.57*139.57); 
+  //double ppi = sqrt(tpi*2*139.57)/gamma; //MeV
+  double Epi = sqrt(139.57*139.57 + 2*139.57*tpi + tpi*tpi); //sqrt(ppi*ppi + 139.57*139.57); 
+  double ppi = sqrt(2*tpi*139.57 + tpi*tpi); //sqrt(Epi*Epi - 139.57*139.57); //sqrt(tpi*2*139.57)/gamma; //MeV
   double pz = ppi*cos(angle);
   double px = ppi*sin(angle)*cos(phi);
   double py = ppi*sin(angle)*sin(phi);
+  this->reco_Epi = Epi;
   this->reco_KE = tpi;
   this->reco_ppi = ppi;
   this->reco_ppix = px;
   this->reco_ppiy = py;
   this->reco_ppiz = pz;  
-
+  */
 }
 
 //This function will get an integer for the best match type of the Michel.
@@ -518,9 +561,9 @@ void Michel::DoesMichelMatchClus(const CVUniverse& univ){
 
   //This is where the function for Cluster Matching goes
   
-  ////std::cout << "STARTING SEARCH FOR CLUSTER MATCH " << std::endl;
+  //std::cout << "STARTING SEARCH FOR CLUSTER MATCH " << std::endl;
   //Inititalizing vertex variables needed for cluster matching
-  int nclusters = this->nclusters;
+  int nclusters = univ.GetInt("cluster_view_sz"); //this->nclusters;
   //std::cout << "There are " <<  nclusters << "  available clusters for this matching " << std::endl;
   double vtx_x = univ.GetVertex().X(); //mm
   double vtx_y = univ.GetVertex().Y(); //mm
@@ -551,7 +594,8 @@ void Michel::DoesMichelMatchClus(const CVUniverse& univ){
   double michely2 = this->m_y2;
   
   double micheltime = this->time;
-  
+ 
+  int nonmuclus = 0.0; 
   //std::cout << "Michel position 1 is (x, u, v, y, z) " << michelx1 << " , " << michelu1 << " , " << michelv1 << " , "<< michely1 <<  " , " << michelz1 << std::endl;
   
   //std::cout << "Michel position 2 is (x, y, v, y, z) " << michelx2 << " , " << michelu2 << " , " << michelv2 << " , " << michely2 << " , " << michelz2 << std::endl;
@@ -561,7 +605,7 @@ void Michel::DoesMichelMatchClus(const CVUniverse& univ){
 
   // Get the closest distance for each view
 
-  ////std::cout << "STARTING LOOP OVER CLUSTERS " << std::endl;
+  //std::cout << "STARTING LOOP OVER CLUSTERS " << std::endl;
   int x1_idx = -1; //want to save the index for each closest cluster
   int u1_idx = -1;
   int v1_idx = -1;
@@ -571,7 +615,7 @@ void Michel::DoesMichelMatchClus(const CVUniverse& univ){
   const double minZ = 5980, maxZ = 8422; 
   for (int i = 0; i < nclusters; i++){
 
-    /*
+    /*  
     Cluster current_cluster = Cluster(univ, i);
 
     double energy = current_cluster.energy;
@@ -583,22 +627,27 @@ void Michel::DoesMichelMatchClus(const CVUniverse& univ){
     int ismuon = current_cluster.ismuon;
     */
 
-
+    int subdet = univ.GetVecElem("cluster_subdet", i);
+    if (subdet != 2 and subdet != 3) continue;
+    int ismuon = univ.GetVecElem("cluster_isMuontrack", i); // check to make sure cluster is not on muon track, 0 is NOT muon, 1 is muon
+    if (ismuon !=0) continue; 
     double energy = univ.GetVecElem("cluster_energy", i);
-    double time = univ.GetVecElem("cluster_time", i) / pow(10, 3);  
-    double pos = univ.GetVecElem("cluster_pos", i);   
+    if (energy < 2.) continue;
+    double pos = univ.GetVecElem("cluster_pos", i);
+    if (abs(pos) > 900) continue;
+    double time = univ.GetVecElem("cluster_time", i) / pow(10, 3);
+    double timediff = micheltime - time;
+    if (timediff < 0.) continue;  
     double zpos = univ.GetVecElem("cluster_z", i);  
     int view = univ.GetVecElem("cluster_view", i);
-    double timediff = micheltime - time;
-    int ismuon = univ.GetVecElem("cluster_isMuontrack", i);
-    
-    if (ismuon !=0) continue; // check to make sure cluster is not on muon track, 0 is muon, 1 isnot muon
 
-    if (energy < 2.) continue; // only get clusters greater than 2 MeV
     
-    if (timediff < 0.) continue;
+    //nonmuclus++;
+    //nnonmuclusters++;
+
+    
     //if (zpos < minZ || zpos > maxZ) continue; //Require the matched clusters also be in tracker  TODO: July 20, 2022 - Change if Kevin says this doesnt make sense 
-    if (zpos <  5980) continue; 
+    //if (zpos <  5980 or zpos > 9038) continue; // Require match clusters to be in tracker and ecal 
     //std::cout << "printing cluster info " << "energy " << energy << " time " << time << " pos " << pos << " zpos " << zpos << std::endl;
 
     double zdiff1 = abs(zpos - michelz1);
@@ -640,11 +689,11 @@ void Michel::DoesMichelMatchClus(const CVUniverse& univ){
 
       if (u2Ddistance1 < closestdistance1u ){ 
 	    closestdistance1u = u2Ddistance1;
-        u1_idx = i;
+            u1_idx = i;
       }
       if (u2Ddistance2 < closestdistance2u){
 	     closestdistance2u = u2Ddistance2;
-         u2_idx = i;
+             u2_idx = i;
       }
 
     }
@@ -672,7 +721,7 @@ void Michel::DoesMichelMatchClus(const CVUniverse& univ){
   }
  
   //std::cout << "Printing closest clusters index to each end point: x1: " << x1_idx << " u1: " << u1_idx << " v1: " << v1_idx << " x2: " << x2_idx << " u2: " << u2_idx << " v2: " << v2_idx << std::endl;
-  
+  std::vector<int> closestidx = {u1_idx, u2_idx, x1_idx, x2_idx, v1_idx, v2_idx};
  
 //Now store the closest X, u, v clusters for each Michel Endpoint based on the above closest distance
 
@@ -699,6 +748,13 @@ void Michel::DoesMichelMatchClus(const CVUniverse& univ){
     double timediff = micheltime - time;
     double ismuon = current_cluster.ismuon;
     */
+    
+    // 
+    // Only look at clusters found to be closest to michel in previous cluster loop
+    std::vector<int>::iterator it = std::find(closestidx.begin(), closestidx.end(), i);  
+    if (it == closestidx.end()) continue;
+
+
     double energy = univ.GetVecElem("cluster_energy", i);
     double time = univ.GetVecElem("cluster_time", i) / pow(10, 3);  
     double pos = univ.GetVecElem("cluster_pos", i);  
@@ -709,11 +765,12 @@ void Michel::DoesMichelMatchClus(const CVUniverse& univ){
 
     if (ismuon != 0) continue; // Checking to see if Cluster is on Muon Track or not. 0 is on. 1 is not. 
     if (energy < 2.) continue;
- //   std::cout << "Printing details about cluster "<< i << " : "  << energy << " : " << time << " : " << pos << " : " << zpos << " : " << view << " : " << timediff << std::endl;  
     if (timediff < 0.) continue; 
+    if (zpos <  5980 or zpos > 9038) continue; 
     double zdiff1 = abs(zpos - michelz1);
     double zdiff2 = abs(zpos - michelz2);
     
+
     // Saving clusters with distances equal to the closest clusters. Again, this is probably not the best way. I need to rewrite this section to just use clusters from the index I saved in the previous loop. That way I reduce the number of clusters that I have to loop over. 
     Cluster current_cluster = Cluster(univ, i);
     if (view == 1)
@@ -812,7 +869,10 @@ if (!clusv1.empty()){
   this->up_to_clus_XZ = XZdist1;
   this->up_to_clus_UZ = UZdist1;
   this->up_to_clus_VZ = VZdist1;
-   
+  this->up_clus_y = michely1;
+  this->up_clus_x = michelx1;
+  this->up_clus_z = michelz1;  
+ 
   double XZdist2 = 9999.;
   double UZdist2 = 9999.;
   double VZdist2 = 9999.;
@@ -882,7 +942,7 @@ if (!clusv1.empty()){
     matchclus1.push_back(clusx1[0]);
     matchclus1.push_back(yclus);
     matchclus1.push_back(clusu1[1]);  // seting the cluster 3D point z to be of the closest view
-     this->up_clus_y = michely1;
+    this->up_clus_y = michely1;
     }
   }
   else if (VZdist1 < XZdist1 && VZdist1 < UZdist1 && XZdist1 < UZdist1) { // VX closest
@@ -894,7 +954,7 @@ if (!clusv1.empty()){
     matchclus1.push_back(clusx1[0]);
     matchclus1.push_back(yclus);
     matchclus1.push_back(clusv1[1]);  // seting the cluster 3D point z to be of the closest view
-     this->up_clus_y = michely1;
+    this->up_clus_y = michely1;
     }
   }
   else if (VZdist1 < XZdist1 && VZdist1 < UZdist1 && XZdist1 > UZdist1){ // VU closest
@@ -1057,6 +1117,7 @@ if (!clusv1.empty()){
   //std::cout << " The michel endpoint 1 - cluster 3D point distance is " << mdist1 << std::endl;
   //std::cout << " The michel endpoint 2 - cluster 3D point distance is " << mdist2 << std::endl;
    //Saving all the distances to the Michel member data
+  this->nnonmuclusters = nonmuclus;
   this->down_clus_michel_dist3D = mdist2;
   this->up_clus_michel_dist3D = mdist1;
   this->up_to_cluster_dist3D = dist1;

@@ -133,11 +133,11 @@ class Distance2DSideband: public PlotUtils::Cut<UNIVERSE, EVENT>
  
 
         if (distances3D[0] == evt.m_allmichels[i].up_to_vertex_dist3D){
-        evt.m_allmichels[i].best_XZ = evt.m_allmichels[i].up_to_vertex_XZ;
-        evt.m_allmichels[i].best_UZ = evt.m_allmichels[i].up_to_vertex_UZ;
-        evt.m_allmichels[i].best_VZ = evt.m_allmichels[i].up_to_vertex_VZ;
-        evt.m_allmichels[i].BestMatch = 1;
-        evt.m_allmichels[i].Best3Ddist = evt.m_allmichels[i].up_to_vertex_dist3D;
+         evt.m_allmichels[i].best_XZ = evt.m_allmichels[i].up_to_vertex_XZ;
+         evt.m_allmichels[i].best_UZ = evt.m_allmichels[i].up_to_vertex_UZ;
+         evt.m_allmichels[i].best_VZ = evt.m_allmichels[i].up_to_vertex_VZ;
+         evt.m_allmichels[i].BestMatch = 1;
+         evt.m_allmichels[i].Best3Ddist = evt.m_allmichels[i].up_to_vertex_dist3D;
 
         //std::cout << "This  Michel is UPVTX and has true endpoint " << evt.m_allmichels[i].trueEndpoint << std::endl;
      	}
@@ -151,20 +151,20 @@ class Distance2DSideband: public PlotUtils::Cut<UNIVERSE, EVENT>
 
      	}
      	else if (distances3D[0] == evt.m_allmichels[i].up_clus_michel_dist3D){
-        evt.m_allmichels[i].BestMatch = 3;
-        evt.m_allmichels[i].best_XZ = evt.m_allmichels[i].up_to_clus_XZ;
-        evt.m_allmichels[i].best_UZ = evt.m_allmichels[i].up_to_clus_VZ;
-        evt.m_allmichels[i].best_VZ = evt.m_allmichels[i].up_to_clus_UZ;
-        evt.m_allmichels[i].Best3Ddist = evt.m_allmichels[i].up_clus_michvtx_dist3D;
+         evt.m_allmichels[i].BestMatch = 3;
+         evt.m_allmichels[i].best_XZ = evt.m_allmichels[i].up_to_clus_XZ;
+         evt.m_allmichels[i].best_UZ = evt.m_allmichels[i].up_to_clus_VZ;
+         evt.m_allmichels[i].best_VZ = evt.m_allmichels[i].up_to_clus_UZ;
+         evt.m_allmichels[i].Best3Ddist = evt.m_allmichels[i].up_clus_michvtx_dist3D;
         //std::cout << "This  Michel is UPCLUS and has true endpoint " << evt.m_allmichels[i].trueEndpoint << std::endl;
 
      	}
      	else if (distances3D[0] == evt.m_allmichels[i].down_clus_michel_dist3D){
-        evt.m_allmichels[i].BestMatch = 4;
-        evt.m_allmichels[i].Best3Ddist = evt.m_allmichels[i].down_clus_michvtx_dist3D;
-        evt.m_allmichels[i].best_XZ = evt.m_allmichels[i].down_to_clus_XZ;
-        evt.m_allmichels[i].best_UZ = evt.m_allmichels[i].down_to_clus_UZ;
-        evt.m_allmichels[i].best_VZ = evt.m_allmichels[i].down_to_clus_VZ;
+         evt.m_allmichels[i].BestMatch = 4;
+         evt.m_allmichels[i].Best3Ddist = evt.m_allmichels[i].down_clus_michvtx_dist3D;
+         evt.m_allmichels[i].best_XZ = evt.m_allmichels[i].down_to_clus_XZ;
+         evt.m_allmichels[i].best_UZ = evt.m_allmichels[i].down_to_clus_UZ;
+         evt.m_allmichels[i].best_VZ = evt.m_allmichels[i].down_to_clus_VZ;
         //std::cout << "This  Michel is DOWNCLUS and has true endpoint " << evt.m_allmichels[i].trueEndpoint << std::endl;
 
      	}
@@ -187,7 +187,10 @@ class Distance2DSideband: public PlotUtils::Cut<UNIVERSE, EVENT>
       //evt.m_allmichels.clear();
       //evt.m_allmichels = nmichelspass;
       //return true; 
-      if (npass < 1 && !nmichelspass.empty()){
+      evt.m_nmichels.clear();
+     
+      if (npass > 0) return false;
+      else if (npass == 0 && !nmichelspass.empty()){
 	//std::cout << "This Event is a SideBand " << std::endl;
 	evt.sideband = 1;
  	evt.m_nmichels.clear();

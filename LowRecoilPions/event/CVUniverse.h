@@ -357,17 +357,21 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
   */
   virtual double GetQ2Reco() const{
     //double q2reco = GetDouble("MasterAnaDev_Q2_Inclusive")/pow(10,6);
-    
-    double enu = GetEmuGeV() + NewRecoilE()/1000.;
+     
+    double enu = GetEmuGeV() + (NewRecoilE())/1000.;
+    //double q2reco =  CalcQ2(enu,  GetEmuGeV(), GetThetamu()); 
+    //std::cout << " Q2 from Eavail is " << q2reco << std::endl;
     double pmucos = (GetPmu()/1000.)*cos(GetThetamu());
     double q2reco = 2.*enu*(GetEmuGeV() - pmucos ) - (M_mu*M_mu);
     //std::cout << "Print RecoilSummedE" << GetRecolE() <<  " Print Ehad: " << GetEHad() << " Print q2reco: " << q2reco << " Print EAvail: " << GetEavail() << std::endl;
     //double q2reco = GetDouble("qsquared_recoil");
     
-    return  q2reco; // TODO: July 20, 2022 Check Using Hang Su's Low recoil function; //q2reco;
+    //std::cout << " Q2 from Tree is " << GetDouble("MasterAnaDev_Q2_Inclusive")/pow(10,6) << std::endl; // TODO: July 20, 2022 Check Using Hang Su's Low recoil function; //q2reco;
+    return q2reco;//GetDouble("MasterAnaDev_Q2_Inclusive")/pow(10,6);
   }
   
   virtual double GetQ2RecoMeV() const{
+    
     return GetQ2Reco()*pow(10,6);
 
   }
@@ -375,7 +379,7 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
   //This is for RecoilFunction Calculations
   virtual double GetLowQ2PionWeight() const
   {   
-      double weight = GetLowQ2PiWeight("MENU1PI");
+      //double weight = GetLowQ2PiWeight("MENU1PI");
       //if (weight != 1.0) PrintTrueArachneLink();
       return GetLowQ2PiWeight("MENU1PI");
   }
@@ -398,15 +402,17 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
   }
  
   virtual double GetCOHPionWeight() const {
+    double weight = 1.0;
     if(!GetInt("mc_intType") == 4) return 1.0;
     if(GetInt("mc_intType") == 4){
        //int npi = GetTrueNPionsinEvent();
        //if (npi == 0) return 1.0;
-       double angle = GetTrueAngleHighTpi();
+       double angle = GetTrueAngleHighTpi();//*180./M_PI; //this is now in degrees
+       
        double KE = GetTrueHighEpi()/1000.; // This is supposed to be the energy of the pion!!!! 
        if (KE < 0) return 1.0;
        else {
-	double weight = GetCoherentPiWeight(angle, KE); //Inputs are in Degrees and GeV
+	weight *= GetCoherentPiWeight(angle, KE); //Inputs are in Degrees and GeV
         //std::cout << "Printing COHerent weight for COH event for angle: " << angle << " degrees and KE : " << KE << " GeV. And weight: " << weight << std::endl;
 	return weight;
        }
@@ -421,7 +427,7 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
      int idk = -9999;
      for (int i = 0; i < nFSpi; i++){
          int pdg = GetVecElem("mc_FSPartPDG",i);
-         if(abs(pdg) != 211) continue;
+         if(pdg != 211) continue;
          double energy = GetVecElem("mc_FSPartE", i);
          double mass = 139.569;
          double tpi = energy - mass;
@@ -429,11 +435,14 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
                pionKE = tpi;
                TVector3 pimomentumvec(GetVecElem("mc_FSPartPx", i), GetVecElem("mc_FSPartPz", i),GetVecElem("mc_FSPartPz", i));
                double deg_wrtb = thetaWRTBeam(pimomentumvec.X(), pimomentumvec.Y(), pimomentumvec.Z()); //rad
-               angle = deg_wrtb*180./M_PI;
+          
+               angle = deg_wrtb; //*180./M_PI;
          }
       }
-
-      return angle;
+      //Making sure angle is only between 0 and pi
+      if (angle < 0.0) angle = -1.0*angle;
+      if (angle > M_PI) angle = 2.0*M_PI - angle; 
+      return angle*180./M_PI; // Degrees
    }
 
    virtual double GetTrueAngleLowTpi() const {
@@ -461,16 +470,20 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
   
    virtual double GetTrueHighEpi() const {
      int nFSpi = GetInt("mc_nFSPart");
-     double pionE = -9999.0;
+     double pionE = -1.0;
+     double pionKE = -1.0;
      for (int i = 0; i < nFSpi; i++){
           int pdg = GetVecElem("mc_FSPartPDG",i);
-          if(abs(pdg) != 211) continue;
+          if(pdg != 211) continue;
           double energy = GetVecElem("mc_FSPartE", i);
-          //double mass = 139.569;
-          //double tpi = energy - mass;
-          if (energy >= pionE) pionE = energy;
-      }
-
+          double mass = 139.569;
+          double tpi = energy - mass;
+	  if (tpi >= pionKE){
+	     pionKE = tpi;
+             pionE = energy;
+          }
+      } 
+      //std::cout << "Printing energy of pion " << pionE << std::endl;
       return pionE; // MeV
    }
 
@@ -479,7 +492,18 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
   //virtual double GetRecoilE() const {
   //  return GetVecElem("recoil_summed_energy", 0);
   //}
-  
+  double CalcQ2(const double Enu, const double Emu,
+                          const double Thetamu) const {
+      double Q2 =
+             2.0 * Enu *
+             (Emu - sqrt(pow(Emu, 2.0) - pow(M_mu, 2.0)) *
+             cos(Thetamu)) - pow(M_mu, 2.0);
+      if (Q2 < 0.) Q2 = 0.0;
+      return Q2;
+  } 
+
+
+ 
   virtual double Getq3() const{
     double eavail = NewRecoilE()/1000.;
     double q2 = GetQ2Reco();
@@ -532,32 +556,44 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
 
   
   virtual double GetTpiFromRange(double range) const{
-     std::string f= "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/TpiRange_Mediangraph.root"; //"util/TpiRange_Mediangraph.root";
+     /*
+     char *mweightsfilelocation = std::getenv("UTILPATH");
+     std::string f = std::string(mweightsfilelocation) + "TpiRangeFit_allbinTest.root"; // "/TpiRange_Mediangraph.root";
      TFile* file = TFile::Open(f.c_str(),"READONLY"); 
      TGraph* tpirange = nullptr;
      file->GetObject("FitCurve", tpirange);
      //TGraph* tpirange = (TGraph*)file->Get("FitCurve");  
      //tpirange->SetDirectory(nullptr);  
+     if (range > 2300.) {
+		delete file;
+     		tpirange->Clear();	
+		delete tpirange;	
+		return -9999.;
+
+     }
      double tpiest = tpirange->Eval(range);
      //std::cout << "The Pion Range is " << range << " mm and the estimated Tpi is: " << tpiest << " MeV" << std::endl; 
      delete file;
      tpirange->Clear();
      delete tpirange;
      //file->Close();
+     */
+     double tpiest = 0.2142*range + 2.864*sqrt(range);
      return tpiest; //Tpi in MeV
 
   }
 
+  
 
 
   virtual std::vector<int> GetTrueFSPDGCodes() const {
-     std::vector<int> pdgcodes;
-     int pdgsize = GetInt("mc_nFSPart");
+     std::vector<int> pdgcodes =  GetVecInt("mc_FSPartPDG");;
+     /*int pdgsize = GetInt("mc_nFSPart");
      for (int i = 0; i< pdgsize; i++)
       {
           int pdg = GetVecElem("mc_FSPartPDG", i);
           pdgcodes.push_back(pdg);
-      }
+      }*/
 
       return pdgcodes;
   }       
@@ -580,7 +616,7 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
   }
 
  virtual bool GetTrueIsFSPartInEvent(const int pdg) const {
-     std::vector<int> FSparts = GetTrueFSPDGCodes();
+     std::vector<int> FSparts = GetVecInt("mc_FSPartPDG"); //GetTrueFSPDGCodes();
      std::vector<int>::iterator it;
      it = std::find(FSparts.begin(), FSparts.end(), pdg);
      if (it != FSparts.end())
@@ -690,10 +726,22 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
      for (int i = 0; i< pdgsize; i++)
       {
           int pdg = GetVecElem("mc_FSPartPDG", i);
-          if (pdg == 321) npart++;
+          if (pdg == 321 ) npart++;
       }
       return npart;
  }
+
+
+ virtual int GetTrueNNeutralKaonsinEvent() const {
+     int npart = 0; 
+     int pdgsize = GetInt("mc_nFSPart"); 
+     for (int i = 0; i< pdgsize; i++)
+      {
+          int pdg = GetVecElem("mc_FSPartPDG", i);
+          if (pdg == 311 ) npart++;
+      }
+      return npart; 
+  }
 
  virtual int GetTrueNPi0inEvent() const {
      int npart = 0;
@@ -920,6 +968,9 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
     return sign * acos(pzp / sqrt(denom2));
   }
 
+  
+
+
   virtual double thetaWRTBeam(double x, double y, double z) const{
       double pyp = -1.0 *sin( MinervaUnits::numi_beam_angle_rad)*z + cos( MinervaUnits::numi_beam_angle_rad )*y;
       double pzp = cos( MinervaUnits::numi_beam_angle_rad )*z + sin( MinervaUnits::numi_beam_angle_rad )*y;
@@ -970,6 +1021,7 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
 	  std::cout << "Get Muon Pt: " << GetMuonPT() << std::endl;
 	  std::cout << "Get Muon Pz: " << GetMuonPz() << std::endl;
 	  std::cout << "Get Muon PT True " << GetMuonPTTrue() << std::endl;
+ 	  std::cout << "Get Muon E True " << GetElepTrueGeV() << std::endl;
  }
 
  virtual void PrintDataArachneLink() const {
@@ -990,11 +1042,41 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
        }
 
  }
+
+ int GetFittedMichelsOnly() const
+ {
+   std::vector<int> nfitted = GetVecInt("FittedMichel_michel_fitPass");
+   int count = std::count(nfitted.begin(), nfitted.end(), 1);
+   //std::cout << "THERE ARE " << count << " N FITTED MICHELS IN EVENT " << std::endl;
+   return count;
+ }
+
+
+ int GetNonMuonClusters() const
+ {
+    std::vector<int> ismuclus = GetVecInt("cluster_isMuontrack");
+    int count = std::count(ismuclus.begin(), ismuclus.end(), 0);
+    //std::cout << "THERE ARE " << count << " N NON MUON CLUSTERS IN EVENT " << std::endl;
+    return count;
+ }
+
+ double GetNClusters() const
+ {
+  int nclusters = GetInt("cluster_view_sz");
+  int nonmuclus = 0;
+  //for (int i = 0; i < nclusters; i++){
+  //      int ismuon = GetVecElemInt("cluster_isMuontrack", i);
+  //      if (ismuon != 0) continue;
+  //	nonmuclus++;
+
+  //}
+  double nclus = 1.0*nclusters;
+  return nclus;//nonmuclus;
  
+ }
 
  virtual double GetClusterEnergyTracker() const
  {
-    int nclusters = GetInt("cluster_view_sz");
     double totenergy = GetDouble("cluster_trackerEsum"); //0.0;
     /*
     for (int i = 0; i < nclusters; i++){
@@ -1018,7 +1100,6 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
  virtual double GetClusterEnergyECAL() const
  {
     double totenergy = GetDouble("cluster_ecalEsum");//0.0;
-    int nclusters = GetInt("cluster_view_sz"); 
     /*
     for (int i = 0; i < nclusters; i++){
  	int ismuon = GetVecElemInt("cluster_isMuontrack", i);
@@ -1037,6 +1118,26 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
     */
     return totenergy;
  }
+
+ virtual std::vector<double> GetTrackerECALMuFuzz() const
+ {
+   double trk_mufuzz = 0.0;
+   double ecal_mufuzz = 0.0;
+   int nfuzz = GetInt("muon_fuzz_per_plane_r80_planeIDs_sz");
+   if (nfuzz == 0) return {0.0, 0.0};
+   for (int i =0; i < nfuzz; i++){
+        int planeID = GetVecElem("muon_fuzz_per_plane_r80_planeIDs", i);
+        if (planeID < 1504968704 || planeID > 1709703168) continue;
+        double fuzze = GetVecElem("muon_fuzz_per_plane_r80_energies", i);
+        if (planeID > 1504968704 and planeID < 1560805376) trk_mufuzz += fuzze;
+        else if (planeID > 1700003840 and planeID < 1709703168) ecal_mufuzz += fuzze;
+    }  
+   
+   return {trk_mufuzz, ecal_mufuzz};
+
+ }
+
+ 
  
  virtual double GetTrackerMuFuzz() const
  {
@@ -1069,9 +1170,9 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
  virtual double NewEavail() const
  {
     //double recoiltracker =  GetDouble("blob_recoil_E_tracker") -  GetTrackerMuFuzz(); 
-    double recoiltracker = GetClusterEnergyTracker() - GetTrackerMuFuzz();
+    double recoiltracker = GetClusterEnergyTracker() - GetTrackerECALMuFuzz()[0]; // GetTrackerMuFuzz();
     //double recoilEcal = GetDouble("blob_recoil_E_ecal") - GetECALMuFuzz();
-    double recoilEcal = GetClusterEnergyECAL() - GetECALMuFuzz();
+    double recoilEcal = GetClusterEnergyECAL() - GetTrackerECALMuFuzz()[1]; //GetECALMuFuzz();
     const double Eavailable_scale = 1.17;
     double eavail = recoiltracker + recoilEcal;
     return eavail*Eavailable_scale;

@@ -80,6 +80,7 @@ enum ErrorCodes
 #include "cuts/Distance2DSideband.h"
 #include "cuts/RecoilERange.h"
 #include "cuts/PmuCut.h"
+#include "cuts/PzmuCut.h"
 #include "cuts/WexpRecoCut.h"
 #include "event/SetDistanceMichelSideband.h"
 #include "event/SetDistanceMichelSelection.h"
@@ -115,6 +116,9 @@ enum ErrorCodes
 #include "util/TargetMassReweighter.h"
 #include "util/MnvTunev431Reweighter.h"
 #include "cuts/RemoveSignalEvents.h"
+#include "cuts/GetClosestMichelSide.h"
+#include "util/BkgSideReweighter.h"
+
 #pragma GCC diagnostic pop
 
 //ROOT includes
@@ -169,7 +173,7 @@ void LoopAndFillEventSelection(
         //if (universe->ShortName() != "cv") continue;
         // Tell the Event which entry in the TChain it's looking at
         universe->SetEntry(i);
-        MichelEvent myevent;
+        MichelEvent myevent = cvEvent;
         const auto cutResults = michelcuts.isMCSelected(*universe, myevent, cvWeight);
 	//const auto cutResults = michelcuts.isDataSelected(*universe, myevent);       
         //if (universe->ShortName() != "cv") continue;
@@ -480,7 +484,7 @@ int main(const int argc, const char** argv)
   preCuts.emplace_back(new reco::ZRange<CVUniverse, MichelEvent>("Tracker", minZ, maxZ));
   preCuts.emplace_back(new reco::Apothem<CVUniverse, MichelEvent>(apothem));
   //preCuts.emplace_back(new reco::ZRange<CVUniverse, MichelEvent>("Tracker", minZ, maxZ));
-  preCuts.emplace_back(new reco::MaxMuonAngle<CVUniverse, MichelEvent>(20.));
+  preCuts.emplace_back(new reco::MaxMuonAngle<CVUniverse, MichelEvent>(13.));
   preCuts.emplace_back(new reco::HasMINOSMatch<CVUniverse, MichelEvent>());
   preCuts.emplace_back(new reco::NoDeadtime<CVUniverse, MichelEvent>(1, "Deadtime"));
   preCuts.emplace_back(new reco::IsNeutrino<CVUniverse, MichelEvent>());
@@ -488,12 +492,13 @@ int main(const int argc, const char** argv)
   preCuts.emplace_back(new PTRangeReco<CVUniverse, MichelEvent>(0.0,1.0));
   preCuts.emplace_back(new RecoilERange<CVUniverse, MichelEvent>(0.0,1.0));
   preCuts.emplace_back(new PmuCut<CVUniverse, MichelEvent>(1.5));
+  preCuts.emplace_back(new PzmuCut<CVUniverse, MichelEvent>(20.));
   preCuts.emplace_back(new hasMichel<CVUniverse, MichelEvent>());
    
   //preCuts.emplace_back(new BestMichelDistance2D<CVUniverse, MichelEvent>(150.));
   preCuts.emplace_back(new RemoveSignalEvents<CVUniverse, MichelEvent>(150.));
   preCuts.emplace_back(new Distance2DSideband<CVUniverse, MichelEvent>(1000.));
-  preCuts.emplace_back(new GetClosestMichel<CVUniverse, MichelEvent>(1)); // REMEMBER TO CHANGE THE CLOSEST DISTANCE CUT FOR SIDEBAND
+  preCuts.emplace_back(new GetClosestMichelSide<CVUniverse, MichelEvent>(1)); // REMEMBER TO CHANGE THE CLOSEST DISTANCE CUT FOR SIDEBAND
   //nosidebands.emplace_back(new BestMichelDistance2D<CVUniverse, MichelEvent>(150.));
   //nosidebands.emplace_back(new GetClosestMichel<CVUniverse, MichelEvent>(0));
 
@@ -515,7 +520,7 @@ int main(const int argc, const char** argv)
   
   phaseSpace.emplace_back(new truth::ZRange<CVUniverse>("Tracker", minZ, maxZ));
   phaseSpace.emplace_back(new truth::Apothem<CVUniverse>(apothem));
-  phaseSpace.emplace_back(new truth::MuonAngle<CVUniverse>(20.));
+  phaseSpace.emplace_back(new truth::MuonAngle<CVUniverse>(13.));
   phaseSpace.emplace_back(new truth::PZMuMin<CVUniverse>(1500.));
   phaseSpace.emplace_back(new truth::pTRangeLimit<CVUniverse>(0., 1.0));
   phaseSpace.emplace_back(new truth::pMuCut<CVUniverse>(1.5));
@@ -551,6 +556,7 @@ int main(const int argc, const char** argv)
   MnvTunev4.emplace_back(new PlotUtils::MnvTunev431Reweighter<CVUniverse, MichelEvent>());
   //MnvTunev4.emplace_back(new PlotUtils::TargetMassReweighter<CVUniverse, MichelEvent>()); 
   //MnvTunev4.emplace_back(new PlotUtils::PionReweighter<CVUniverse,MichelEvent>());
+  //MnvTunev4.emplace_back(new PlotUtils::BkgSideReweighter<CVUniverse,MichelEvent>());
   PlotUtils::Model<CVUniverse, MichelEvent> model(std::move(MnvTunev4));
   
    

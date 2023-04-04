@@ -113,6 +113,8 @@ enum ErrorCodes
 #include "util/TargetMassReweighter.h"
 #include "util/MnvTunev431Reweighter.h"
 #include "cuts/RemoveSignalEvents.h"
+#include "cuts/GetClosestMichelSide.h"
+#include "util/BkgSideReweighter.h"
 #pragma GCC diagnostic pop
 
 //ROOT includes
@@ -185,22 +187,27 @@ void LoopAndFillEventSelection(
         universe->SetEntry(i);
        // std::cout << "THIS IS THE START OF UNIVERSE " << universe->ShortName() << " ===================== \n" << std::endl;
         //if (universe->ShortName() != "cv") continue;
-        MichelEvent myevent; // make sure your event is inside the error band loop. 
+        MichelEvent myevent = cvEvent; // make sure your event is inside the error band loop. 
         
         //if(universe->IsVerticalOnly()) myevent = cvEvent; // Hacking event loop so cutter doesn't screw up Michel Event for Vertical Universes 
         //if (universe->ShortName() != "cv") continue;
-        const double weight2 = model.GetWeight(*universe, myevent); 
+        //const double weight2 = model.GetWeight(*universe, myevent); 
         const auto cutResults = michelcuts.isMCSelected(*universe, myevent, cvWeight);
         //const auto cutResults = michelcuts.isDataSelected(*universe, myevent);       
         //if (universe->ShortName() != "cv") continue;
 	if (!cutResults.all()) continue;
         if (cutResults.all()){
+  	    const double weight2 = model.GetWeight(*universe, myevent);
             //std::cout << "Universe Name: " << universe->ShortName() << " Weight is : " << weight2 << std::endl; 
-            
+   
+            //universe->PrintTrueArachneLink();         
             for(auto& study: studies) study->SelectedSignal(*universe, myevent, weight2);
             const bool isSignal = michelcuts.isSignal(*universe, weight2);
             if(isSignal){ 
-		for(auto& study: studies) study->TruthSignal(*universe, myevent, weight2);
+		//universe->PrintTrueArachneLink();
+	        //std::cout << " The Best Range for the Event Michel is " << myevent.m_nmichels[0].Best3Ddist << " At time " << myevent.m_nmichels[0].time << std::endl;
+		//std::cout << " Is the Michel OVerlay? (1: True) " << myevent.ClosestMichelsIsOverlay << std::endl;	
+        	for(auto& study: studies) study->TruthSignal(*universe, myevent, weight2);
 	    }
             else if(!isSignal){
                for(auto& study: studies) study->BackgroundSelected(*universe, myevent, weight2);
@@ -438,7 +445,7 @@ int main(const int argc, const char** argv)
   //preCuts.emplace_back(new reco::ZRange<CVUniverse, MichelEvent>("Tracker", minZ, maxZ));
   preCuts.emplace_back(new reco::Apothem<CVUniverse, MichelEvent>(apothem));
   preCuts.emplace_back(new reco::ZRange<CVUniverse, MichelEvent>("Tracker", minZ, maxZ));
-  preCuts.emplace_back(new reco::MaxMuonAngle<CVUniverse, MichelEvent>(20.));
+  preCuts.emplace_back(new reco::MaxMuonAngle<CVUniverse, MichelEvent>(13.));
   preCuts.emplace_back(new reco::HasMINOSMatch<CVUniverse, MichelEvent>());
   preCuts.emplace_back(new reco::NoDeadtime<CVUniverse, MichelEvent>(1, "Deadtime"));
   preCuts.emplace_back(new reco::IsNeutrino<CVUniverse, MichelEvent>());
@@ -451,7 +458,7 @@ int main(const int argc, const char** argv)
  
   preCuts.emplace_back(new RemoveSignalEvents<CVUniverse, MichelEvent>(150.));
   preCuts.emplace_back(new Distance2DSideband<CVUniverse, MichelEvent>(1000.)); 
-  preCuts.emplace_back(new GetClosestMichel<CVUniverse, MichelEvent>(1));
+  preCuts.emplace_back(new GetClosestMichelSide<CVUniverse, MichelEvent>(1));
 
 
   TFile* mc_MichelStudies = TFile::Open("studiesMC.root", "RECREATE");
@@ -464,7 +471,7 @@ int main(const int argc, const char** argv)
   
   phaseSpace.emplace_back(new truth::ZRange<CVUniverse>("Tracker", minZ, maxZ));
   phaseSpace.emplace_back(new truth::Apothem<CVUniverse>(apothem));
-  phaseSpace.emplace_back(new truth::MuonAngle<CVUniverse>(20.));
+  phaseSpace.emplace_back(new truth::MuonAngle<CVUniverse>(13.));
   phaseSpace.emplace_back(new truth::PZMuMin<CVUniverse>(1500.));
   phaseSpace.emplace_back(new truth::pTRangeLimit<CVUniverse>(0., 1.0));
   phaseSpace.emplace_back(new truth::pMuCut<CVUniverse>(1.5)); 
@@ -499,6 +506,7 @@ int main(const int argc, const char** argv)
   //MnvTunev4.emplace_back(new PlotUtils::TargetMassReweighter<CVUniverse, MichelEvent>());  
   MnvTunev4.emplace_back(new PlotUtils::MnvTunev431Reweighter<CVUniverse, MichelEvent>()); 
   //MnvTunev4.emplace_back(new PlotUtils::PionReweighter<CVUniverse,MichelEvent>()); 
+  //MnvTunev4.emplace_back(new PlotUtils::BkgSideReweighter<CVUniverse,MichelEvent>());
   PlotUtils::Model<CVUniverse, MichelEvent> model(std::move(MnvTunev4));
   
   // Make a map of systematic universes
@@ -535,7 +543,7 @@ int main(const int argc, const char** argv)
    
   int nq3mbins = mehreenQ3Bins.size() -1; 
   std::vector<double> tpibins = {1., 4., 8., 12., 16., 20., 24., 28., 32., 36., 40., 46., 52.,60., 70., 80., 100., 125.,150., 175., 200., 225., 250., 275., 300., 350., 400., 500., 700.,1000.};//, 1300., 1600., 2000.};   
-   std::vector<double> rangebins = {1., 8., 16., 24., 32., 40., 50., 65., 80.,95., 110., 140., 170., 200., 230., 260., 290., 310., 360., 400., 450., 500., 550., 600., 650., 700., 800., 900., 1000., 1200., 1400., 1800., 2400.};
+   std::vector<double> rangebins = {1.0, 100., 200., 300., 400., 500., 1000., 1100., 1200., 1300., 1400., 1500., 1600., 1700., 1800., 1900., 2000., 2100., 2200., 2300., 2400., 2600., 2800., 3000., 4000.}; //{1., 8., 16., 24., 32., 40., 50., 65., 80.,95., 110., 140., 170., 200., 230., 260., 290., 310., 360., 400., 450., 500., 550., 600., 650., 700., 800., 900., 1000., 1200., 1400., 1800., 2400.};
 
   std::vector<double> recoilbins = {0.0, 150., 225., 300., 400., 500., 600.,700., 800., 900., 1000.};// 1200., 1400., 1600.};
   const double robsRecoilBinWidth = 50; //MeV
@@ -545,6 +553,14 @@ int main(const int argc, const char** argv)
 
   std::vector<Study*> studies;
   std::vector<Study*> sideband_studies; 
+
+  std::function<double(const CVUniverse&, const MichelEvent&, const int)> getnclusters = [](const CVUniverse& univ, const MichelEvent& evt, const int whichMichel)
+                                {
+                                        double nclus = univ.GetNonMuonClusters(); //evt.m_nmichels[whichMichel].nnonmuclusters; //(double)univ.GetNClusters();
+                                        //std::cout << "Printing n clusters " << nclus << std::endl;
+                                        return nclus;
+                                        //                                                                                //else{ return -100;                                                                                     
+                                };
    
   std::function<double(const CVUniverse&, const MichelEvent&)> getq3 = [](const CVUniverse& univ, const MichelEvent& evt)
                                  {
@@ -709,8 +725,7 @@ int main(const int argc, const char** argv)
 				  //std::cout << "Print pz mu true MAT " << univ.GetMuonPzTrue() << std::endl;
 				  double plmu = univ.GetMuonPzTrue(); // GeV rotated 
 				  double angle = evt.m_nmichels[whichMichel].true_angle;
-				  double p_pi = evt.m_nmichels[whichMichel].true_parent_p/1000.;
-				  double pl_pi = p_pi*cos(angle);
+				  double pl_pi = evt.m_nmichels[whichMichel].true_parent_pz/1000.;
 				  double epsub = (Emu - plmu) + (Epi - pl_pi);
 				  //std::cout << "Printing TRUE (Emu - plmu) + (Epi - pzpi) " << epsub << " FOR MICHEL" << whichMichel << std::endl;
 				  return pow(epsub,2); 
@@ -1023,7 +1038,8 @@ int main(const int argc, const char** argv)
    int npzmubins = dansPzBins.size() -1;
    std::vector<double> pzbins = {0.01, 0.015, 0.020, 0.025, 0.030, 0.035, 0.040, 0.045, 0.05, 0.075, 0.10, 0.125, 0.15, 0.175,0.20, 0.25,0.30,0.35, 0.4, 0.45, 0.50, 0.55, 0.60 , 0.7, 0.80,0.9, 1.};
    int npzbins = pzbins.size() -1;
-
+   std::vector<double> nclusbins = {0,1, 5, 15, 25, 50, 75, 100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 1000};
+  int nclusterbins = nclusbins.size() -1;
    //VarConfig deltat_config{"deltat", "#mus", 30, 0., 9.};
    VarConfig pirange_config{"pirange", "mm", 100, 0.0, 2000.0};
    VarConfig tpi_config{"KE", "MeV", 100, 0.0, 1000.};
@@ -1120,7 +1136,10 @@ int main(const int argc, const char** argv)
    studies.push_back(new PerMichel2DVarbin(t_reco, t_true, tconfig, ttconfig, error_bands));
    studies.push_back(new PerMichel2DVarbin(permichel_tpi, permichel_range, tpiconfig, rangeconfig, error_bands));
    //studies.push_back(new PerMichel2DVarbin(permichel_range, permichel_tpi, rangeconfig,tpiconfig, error_bands));
-  
+
+   studies.push_back(new PerMichelVarVecFSPart(getnclusters, "nonmu_clusters", "n_clusters",  nclusterbins, nclusbins, error_bands)); 
+
+ 
    std::function<double(const CVUniverse&, const MichelEvent&)> event_angle = [](const CVUniverse& univ, const MichelEvent& evt)
                                 { 
                                   double angle = evt.m_nmichels[0].best_angle;
@@ -1163,7 +1182,7 @@ int main(const int argc, const char** argv)
   data_studies.push_back(new PerMichelVarVecFSPart(t_angle2_reco,"t_angle2_reco", "GeV2",ntbins, tbins, data_error_bands));
   data_studies.push_back(new PerMichelVarVecFSPart(t_angle3_reco,"t_angle3_reco", "GeV2",ntbins, tbins, data_error_bands));
   data_studies.push_back(new PerMichelVarVecFSPart(t_angle4_reco,"t_angle4_reco", "GeV2",ntbins, tbins, data_error_bands));  
-
+  data_studies.push_back(new PerMichelVarVecFSPart(getnclusters, "nonmu_clusters", "n_clusters",  nclusterbins, nclusbins, data_error_bands));
   // Loop entries and fill
   try
   {

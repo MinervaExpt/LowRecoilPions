@@ -19,10 +19,10 @@ class BestMichelDistance2D: public PlotUtils::Cut<UNIVERSE, EVENT>
 
     bool checkCut(const UNIVERSE& univ, EVENT& evt) const
     {
-      //std::cout << "Implementing Michel Cut with 2D distnace of " << m_maxDistance << " mm" << std::endl;
+      //std::cout << "Implementing Michel Cut with 2D distance of " << m_maxDistance << " mm" << std::endl;
       std::vector<Michel> nmichelspass;
       int nmichels = evt.m_allmichels.size();
-      if (nmichels == 0) return false;
+      if (nmichels == 0) return bool(false);
       for (unsigned int i = 0; i < evt.m_allmichels.size(); i++)
       {
 
@@ -85,6 +85,11 @@ class BestMichelDistance2D: public PlotUtils::Cut<UNIVERSE, EVENT>
         
         if (evt.m_allmichels[i].passable_matchtype.at(1) == -1 && evt.m_allmichels[i].passable_matchtype.at(2) == -1 && evt.m_allmichels[i].passable_matchtype.at(3) == -1 && evt.m_allmichels[i].passable_matchtype.at(0) == -1) continue;
         
+
+
+
+
+
         std::vector<double> distances3D;
   
         if (evt.m_allmichels[i].passable_matchtype[0] == 1) distances3D.push_back(evt.m_allmichels[i].up_to_vertex_dist3D); //Distance between michel to vertex
@@ -102,6 +107,7 @@ class BestMichelDistance2D: public PlotUtils::Cut<UNIVERSE, EVENT>
          evt.m_allmichels[i].best_XZ = evt.m_allmichels[i].up_to_vertex_XZ;
          evt.m_allmichels[i].best_UZ = evt.m_allmichels[i].up_to_vertex_UZ;
          evt.m_allmichels[i].best_VZ = evt.m_allmichels[i].up_to_vertex_VZ;
+
          evt.m_allmichels[i].BestMatch = 1;
          evt.m_allmichels[i].Best3Ddist = evt.m_allmichels[i].up_to_vertex_dist3D;
 
@@ -144,20 +150,27 @@ class BestMichelDistance2D: public PlotUtils::Cut<UNIVERSE, EVENT>
 		continue;
       	} 
 
+        if (evt.m_allmichels[i].best_XZ < evt.m_allmichels[i].best_UZ and evt.m_allmichels[i].best_XZ < evt.m_allmichels[i].best_VZ) evt.m_allmichels[i].bestview = 1;
+
+        else if (evt.m_allmichels[i].best_UZ < evt.m_allmichels[i].best_XZ and evt.m_allmichels[i].best_UZ < evt.m_allmichels[i].best_VZ) evt.m_allmichels[i].bestview = 2; 
+        
+        else if (evt.m_allmichels[i].best_VZ < evt.m_allmichels[i].best_UZ and evt.m_allmichels[i].best_VZ < evt.m_allmichels[i].best_XZ) evt.m_allmichels[i].bestview = 3; 
+
         nmichelspass.push_back(evt.m_allmichels[i]);  
         evt.m_nmichelspass.push_back(evt.m_allmichels[i]);  
      }
       
-      //evt.m_nmichels.clear();      
+      evt.m_nmichels.clear();      
+      //std::cout << "BEst 2D Distance Cut done looping over Michels " << std::endl;
       //evt.m_allmichels.clear(); //empty existing vector of Michels
       if (!nmichelspass.empty()){
 	evt.selection = 1;
         //std::cout << "Event has a Selection Michel." << std::endl; 
         evt.m_nmichels.clear();
         evt.m_nmichels = nmichelspass; // replace vector of michels with the vector of michels that passed the above cut
-      	return true;
+      	return bool(true);
       }
-      else return false;
+      else return bool(false);
       //evt.m_nmichelspass = nmichelspass;
       //return true; 
       //return !nmichelspass.empty();

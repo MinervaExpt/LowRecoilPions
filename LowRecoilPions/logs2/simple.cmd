@@ -3,40 +3,40 @@
 # 
 universe           = vanilla
 executable         = simple.sh
-arguments          = data_me1A_xrootd_plist.txt mc_me1A_xrootd_plist.txt
+arguments          = data_me1A_xtest.txt mc_me1A_xtest.txt
 
-output             = runEventLoop_job.sh2023_02_21_1314402559902d-9ab6-415c-9840-73f9321691c4cluster.$(Cluster).$(Process).out
-error              = runEventLoop_job.sh2023_02_21_1314402559902d-9ab6-415c-9840-73f9321691c4cluster.$(Cluster).$(Process).err
-log                = runEventLoop_job.sh2023_02_21_1314402559902d-9ab6-415c-9840-73f9321691c4cluster.$(Cluster).$(Process).log
+output             = runEventLoop_lite.sh2023_03_06_122717f2d3873e-1a97-43fc-abb5-7257c9b5f4e1cluster.$(Cluster).$(Process).out
+error              = runEventLoop_lite.sh2023_03_06_122717f2d3873e-1a97-43fc-abb5-7257c9b5f4e1cluster.$(Cluster).$(Process).err
+log                = runEventLoop_lite.sh2023_03_06_122717f2d3873e-1a97-43fc-abb5-7257c9b5f4e1cluster.$(Cluster).$(Process).log
 
 
 JOBSUBJOBSECTION=$(Process)
 
 
-environment        = CLUSTER=$(Cluster);PROCESS=$(Process);JOBSUBJOBSECTION=$(JOBSUBJOBSECTION);CONDOR_TMP=/nashome/s/sultana/.cache/jobsub_lite/js_2023_02_21_131440_2559902d-9ab6-415c-9840-73f9321691c4;BEARER_TOKEN_FILE=.condor_creds/minerva.use;CONDOR_EXEC=/tmp;DAGMANJOBID=$(DAGManJobId);GRID_USER=sultana;JOBSUBJOBID=$(CLUSTER).$(PROCESS)@jobsub01.fnal.gov;EXPERIMENT=minerva;IFDH_CP_MAX_RETRIES=1
+environment        = CM1=$(CM1);CM2=$(CM2);CLUSTER=$(Cluster);PROCESS=$(Process);JOBSUBJOBSECTION=$(JOBSUBJOBSECTION);CONDOR_TMP=/nashome/s/sultana/.cache/jobsub_lite/js_2023_03_06_122717_f2d3873e-1a97-43fc-abb5-7257c9b5f4e1;BEARER_TOKEN_FILE=.condor_creds/minerva.use;CONDOR_EXEC=/tmp;DAGMANJOBID=$(DAGManJobId);GRID_USER=sultana;JOBSUBJOBID=$(CLUSTER).$(PROCESS)@jobsub01.fnal.gov;EXPERIMENT=minerva;IFDH_CP_MAX_RETRIES=1
 rank               = Mips / 2 + Memory
 job_lease_duration = 3600
 notification       = Never
 transfer_output    = True
 transfer_error     = True
 transfer_executable= True
-transfer_input_files = runEventLoop_job.sh,simple.cmd
-transfer_output_files = simple.cmd,simple.sh,runEventLoop_job.sh
+transfer_input_files = runEventLoop_lite.sh,simple.cmd
+transfer_output_files = simple.cmd,simple.sh,runEventLoop_lite.sh
 when_to_transfer_output = ON_EXIT_OR_EVICT
 
-request_memory = 6144.0
-request_disk = 5242880.0KB
+request_memory = 2048.0
+request_disk = 2097152.0KB
 
-+JobsubClientDN="/DC=org/DC=cilogon/C=US/O=Fermi National Accelerator Laboratory/OU=People/CN=Mehreen Sultana/CN=UID:sultana/CN=1956228813"
-+JobsubClientIpAddress="131.225.67.85"
++JobsubClientDN="/DC=org/DC=cilogon/C=US/O=Fermi National Accelerator Laboratory/OU=People/CN=Mehreen Sultana/CN=UID:sultana/CN=3817512969"
++JobsubClientIpAddress="131.225.67.69"
 +JobsubServerVersion="lite_v1_0"
 +JobsubClientVersion="lite_v1_0"
 +JobsubClientKerberosPrincipal="sultana@FNAL.GOV"
-+JOB_EXPECTED_MAX_LIFETIME = 7200.0
++JOB_EXPECTED_MAX_LIFETIME = 100800.0
 notify_user = sultana@fnal.gov
 
 # set command to user executable for jobsub_q
-+JobsubCmd = "runEventLoop_job.sh"
++JobsubCmd = "runEventLoop_lite.sh"
 
 
 +AccountingGroup = "group_minerva.sultana"
@@ -44,6 +44,8 @@ notify_user = sultana@fnal.gov
 
 +Jobsub_Group="minerva"
 +JobsubJobId="$(CLUSTER).$(PROCESS)@jobsub01.fnal.gov"
++JobsubOutputURL="https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_03_06/f2d3873e-1a97-43fc-abb5-7257c9b5f4e1"
++JobsubUUID="f2d3873e-1a97-43fc-abb5-7257c9b5f4e1"
 +Drain = False
 
 
@@ -52,8 +54,9 @@ notify_user = sultana@fnal.gov
 
 +GeneratedBy ="lite_v1_0 jobsub01.fnal.gov"
 
++DESIRED_usage_model = "OPPORTUNISTIC,DEDICATED"
 
-+DESIRED_usage_model="DEDICATED,OPPORTUNISTIC"
+
 
 requirements  = target.machine =!= MachineAttrMachine1 && target.machine =!= MachineAttrMachine2 && (isUndefined(DesiredOS) || stringListsIntersect(toUpper(DesiredOS),IFOS_installed)) && (stringListsIntersect(toUpper(target.HAS_usage_model), toUpper(my.DESIRED_usage_model))) && ((isUndefined(target.GLIDEIN_Site) == FALSE) && (stringListIMember(target.GLIDEIN_Site,my.DESIRED_Sites)))
 

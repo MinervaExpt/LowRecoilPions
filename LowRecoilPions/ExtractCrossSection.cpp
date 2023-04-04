@@ -110,9 +110,12 @@ PlotUtils::MnvH1D* UnfoldHist( PlotUtils::MnvH1D* h_folded, PlotUtils::MnvH2D* h
   TH1D* hTruthDummy     = new TH1D(h_migration->ProjectionY()->GetCVHistoWithStatError());
   TH1D* hBGSubDataDummy = new TH1D(h_folded->GetCVHistoWithStatError());
   TH2D* hMigrationDummy = new TH2D(h_migration->GetCVHistoWithStatError());
-  
-  
-  
+   
+  //hUnfoldedDummy->ClearUnderflowAndOverflow(); 
+  //hRecoDummy->ClearUnderflowAndOverflow();
+  //hTruthDummy->ClearUnderflowAndOverflow();
+  //hBGSubDataDummy->ClearUnderflowAndOverflow();
+  //hMigrationDummy->ClearUnderflowAndOverflow(); // Adding this line to see if maybe unfolding doesn't go crazy in overflow bins. 
   
   unfold.UnfoldHisto(hUnfoldedDummy, unfoldingCovMatrixOrig, hMigrationDummy, hRecoDummy, hTruthDummy, hBGSubDataDummy,RooUnfold::kBayes, num_iter);//Stupid RooUnfold.  This is dummy, we don't need iterations
   
@@ -206,6 +209,7 @@ int main(const int argc, const char** argv)
       auto effDenom = util::GetIngredient<PlotUtils::MnvH1D>(*mcFile, "efficiency_denominator", prefix);
       auto simEventRate = effDenom->Clone(); //Make a copy for later
       auto recosignal = util::GetIngredient<PlotUtils::MnvH1D>(*mcFile, "selected_signal_reco", prefix);
+      auto truesignal = util::GetIngredient<PlotUtils::MnvH1D>(*mcFile, "efficiency_numerator", prefix);
       auto purdenom = util::GetIngredient<PlotUtils::MnvH1D>(*dataFile, "data", prefix); 
 
       //folded->GetXaxis()->SetRangeUser(0.0, 1400.);
@@ -213,8 +217,9 @@ int main(const int argc, const char** argv)
       //migration->GetYaxis()->
 
 
-      auto purnum = recosignal->Clone();
-      auto purden = purdenom->Clone();
+      auto purnum = recosignal->Clone(); 
+      //Plot(*folded, "data", prefix);
+      auto purden =  util::GetIngredient<PlotUtils::MnvH1D>(*mcFile, "data", prefix); //purdenom->Clone();
       const auto fiducialFound = std::find_if(mcFile->GetListOfKeys()->begin(), mcFile->GetListOfKeys()->end(),
                                               [&prefix](const auto key)
                                               {
@@ -255,7 +260,7 @@ int main(const int argc, const char** argv)
       auto bkgtoSubtract = toSubtract->GetBinNormalizedCopy(); //GetCVHistoWithError().Clone();
       //bkgtoSubtract.GetXaxis()->SetTitle(prefix);
       bkgtoSubtract.Scale(dataPOT/mcPOT);
-      bkgtoSubtract.GetYaxis()->SetRangeUser(0.0, 3500.);
+      //bkgtoSubtract.GetYaxis()->SetRangeUser(0.0, 3500.);
       bkgtoSubtract.GetYaxis()->SetTitle("N Background Events");
       Plot(bkgtoSubtract, "BackgroundSumNorm", prefix);
       auto bkgSubtracted = std::accumulate(backgrounds.begin(), backgrounds.end(), folded->Clone(),
@@ -276,20 +281,29 @@ int main(const int argc, const char** argv)
       }
 
       bkgSubtracted->Write("backgroundSubtracted");
-
+      
       //d'Aogstini unfolding
       auto unfolded = UnfoldHist(bkgSubtracted, migration, nIterations);
       if(!unfolded) throw std::runtime_error(std::string("Failed to unfold ") + folded->GetName() + " using " + migration->GetName());
       Plot(*unfolded, "unfolded", prefix);
       unfolded->Clone()->Write("unfolded"); //TODO: Seg fault first appears when I uncomment this line
       std::cout << "Survived writing the unfolded histogram.\n" << std::flush; //This is evidence that the problem is on the final file Write() and not unfolded->Clone()->Write().
+      //purnum->Scale(dataPOT/mcPOT);
       purnum->Divide(purnum, purden);
-      Plot(*recosignal, "Purity", prefix);   
-      recosignal->Clone()->Write("Purity");
+      recosignal->Scale(dataPOT/mcPOT);
+      Plot(*recosignal, "Signalreco", prefix);   
+      recosignal->Clone()->Write("Signalreco");
+      truesignal->Scale(dataPOT/mcPOT);
+      Plot(*truesignal,"Signaltrue", prefix);
+      truesignal->Clone()->Write();
+      Plot(*purnum, "Purity", prefix);
+      purnum->Clone()->Write("Purity");
+      
+
       effNum->Divide(effNum, effDenom,1,1, "B"); //Only the 2 parameter version of MnvH1D::Divide()
                                         //handles systematics correctly.
       Plot(*effNum, "efficiency", prefix);
-
+      effNum->Clone()->Write("Efficiency");
       unfolded->Divide(unfolded, effNum);
       Plot(*unfolded, "efficiencyCorrected", prefix);
 

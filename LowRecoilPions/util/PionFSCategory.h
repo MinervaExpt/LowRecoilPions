@@ -39,14 +39,28 @@ class FSCategory
       bool operator ()(const CVUniverse& univ) const
       {
 	const int interaction = univ.GetInteractionType();
-        bool pion = univ.GetTrueIsFSPartInEvent(211); //univ.GetTrueNPionsinEvent();
-	bool k0 = univ.GetTrueIsFSPartInEvent(311);//univ.GetTrueNKaonsinEvent();
-	bool kplus = univ.GetTrueIsFSPartInEvent(321);
-	bool pi0 = univ.GetTrueIsFSPartInEvent(111); //univ.GetTrueNPi0inEvent();
-	bool lam = univ.GetTrueIsFSPartInEvent(3122); //lambda baryons
-	bool sigma = univ.GetTrueIsFSPartInEvent(3222);
+        int npionp = 0;
+        int npion0 = 0;
+        int nkplus = 0;
+        int npionm = 0;
+        int nkneut = 0;
+        const std::vector<int> fsParts = univ.GetTrueFSPDGCodes();
+        for(auto pdgCode: fsParts)
+	{
+  		if(pdgCode == 211) ++npionp;
+		else if(pdgCode == -211) ++npionm;
+		else if(pdgCode == 111) ++npion0;
+  		else if(abs(pdgCode) == 321) ++nkplus;
+                else if(pdgCode == 311) ++nkneut;
+	} 
+        bool pion = (npionp > 0); //univ.GetTrueIsFSPartInEvent(211); //univ.GetTrueNPionsinEvent();
+	bool k0 = (nkneut > 0);//univ.GetTrueIsFSPartInEvent(311);//univ.GetTrueNKaonsinEvent();
+	bool kplus = (nkplus > 0);//univ.GetTrueIsFSPartInEvent(321);
+	bool pi0 = (npion0 > 0); //univ.GetTrueIsFSPartInEvent(111); //univ.GetTrueNPi0inEvent();
+	//bool lam = univ.GetTrueIsFSPartInEvent(3122); //lambda baryons
+	//bool sigma = univ.GetTrueIsFSPartInEvent(3222);
 	int qelike = 0;
- 	int npions = univ.GetTrueNPionsinEvent();
+ 	int npions = npionp; //univ.GetTrueNPionsinEvent();
 	//if (interaction == 4) std::cout << "THIS EVENT IS COH " << std::endl;
  	if (interaction==4 && fForbidden.count(4) == 1 ){ return true;}
 	//else if (interaction==3){return false;}

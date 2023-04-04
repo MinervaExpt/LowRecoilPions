@@ -5,10 +5,10 @@
 #include "PlotUtils/Cut.h"
 
 template <class UNIVERSE, class EVENT>
-class GetClosestMichel: public PlotUtils::Cut<UNIVERSE, EVENT>
+class GetClosestMichelSide: public PlotUtils::Cut<UNIVERSE, EVENT>
 {
  public:
-    GetClosestMichel(const int michelgroup): PlotUtils::Cut<UNIVERSE, EVENT>("Getting Closest Michel for Michel Group " + std::to_string(michelgroup))
+    GetClosestMichelSide(const int michelgroup): PlotUtils::Cut<UNIVERSE, EVENT>("Getting Closest Michel for Michel Group " + std::to_string(michelgroup))
     {
     }
     //michel group means getting Closest Michel in selection (evt.m_nmichelspass) or sideband group (m_sidebandpass)
@@ -22,6 +22,7 @@ class GetClosestMichel: public PlotUtils::Cut<UNIVERSE, EVENT>
       // evt.m_nmichels.clear();
       //if (michelgroup == 0) evt.m_nmichels = evt.m_nmichelspass;
       //else if (michelgroup == 1) evt.m_nmichels = evt.m_sidebandpass;  
+      if (evt.m_nmichels.empty()) return false;
       int noverlay = 0.0;
       int nmichels = evt.m_nmichels.size();
       std::vector<Michel> closestMichel;
@@ -96,19 +97,8 @@ class GetClosestMichel: public PlotUtils::Cut<UNIVERSE, EVENT>
        evt.eavail_reco = univ.NewEavail();  
        evt.m_nmichels.clear();
        evt.m_nmichels = closestMichel;
-       //std::cout << "Get Closest Distance Michel Done looping over Michels. Closest Distance is: " << closestMichel[0].Best3Ddist << std::endl;
-       if (univ.GetMuonPT() < .20 and univ.NewEavail() < 50. and !evt.m_nmichels.empty())
-       {
-	     double vtx_t = univ.GetVertex().T()/pow(10, 3); //mus
-	     
-	    // univ.PrintTrueArachneLink();
-	   //  univ.PrintDataArachneLink();
-	   //  std::cout << "Available Energy: " << univ.NewEavail() << " Muon pT Reco: " << univ.GetMuonPT()  << " Primary Vtx time: " << vtx_t << " Best Michel at time: " << evt.m_nmichels[0].time << " range: " << evt.m_nmichels[0].Best3Ddist << " energy: " << evt.m_nmichels[0].energy << " Matched to : " <<  evt.m_nmichels[0].BestMatch << std::endl;
-          
-       }
-       //if (closestMichel[0].Best3Ddist > 60.) return false;
-       //if (closestMichel[0].Best3Ddist < 60 || closestMichel[0].Best3Ddist > 1338.) return false;
-       if (closestMichel[0].Best3Ddist > 2400.) return false;
+       if (evt.m_nmichels.empty()) return false;
+       //if (closestMichel[0].Best3Ddist > 2400.) return false;
        else return true;       
        //return !evt.m_nmichels.empty();
     };

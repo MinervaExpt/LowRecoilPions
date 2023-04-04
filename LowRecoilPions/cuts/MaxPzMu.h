@@ -19,7 +19,7 @@ class MaxPzMu: public PlotUtils::SignalConstraint<UNIVERSE>
   private:
     bool checkConstraint(const UNIVERSE& univ) const override
     {
-      return univ.GetPlepTrue() * cos(univ.GetThetalepTrue()) <= fMax;
+      return (univ.GetPlepTrue() * cos(univ.GetThetalepTrue())) <= fMax;
     }
 
     const double fMax;

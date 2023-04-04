@@ -63,6 +63,27 @@ namespace truth
   };
 
 
+
+  template <class UNIVERSE>
+  class pzMuCut: public PlotUtils::SignalConstraint<UNIVERSE>
+  { 
+    public:
+      pzMuCut(const double pMin): PlotUtils::SignalConstraint<UNIVERSE>("True pzmu < " + std::to_string(pMin) + " GeV"),
+      fpMin(pMin)
+      {
+      }
+    
+    private: 
+      double fpMin; // Min pmu allowed in GeV/c
+      bool checkConstraint(const UNIVERSE& univ) const //override
+      { 
+        double truep =  (univ.GetPlepTrue() * cos(univ.GetThetalepTrue())) / 1000.;
+        return (truep < fpMin);
+      }
+  };
+
+  
+
   template <class UNIVERSE>
   class TrueWexpCut: public PlotUtils::SignalConstraint<UNIVERSE>
   {
@@ -84,7 +105,7 @@ namespace truth
   class EavailCut: public PlotUtils::SignalConstraint<UNIVERSE>
   {
    public:
-      EavailCut(): PlotUtils::SignalConstraint<UNIVERSE>("Available Energy < 2.0 GeV")
+      EavailCut(): PlotUtils::SignalConstraint<UNIVERSE>("Available Energy < 1.0 GeV")
       {
       }
 
@@ -102,7 +123,7 @@ namespace truth
   class TpiCut: public PlotUtils::SignalConstraint<UNIVERSE>
   {
    public:
-      TpiCut(): PlotUtils::SignalConstraint<UNIVERSE>("Pion Kinetic Energy < .350 GeV")
+      TpiCut(): PlotUtils::SignalConstraint<UNIVERSE>("35 MeV < Pion Kinetic Energy < .350 GeV")
       {
       }
 
@@ -110,7 +131,7 @@ namespace truth
       bool checkConstraint(const UNIVERSE& univ) const //override
       {
         double trueE = univ.GetTrueLowestTpiEvent();
-        if (trueE < 35. || trueE > 350.) return true;
+        if (trueE < 1000.) return true;
         else return false;
       }
 
