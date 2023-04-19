@@ -25,9 +25,9 @@ class hasMichel: public PlotUtils::Cut<UNIVERSE, EVENT>
       int nfittedmich = univ.GetFittedMichelsOnly();
       if (nfittedmich < 1) return false;
       int nclusters = univ.GetNClusters(); 
-      if (univ.ShortName() != "cv"){
-	 if (evt.m_allmichels.empty()) return bool(false);
-         else return bool(true); 
+      if (univ.ShortName() != "cv" ){
+	 if (!evt.m_allmichels.empty()) return bool(true);
+         //else return bool(true); 
       }
       //if (nclusters > 500.) return false;
   
@@ -51,7 +51,7 @@ class hasMichel: public PlotUtils::Cut<UNIVERSE, EVENT>
 	double z2 = current_michel.m_z2;
 	//Michel is in Tracker and ECAL	
 	if (z1 < 5980. || z2 < 5980.) continue; 
-	if (z1 > 9038. || z2 > 9038.) continue;
+	else if (z1 > 9038. || z2 > 9038.) continue;
         evt.m_allmichels.push_back(current_michel);       
                    	
         

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export OUTDIR=`pwd`/$CONDOR_DIR_OUT
+export OUTDIR=$CONDOR_DIR_OUT
 
 printenv
 set -x #start bash debugging at this point
@@ -11,6 +11,7 @@ echo "the user id is " `whoami`
 echo "the output of id is " `id`
 echo "------ CHECK THE VOMS PROXY and the x509"
 echo $X509_USER_PROXY
+kx509 && voms-proxy-init -rfc -noregen
 echo "OUTPUT DIRECTORY"
 echo $CONDOR_DIR_OUT
 #voms-proxy-info --all
@@ -46,7 +47,7 @@ fi
 
 
 cd `dirname $INPUT_TAR_FILE`/opt
-
+#export MNV101_SKIP_SYST=0
 echo "pwd is " `pwd`
 #ls 
 export MINERVA_PREFIX=`pwd`
@@ -109,7 +110,7 @@ echo "pwd is " `pwd`
 #9: optional switch to turn off neutron cuts when passed a 0.
 
 
-echo "With playlists: " `$1` " and " `$2`
+echo "With playlists:  $1  and  $2 "
 /usr/bin/time -v -o runEventLoopTime.txt twoDEventLoop $LOWREC_PREFIX/playlists/$1 $LOWREC_PREFIX/playlists/$2 > Dump_runEventLoop.txt
 
 echo "Moving files to output Dir " `$CONDOR_DIR_OUT`

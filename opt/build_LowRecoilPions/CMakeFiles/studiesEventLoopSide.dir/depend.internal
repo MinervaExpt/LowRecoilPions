@@ -167,6 +167,7 @@ CMakeFiles/studiesEventLoopSide.dir/studiesEventLoopSide.cpp.o
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/cuts/MaxPzMu.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/cuts/PTRangeReco.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/cuts/PmuCut.h
+ /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/cuts/PzmuCut.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/cuts/RecoilERange.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/cuts/RemoveSignalEvents.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/cuts/SignalDefinition.h
@@ -192,6 +193,7 @@ CMakeFiles/studiesEventLoopSide.dir/studiesEventLoopSide.cpp.o
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/studiesEventLoopSide.cpp
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/systematics/Systematics.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/BkgSideReweighter.h
+ /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/BkgSigReweighter.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/COHPionReweighter.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/Categorized.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/DiffractiveReweighter.h

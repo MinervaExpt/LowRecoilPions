@@ -113,7 +113,7 @@ namespace truth
       bool checkConstraint(const UNIVERSE& univ) const //override
       {
         double trueE = univ.GetTrueEAvail()/1000.;
-        if (trueE < 1.0) return true;
+        if (trueE < 1.2) return true;
 	else return false;
       }
 

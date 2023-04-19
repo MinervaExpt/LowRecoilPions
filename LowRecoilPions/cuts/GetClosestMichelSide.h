@@ -56,7 +56,7 @@ class GetClosestMichelSide: public PlotUtils::Cut<UNIVERSE, EVENT>
 	   //if (dist > 1000.) return false; // mimicing aaron's cuts to remove high tpi events > 350 MeV. 1000 - 1200 mm in range is approximately the bin with the most events in that tpi bins. . 
 	   
            evt.m_bestdist = dist;
-	              
+	   evt.m_nmichels[i].GetPionAngle(univ);	              
 	   evt.m_idx = i;
            if (evt.m_nmichels[i].overlay_fraction > 0.5) evt.ClosestMichelsIsOverlay = 1;      
            evt.m_best_XZ = evt.m_nmichels[i].best_XZ;
@@ -86,6 +86,7 @@ class GetClosestMichelSide: public PlotUtils::Cut<UNIVERSE, EVENT>
         
        }
        if (closestMichel.empty()) return false;
+       
        double lowtpiinevent = closestMichel[0].pionKE;
        //if (closestMichel[0].Best3Ddist > 1200.) continue; //Mimicking Aaron's cuts to remove high Tpi events > 350 MeV. 
        

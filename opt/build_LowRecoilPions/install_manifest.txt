@@ -8,7 +8,12 @@
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/bin/runXSecLooper
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/bin/backgroundStack.py
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/bin/runTransWarp.sh
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/bin/runTransWarp2D.sh
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/bin/setup_MAT_IncPions.sh
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/etc/playlists/p3_x_me1A_central_mc.txt
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/etc/playlists/p3_x_me1A_central_data.txt
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/etc/playlists/datatest.txt
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/etc/playlists/mctest.txt
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/etc/playlists/CCQENu_minervame1A_DATA_Inextinguishable_merged.txt
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/etc/playlists/CCQENu_minervame1A_MC_Inextinguishable_merged.txt
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/etc/playlists/MAD_minervame1A_MC_andrewsGPVM.txt

@@ -1,3 +1,0 @@
-root://fndca1.fnal.gov:1094///pnfs/fnal.gov/usr/minerva/persistent/users/zdar//Merged_mc_ana_me1A_DualVertex_p3/MasterAnaDev_mc_AnaTuple_run00110001_Playlist.root
-root://fndca1.fnal.gov:1094///pnfs/fnal.gov/usr/minerva/persistent/users/zdar//Merged_mc_ana_me1A_DualVertex_p3/MasterAnaDev_mc_AnaTuple_run00110002_Playlist.root
-root://fndca1.fnal.gov:1094///pnfs/fnal.gov/usr/minerva/persistent/users/zdar//Merged_mc_ana_me1A_DualVertex_p3/MasterAnaDev_mc_AnaTuple_run00110003_Playlist.root

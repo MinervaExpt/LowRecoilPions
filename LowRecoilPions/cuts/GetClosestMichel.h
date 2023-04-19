@@ -53,9 +53,8 @@ class GetClosestMichel: public PlotUtils::Cut<UNIVERSE, EVENT>
 	if (evt.m_nmichels[i].OrderOfMichel == 1) {
            //closestMichel.push_back(evt.m_nmichels[i]);
 	   //if (dist > 1000.) return false; // mimicing aaron's cuts to remove high tpi events > 350 MeV. 1000 - 1200 mm in range is approximately the bin with the most events in that tpi bins. . 
-	   
+           evt.m_nmichels[i].GetPionAngle(univ);	   
            evt.m_bestdist = dist;
-	              
 	   evt.m_idx = i;
            if (evt.m_nmichels[i].overlay_fraction > 0.5) evt.ClosestMichelsIsOverlay = 1;      
            evt.m_best_XZ = evt.m_nmichels[i].best_XZ;
@@ -85,6 +84,7 @@ class GetClosestMichel: public PlotUtils::Cut<UNIVERSE, EVENT>
         
        }
        if (closestMichel.empty()) return false;
+       //closestMichel[0].GetPionAngle(univ);
        double lowtpiinevent = closestMichel[0].pionKE;
        //if (closestMichel[0].Best3Ddist > 1200.) continue; //Mimicking Aaron's cuts to remove high Tpi events > 350 MeV. 
        
@@ -108,7 +108,7 @@ class GetClosestMichel: public PlotUtils::Cut<UNIVERSE, EVENT>
        }
        //if (closestMichel[0].Best3Ddist > 60.) return false;
        //if (closestMichel[0].Best3Ddist < 60 || closestMichel[0].Best3Ddist > 1338.) return false;
-       if (closestMichel[0].Best3Ddist > 2400.) return false;
+       if (closestMichel[0].Best3Ddist > 2600.) return false;
        else return true;       
        //return !evt.m_nmichels.empty();
     };

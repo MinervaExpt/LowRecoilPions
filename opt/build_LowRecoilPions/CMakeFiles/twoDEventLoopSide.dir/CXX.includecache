@@ -1629,6 +1629,8 @@ util/TargetMassReweighter.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/TargetMassReweighter.h
 util/MnvTunev431Reweighter.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/MnvTunev431Reweighter.h
+util/BkgSigReweighter.h
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/BkgSigReweighter.h
 cuts/RemoveSignalEvents.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/cuts/RemoveSignalEvents.h
 cuts/GetClosestMichelSide.h
@@ -1643,6 +1645,14 @@ cstdlib
 -
 
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/BkgSideReweighter.h
+string
+-
+vector
+-
+PlotUtils/Reweighter.h
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/PlotUtils/Reweighter.h
+
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/BkgSigReweighter.h
 string
 -
 vector

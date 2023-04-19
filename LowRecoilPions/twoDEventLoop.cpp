@@ -164,10 +164,11 @@ void LoopAndFillEventSelection(
     //=========================================
     for (auto band : error_bands)
     {
+      int unv_count = -1;
       std::vector<CVUniverse*> error_band_universes = band.second;
       for (auto universe : error_band_universes)
       {
-        int unv_count = 0;
+        //int unv_count = 0;
         //if (universe->ShortName() != "cv") continue;
         //MichelEvent myevent; // make sure your event is inside the error band loop. 
         //if (universe->ShortName() != "cv") continue;
@@ -179,6 +180,7 @@ void LoopAndFillEventSelection(
         const auto cutResults = michelcuts.isMCSelected(*universe, myevent, cvWeight);
 	//const auto cutResults = michelcuts.isDataSelected(*universe, myevent);       
         //if (universe->ShortName() != "cv") continue;
+         ++unv_count;
         if (!cutResults.all()) continue;
         
         const double weight2 = model.GetWeight(*universe, myevent);
@@ -193,7 +195,6 @@ void LoopAndFillEventSelection(
                 	var->mcTotalHist->FillUniverse(universe, var->GetRecoValueX(*universe), var->GetRecoValueY(*universe), weight2);
                 	(*var->m_MChists)[universe->GetInteractionType()].FillUniverse(universe, var->GetRecoValueX(*universe), var->GetRecoValueY(*universe), weight2);
                 	var->FillCategHistos(*universe,var->GetRecoValueX(*universe), var->GetRecoValueY(*universe), weight2);
-                	var->mc_trueHist->FillUniverse(universe, var->GetTrueValueX(*universe), var->GetTrueValueY(*universe), weight2);
 
          	}
 
@@ -215,8 +216,12 @@ void LoopAndFillEventSelection(
 			}
 			for(auto& var: vars2D)
           		{
-            			var->efficiencyNumerator->FillUniverse(universe, var->GetTrueValueX(*universe), var->GetTrueValueY(*universe), weight2);
-        			var->FillResponse(var->GetRecoValueX(*universe), var->GetRecoValueY(*universe),var->GetTrueValueX(*universe), var->GetTrueValueY(*universe),universe->ShortName(),weight2,unv_count);
+                                var->selectedSignalReco->FillUniverse(universe, var->GetRecoValueX(*universe), var->GetRecoValueY(*universe), weight2);  
+          			var->efficiencyNumerator->FillUniverse(universe, var->GetTrueValueX(*universe), var->GetTrueValueY(*universe), weight2);
+				
+				//var->m_response->Fill(var->GetRecoValueX(*universe), var->GetRecoValueY(*universe),var->GetTrueValueX(*universe), var->GetTrueValueY(*universe),universe->ShortName(),unv_count,weight2);			 		
+	
+             			var->FillResponse(var->GetRecoValueX(*universe), var->GetRecoValueY(*universe),var->GetTrueValueX(*universe), var->GetTrueValueY(*universe),universe->ShortName(),weight2,unv_count);
 	  		}
 		} // end of if Signal()
                 else if (!isSignal){
@@ -241,14 +246,14 @@ void LoopAndFillEventSelection(
           		for(auto& var: vars2D) (*var->m_backgroundHists)[bkgd_ID].FillUniverse(universe, var->GetRecoValueX(*universe), var->GetRecoValueY(*universe), weight2);
         	} // End of else statement for if Signal 
        } // If event passes PreCuts
-       ++unv_count;
+       //++unv_count;
        //delete universe;
       } // End band's universe loop
     } // End Band loop
   //std::cout << "Printing Muon Momentum At End of Entry Loop: " << cvUniv->GetMuonPTTrue() << std::endl;
   //std::cout << "====================================================== ==========" << std::endl;
   } //End entries loop
-  
+  std::cout << " Now Getting Response Objects" << std::endl; 
   for (auto v : vars2D) v->getResponseObjects(error_bands);
   std::cout << "Finished MC reco loop.\n";
 }
@@ -490,8 +495,8 @@ int main(const int argc, const char** argv)
   preCuts.emplace_back(new reco::MaxMuonAngle<CVUniverse, MichelEvent>(20.));
   preCuts.emplace_back(new reco::HasMINOSMatch<CVUniverse, MichelEvent>());
   preCuts.emplace_back(new reco::NoDeadtime<CVUniverse, MichelEvent>(1, "Deadtime"));
-  preCuts.emplace_back(new PTRangeReco<CVUniverse, MichelEvent>(0.0,1.0));
-  preCuts.emplace_back(new RecoilERange<CVUniverse, MichelEvent>(0.0,1.0));
+  preCuts.emplace_back(new PTRangeReco<CVUniverse, MichelEvent>(0.0,1.2));
+  preCuts.emplace_back(new RecoilERange<CVUniverse, MichelEvent>(0.0,1.2));
   preCuts.emplace_back(new PmuCut<CVUniverse, MichelEvent>(1.5));
   preCuts.emplace_back(new PzmuCut<CVUniverse, MichelEvent>(20.));
   preCuts.emplace_back(new hasMichel<CVUniverse, MichelEvent>());
@@ -521,7 +526,7 @@ int main(const int argc, const char** argv)
   phaseSpace.emplace_back(new truth::Apothem<CVUniverse>(apothem));
   phaseSpace.emplace_back(new truth::MuonAngle<CVUniverse>(20.));
   phaseSpace.emplace_back(new truth::PZMuMin<CVUniverse>(1500.));
-  phaseSpace.emplace_back(new truth::pTRangeLimit<CVUniverse>(0., 1.0));
+  phaseSpace.emplace_back(new truth::pTRangeLimit<CVUniverse>(0., 1.2));
   phaseSpace.emplace_back(new truth::pMuCut<CVUniverse>(1.5));
   phaseSpace.emplace_back(new truth::pzMuCut<CVUniverse>(20.));
   phaseSpace.emplace_back(new truth::EavailCut<CVUniverse>());
@@ -640,7 +645,7 @@ int main(const int argc, const char** argv)
  std::vector<Variable2D*> vars2D;
  //vars2D.push_back(new Variable2D(*vars[2], *vars[1]));// q3bins vs Eavail
  vars2D.push_back(new Variable2D(*vars[2], *vars[0]));// pTbins vs Eavail
- vars2D.push_back(new Variable2D(*vars[5], *vars[0]));//pTbins vs q2 
+ //vars2D.push_back(new Variable2D(*vars[5], *vars[0]));//pTbins vs q2 
  //vars2D.push_back(new Variable2D(*vars[6], *vars[10]));// Wexp vs Eavail
  //vars2D.push_back(new Variable2D(*vars[11], *vars[10])); // Wexp vs q3
  //vars2D.push_back(new Variable2D(*vars[9], *vars[9])); // q2 vs q0 (eHadronic)

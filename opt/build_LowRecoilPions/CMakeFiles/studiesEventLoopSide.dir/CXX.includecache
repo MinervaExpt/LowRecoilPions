@@ -1270,6 +1270,12 @@ PlotUtils/Cut.h
 event/CVUniverse.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/cuts/event/CVUniverse.h
 
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/cuts/PzmuCut.h
+PlotUtils/Cut.h
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/cuts/PlotUtils/Cut.h
+event/CVUniverse.h
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/cuts/event/CVUniverse.h
+
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/cuts/RecoilERange.h
 PlotUtils/Cut.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/cuts/PlotUtils/Cut.h
@@ -1541,6 +1547,8 @@ cuts/RecoilERange.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/cuts/RecoilERange.h
 cuts/PmuCut.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/cuts/PmuCut.h
+cuts/PzmuCut.h
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/cuts/PzmuCut.h
 event/SetDistanceMichelSideband.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/event/SetDistanceMichelSideband.h
 event/SetDistanceMichelSelection.h
@@ -1599,6 +1607,8 @@ util/TargetMassReweighter.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/TargetMassReweighter.h
 util/MnvTunev431Reweighter.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/MnvTunev431Reweighter.h
+util/BkgSigReweighter.h
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/BkgSigReweighter.h
 cuts/RemoveSignalEvents.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/cuts/RemoveSignalEvents.h
 cuts/GetClosestMichelSide.h
@@ -1641,6 +1651,14 @@ PlotUtils/ResponseSystematics.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/systematics/PlotUtils/ResponseSystematics.h
 
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/BkgSideReweighter.h
+string
+-
+vector
+-
+PlotUtils/Reweighter.h
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/PlotUtils/Reweighter.h
+
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/BkgSigReweighter.h
 string
 -
 vector

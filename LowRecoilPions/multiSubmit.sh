@@ -1,40 +1,45 @@
 #!/bin/bash
 
-dateTAG="submitted_`date +%Y_%m_%d_%H_%M`"
+dateTAG="submitted_`date +%Y_%m_%d`" #_%H_%M`"
 
+#playArray=("5A" "6A" "6B" "6C" "6D" "6E" "6F" "6G" "6H" "6I" "6J")
+declare -a playArray=("1A" "1B" "1C" "1D" "1E" "1F" "1L" "1M" "1N" "1O" "1P")
+#declare -a playArray=("1E")
+#declare -a playArray=("1B" "1C" "1D" "1E" "1L" "1M" "1O" "1P")
+tarfile=sultana_Mnv431_noPionWeight_Apr_18_2023.tgz #this one has the Pion Angle bug fix
+#sultana_Mnv431_PionWeight_Apr_17_2023.tgz
+#sultana_Mnv431_NoPionWeight_Apr_11_2023.tgz
+#playlistmc=mctest.txt
+#playlistdata=datatest.txt
 
+for val in ${playArray[@]};
+do
+	playlistmc=p3_x_me${val}_central_mc.txt
+	playlistdata=p3_x_me${val}_central_data.txt
 
+	name=MnvTunev431_noPionWeight_Selection_EventLoop
+	nameside=MnvTunev431_noPionWeight_Sideband_EventLoop
+	namestudy=MnvTunev431_noPionWeight_Selection_StudiesLoop
+	playlistname=all_me${val}_actuallynoPionweight
+        
+        #echo ${val}
+	echo ${playlistname}        
 
+        jobsub_submit -G minerva --onsite --memory=10GB --disk=10GB --expected-lifetime=35h -N 1 -d OUT /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/${playlistname}_${dateTAG}_${name}_fullSystematics -e IFDH_CP_MAX_RETRIES=1 --tar-file-name dropbox:///minerva/data/users/sultana/tarballs/${tarfile} --skip-check rcds file:///minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/runEventLoop_lite.sh ${playlistdata} ${playlistmc}
+	jobsub_submit -G minerva --onsite --memory=10GB --disk=10GB --expected-lifetime=35h -N 1 -d OUT /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/${playlistname}_${dateTAG}_${nameside}_fullSystematics -e IFDH_CP_MAX_RETRIES=1 --tar-file-name dropbox:///minerva/data/users/sultana/tarballs/${tarfile} --skip-check rcds file:///minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/runEventLoop_liteSide.sh ${playlistdata} ${playlistmc}
+	jobsub_submit -G minerva --onsite --memory=10GB --disk=10GB --expected-lifetime=35h -N 1 -d OUT /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/${playlistname}_${dateTAG}_${namestudy}_fullSystematics -e IFDH_CP_MAX_RETRIES=1 --tar-file-name dropbox:///minerva/data/users/sultana/tarballs/${tarfile} --skip-check rcds file:///minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/studyLoop_lite.sh ${playlistdata} ${playlistmc}
+done
 
-#mkdir /pnfs/minerva/scratch/users/sultana/MnvTunev4-3-1-PionReweight_${dateTAG}_gridtest 
+#playlistmc=p3_x_me1A_central_mc.txt
+#playlistdata=p3_x_me1A_central_data.txt
 
-#jobsub_submit --group minerva -role=Analysis --resource-provides=usage_model=DEDICATED,OPPORTUNISTIC --memory=6GB --disk=15GB --expected-lifetime=24h -N 1 -d OUT /pnfs/minerva/scratch/users/sultana/MnvTunev4-3-1_studiesEventLoop_${dateTAG}_gridtest -e IFDH_CP_MAX_RETRIES=1 -f /pnfs/minerva/resilient/tarballs/sultana_Jan242023_LowRecoilPions.tgz file:///minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/studiesEventLoop_grid.sh data_me1A_xrootd_plist.txt mc_me1A_xrootd_plist.txt
+#name=MnvTunev431_noPionWeight_Selection_EventLoop
+#nameside=MnvTunev431_noPionWeight_Sideband_EventLoop
+#namestudy=MnvTunev431_noPionWeight_Selection_StudiesLoop
+#playlistname=_all_me1A
 
-#Sideband Loop
+############ TEST LITE ####################
 
-#jobsub_submit --group minerva -role=Analysis --resource-provides=usage_model=DEDICATED,OPPORTUNISTIC --memory=6GB --disk=15GB --expected-lifetime=24h -N 1 -d OUT /pnfs/minerva/scratch/users/sultana/MnvTunev4-3-1_twoDSideband_${dateTAG}_gridtest -e IFDH_CP_MAX_RETRIES=1 -f /pnfs/minerva/resilient/tarballs/sultana_Jan232023_LowRecoilPions.tgz file:///minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/runEventLoopSide_job.sh data_me1A_xrootd_plist.txt mc1_me1A_xrootd_plist.txt
-
-#Selection Loop
-
-#jobsub_submit --group minerva -role=Analysis --resource-provides=usage_model=DEDICATED,OPPORTUNISTIC --memory=4GB --disk=15GB --expected-lifetime=24h -N 1 -d OUT /pnfs/minerva/scratch/users/sultana/MnvTunev4-3-1_twoDSelection_${dateTAG}_gridtest -e IFDH_CP_MAX_RETRIES=1 -f /pnfs/minerva/resilient/tarballs/sultana_Jan232023_LowRecoilPions.tgz file:///minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/runEventLoop_job.sh data_me1A_xrootd_plist.txt mc1_me1A_xrootd_plist.txt
-
-
-
-#Submitting jobs for Pion Reweight
-
-#sultana_Jan252023_PionReweight_LowRecoilPions.tgz
-
-#jobsub_submit --group minerva -role=Analysis --resource-provides=usage_model=DEDICATED,OPPORTUNISTIC --memory=4GB --disk=6GB --expected-lifetime=24h -N 1 -d OUT /pnfs/minerva/scratch/users/sultana/MnvTunev4-3-1_SideEventLoop_PiReweight_${dateTAG}_gridtest -e IFDH_CP_MAX_RETRIES=1 -f /pnfs/minerva/resilient/tarballs/sultana_Jan252023_PionReweight_LowRecoilPions.tgz file:///minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/studiesEventLoop_grid.sh data_me1A_xrootd_plist.txt mc_me1A_xrootd_plist.txt
-
-#Sideband Loop
-
-#jobsub_submit --group minerva -role=Analysis --resource-provides=usage_model=DEDICATED,OPPORTUNISTIC --memory=4GB --disk=6GB --expected-lifetime=24h -N 1 -d OUT /pnfs/minerva/scratch/users/sultana/MnvTunev4-3-1_twoDSideband_noreweight_fullMC_nosystematics_${dateTAG}_gridtest/ -e IFDH_CP_MAX_RETRIES=1 -f /pnfs/minerva/resilient/tarballs/sultana_Jan262023_LowRecoilPions.tgz file:///minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/runEventLoopSide_job.sh data_me1A_xrootd_plist.txt mc_me1A_xrootd_plist.txt
-
-#Selection Loop
-
-#/minerva/data/users/sultana/tarballs/sultana_Feb212023_LowQ2_NoPionWeight.tgz
-
-
-jobsub_submit --group minerva -role=Analysis --resource-provides=usage_model=DEDICATED,OPPORTUNISTIC --memory=6GB --disk=5GB --expected-lifetime=2h -N 1 -d OUT /pnfs/minerva/scratch/users/sultana/MnvTunev4-3-1_twoDSelection_fullMC_LowQ2_28hRequest_NoPionWeight_${dateTAG}_gridtest/ -e IFDH_CP_MAX_RETRIES=1 --tar_file_name dropbox:///minerva/data/users/sultana/tarballs/sultana_Feb212023_LowQ2_NoPionWeight.tgz --use-cvmfs-dropbox file:///minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/runEventLoop_job.sh data_me1A_xrootd_plist.txt mc_me1A_xrootd_plist.txt
-
-#jobsub_submit --group minerva -role=Analysis --resource-provides=usage_model=DEDICATED,OPPORTUNISTIC --memory=6GB --disk=5GB --expected-lifetime=28h -N 1 -d OUT /pnfs/minerva/scratch/users/sultana/MnvTunev4-3-1_twoDSelection_fullMC_LowQ2_28hRequest_NoPionWeight_${dateTAG}_gridtest/ -e IFDH_CP_MAX_RETRIES=1 -f /pnfs/minerva/resilient/tarballs/sultana_Feb122023_MnvTunev431_LowRecoilPions.tgz file:///minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/runEventLoop_job.sh data_me1A_xrootd_plist.txt mc_me1A_xrootd_plist.txt
+#jobsub_submit -G minerva --onsite --memory=6GB --disk=6GB --expected-lifetime=30h -N 1 -d OUT /pnfs/minerva/scratch/users/sultana/GridJobs/${name}_${dateTAG}_${playlistname}_fullSystematics -e IFDH_CP_MAX_RETRIES=1 --tar-file-name dropbox:///minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_Apr_11_2023.tgz --skip-check rcds file:///minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/runEventLoop_lite.sh ${playlistdata} ${playlistmc}
+#jobsub_submit -G minerva --onsite --memory=6GB --disk=6GB --expected-lifetime=30h -N 1 -d OUT /pnfs/minerva/scratch/users/sultana/GridJobs/${nameside}_${dateTAG}_${playlistname}_fullSystematics -e IFDH_CP_MAX_RETRIES=1 --tar-file-name dropbox:///minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_Apr_11_2023.tgz --skip-check rcds file:///minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/runEventLoop_liteSide.sh ${playlistdata} ${playlistmc}
+#jobsub_submit -G minerva --onsite --memory=6GB --disk=6GB --expected-lifetime=30h -N 1 -d OUT /pnfs/minerva/scratch/users/sultana/GridJobs/${namestudy}_${dateTAG}_${playlistname}_fullSystematics -e IFDH_CP_MAX_RETRIES=1 --tar-file-name dropbox:///minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_Apr_11_2023.tgz --skip-check rcds file:///minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/studyLoop_lite.sh ${playlistdata} ${playlistmc}

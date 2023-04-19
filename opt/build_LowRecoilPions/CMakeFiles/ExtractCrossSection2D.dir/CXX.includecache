@@ -957,6 +957,8 @@ sys/types.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/ExtractCrossSection2D.cpp
 util/GetIngredient.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/GetIngredient.h
+util/SyncBands.h
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/SyncBands.h
 MinervaUnfold/MnvUnfold.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/MinervaUnfold/MnvUnfold.h
 PlotUtils/MnvH1D.h
@@ -999,6 +1001,12 @@ string
 -
 exception
 -
+
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/SyncBands.h
+PlotUtils/MnvH1D.h
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/PlotUtils/MnvH1D.h
+PlotUtils/MnvH2D.h
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/PlotUtils/MnvH2D.h
 
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/MinervaUnfold/MnvResponse.h
 TObject.h

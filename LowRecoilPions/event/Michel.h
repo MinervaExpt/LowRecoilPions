@@ -241,7 +241,7 @@ Michel::Michel(const CVUniverse& univ, int ci)
        //std::cout << "Now doing Cluster matching for universe " << univ.ShortName()  << std::endl;
        if (nclusters > 0) DoesMichelMatchClus(univ); // Gets info for ClusterMatch
        //GetBestMatch();   // Needs to be commented out since this part is done by the cut BestDistance2D.h  
-       GetPionAngle(univ);
+       //GetPionAngle(univ);
   }
   //else (this->delete;)
 
@@ -290,7 +290,7 @@ void Michel::GetPionAngle(const CVUniverse& univ){
   this->best_angle = angle;//in Radians   //*TMath::RadToDeg(); // in Degrees
   
   this->best_phi = phi; // in Radians
-  /*
+  
   double tpi = univ.GetTpiFromRange(this->Best3Ddist);
   double gamma = tpi/139.57 + 1;
   //double ppi = sqrt(tpi*2*139.57)/gamma; //MeV
@@ -305,7 +305,7 @@ void Michel::GetPionAngle(const CVUniverse& univ){
   this->reco_ppix = px;
   this->reco_ppiy = py;
   this->reco_ppiz = pz;  
-  */
+  
 }
 
 //This function will get an integer for the best match type of the Michel.
@@ -325,7 +325,6 @@ void Michel::GetBestMatch(){
      std::vector<double> distances{this->up_to_vertex_dist3D , this->down_to_vertex_dist3D, this->up_clus_michel_dist3D, this->down_clus_michel_dist3D};
      //std::cout << "The distances for this michel are upvtx, downvtx, upclus, downclus " << distances[0] << " - " << distances[1] << " - " << distances[2] << " - " << distances[3] << " - "  << std::endl; 
      std::sort(distances.begin(), distances.end());
- 
 // This bit of code will try to find the best 3D distance end point 
      if (distances[0] == this->up_to_vertex_dist3D){
         upvtxmatch = 1;
@@ -634,7 +633,7 @@ void Michel::DoesMichelMatchClus(const CVUniverse& univ){
     double energy = univ.GetVecElem("cluster_energy", i);
     if (energy < 2.) continue;
     double pos = univ.GetVecElem("cluster_pos", i);
-    if (abs(pos) > 900) continue;
+    if (abs(pos) > 1000) continue;
     double time = univ.GetVecElem("cluster_time", i) / pow(10, 3);
     double timediff = micheltime - time;
     if (timediff < 0.) continue;  

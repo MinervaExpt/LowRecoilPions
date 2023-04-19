@@ -9,6 +9,7 @@
 
 //util includes
 #include "util/GetIngredient.h"
+#include "util/SyncBands.h"
 
 //UnfoldUtils includes
 #pragma GCC diagnostic push
@@ -42,6 +43,9 @@
 #include <algorithm>
 #include <numeric>
 
+//PlotStyleIncludes
+//#include "myPlotStyle.h"
+
 //Convince the STL to talk to TIter so I can use std::find_if()
 namespace std
 {
@@ -70,6 +74,7 @@ TMatrixD ZeroDiagonal(const TMatrixD &m){
 //Plot a step in cross section extraction.
 void Plot(PlotUtils::MnvH2D& hist, const std::string& stepName, const std::string& prefix)
 {
+  //myPlotStyle();
   TCanvas can(stepName.c_str());
   hist.GetCVHistoWithError().Clone()->Draw();
   can.Print((prefix + "_" + stepName + ".png").c_str());
@@ -80,12 +85,15 @@ void Plot(PlotUtils::MnvH2D& hist, const std::string& stepName, const std::strin
   plotter.axis_maximum = 0.4;
   
   int nbinsy = hist.GetNbinsY()+2;
-  for (int i = 0; i < nbinsy; i++)
+  for (int i = 1; i < nbinsy; i++)
   {
-	plotter.DrawErrorSummary(hist.ProjectionX("e",i,i));
+	plotter.legend_text_size = 0.02;
+        plotter.DrawErrorSummary(hist.ProjectionX("e",i,i), "TR", true, true, -1, false, "", true);
+        can.Draw("c");
         can.Print((prefix + "_bin" + std::to_string(i) +"_" + stepName + "_uncertaintySummary.png").c_str());
-	plotter.DrawErrorSummary(hist.ProjectionX("e",i,i), "TR", true, true, 1e-5, false, "Other");
-        can.Print((prefix + "_bin" + std::to_string(i) + "_" + stepName + "_otherUncertainties.png").c_str());
+	plotter.DrawErrorSummary(hist.ProjectionX("e",i,i), "TR", true, true, 1e-5, false, "Other", true);
+        can.Draw("c");
+	can.Print((prefix + "_bin" + std::to_string(i) + "_" + stepName + "_otherUncertainties.png").c_str());
   }
   //plotter.DrawErrorSummary(&hist);
   //can.Print((prefix + "_" + stepName + "_uncertaintySummary.png").c_str());
@@ -95,7 +103,8 @@ void Plot(PlotUtils::MnvH2D& hist, const std::string& stepName, const std::strin
 }
 
 void Plot(PlotUtils::MnvH1D& hist, const std::string& stepName, const std::string& prefix)
-{ 
+{
+  //myPlotStyle(); 
   TCanvas can(stepName.c_str());
   hist.GetCVHistoWithError().Clone()->Draw();
   can.Print((prefix + "_" + stepName + ".png").c_str());
@@ -122,8 +131,9 @@ PlotUtils::MnvH2D* DoResponseUnfolding(std::string basename, PlotUtils::MnvH2D* 
   std::cout << " no migration, stop here for " << basename << std::endl;
     return bkgsub;
   }
-
-  migration->PopVertErrorBand("cv");
+ 
+  util::SyncBands(migration); 
+  //migration->PopVertErrorBand("cv");
 
   std::string unsmearedname = std::string(bkgsub->GetName()) + "_unfolded";
 
@@ -166,7 +176,7 @@ PlotUtils::MnvH2D* DoResponseUnfolding(std::string basename, PlotUtils::MnvH2D* 
   }
   TMatrix unfoldingCov = ZeroDiagonal(unfoldingCovMatrixOrig_hist_type);
   unsmeared->FillSysErrorMatrix("Unfolding",unfoldingCov);
-  //SyncBands(unsmeared);
+  util::SyncBands(unsmeared);
   return unsmeared;
 
 }
@@ -320,7 +330,7 @@ int main(const int argc, const char** argv)
       auto effDenom = util::GetIngredient<PlotUtils::MnvH2D>(*mcFile, "efficiency_denominator", prefix);
       auto simEventRate = effDenom->Clone(); //Make a copy for later
       auto recosignal = util::GetIngredient<PlotUtils::MnvH2D>(*mcFile, "signal_reco", prefix);
-      auto purdenom = util::GetIngredient<PlotUtils::MnvH2D>(*dataFile, "data", prefix); 
+      auto purdenom = util::GetIngredient<PlotUtils::MnvH2D>(*mcFile, "MC", prefix); 
 
       //folded->GetXaxis()->SetRangeUser(0.0, 800.);
       //migration->GetXaxis()->SetRangeUser(0.0, 800.);
@@ -366,11 +376,12 @@ int main(const int argc, const char** argv)
                                           return sum;
                                         });
       Plot(*toSubtract, "BackgroundSum", prefix);
+      
       Plot(*flux, "Flux",prefix);
       //toSubtract->Write();
       auto bkgtoSubtract = toSubtract->GetBinNormalizedCopy();//.GetCVHistoWithError().Clone();
       bkgtoSubtract.GetXaxis()->SetTitle("Available Energy (MeV)");
-      bkgtoSubtract.GetYaxis()->SetRangeUser(0.0, 17000.);
+      bkgtoSubtract.GetYaxis()->SetRangeUser(0.0, toSubtract->GetMaximum()*1.5);
       bkgtoSubtract.GetYaxis()->SetTitle("N Background Events");
       Plot(bkgtoSubtract, "BackgroundSumNorm", prefix);
       auto bkgSubtracted = std::accumulate(backgrounds.begin(), backgrounds.end(), folded->Clone(),
@@ -388,7 +399,7 @@ int main(const int argc, const char** argv)
         std::cerr << "Could not create a file called " << prefix + "_crossSection.root" << ".  Does it already exist?\n";
         return 5;
       }
-
+      toSubtract->Clone()->Write("background");
       bkgSubtracted->Write("backgroundSubtracted");
 
       //d'Aogstini unfolding
@@ -399,13 +410,17 @@ int main(const int argc, const char** argv)
       Plot(*unfolded, "unfolded", prefix);
       unfolded->Clone()->Write("unfolded"); //TODO: Seg fault first appears when I uncomment this line
       std::cout << "Survived writing the unfolded histogram.\n" << std::flush; //This is evidence that the problem is on the final file Write() and not unfolded->Clone()->Write().
+      Plot(*recosignal, "recoSignal", prefix);
+      auto recosig = recosignal->Clone();
+      recosig->Scale(dataPOT/mcPOT);
+      recosig->Write("recoSignal_potnorm"); 
       recosignal->Divide(recosignal, purdenom);
       Plot(*recosignal, "Purity", prefix);   
       recosignal->Clone()->Write("Purity");
       effNum->Divide(effNum, effDenom); //Only the 2 parameter version of MnvH1D::Divide()
                                         //handles systematics correctly.
       Plot(*effNum, "efficiency", prefix);
-
+      effNum->Clone()->Write("Efficiency");
       unfolded->Divide(unfolded, effNum);
       Plot(*unfolded, "efficiencyCorrected", prefix);
 

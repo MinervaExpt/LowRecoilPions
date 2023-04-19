@@ -34,6 +34,10 @@ endif()
 
 if("${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/etc/playlists" TYPE FILE FILES
+    "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/playlists/p3_x_me1A_central_mc.txt"
+    "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/playlists/p3_x_me1A_central_data.txt"
+    "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/playlists/datatest.txt"
+    "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/playlists/mctest.txt"
     "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/playlists/CCQENu_minervame1A_DATA_Inextinguishable_merged.txt"
     "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/playlists/CCQENu_minervame1A_MC_Inextinguishable_merged.txt"
     "/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/playlists/MAD_minervame1A_MC_andrewsGPVM.txt"

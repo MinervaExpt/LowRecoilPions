@@ -192,6 +192,7 @@ CMakeFiles/twoDEventLoopSide.dir/twoDEventLoopSide.cpp.o
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/systematics/Systematics.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/twoDEventLoopSide.cpp
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/BkgSideReweighter.h
+ /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/BkgSigReweighter.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/COHPionReweighter.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/Categorized.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/DiffractiveReweighter.h
