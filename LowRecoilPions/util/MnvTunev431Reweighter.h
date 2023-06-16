@@ -53,7 +53,8 @@ namespace PlotUtils
 		  << "Printing GeantHadron weight: " << wgt_geant << "\n"
 		  << "Printing COH weight: " << wgt_coh << "\n" << std::endl;
         */
-	return weight*wgt_diff*wgt_mich*wgt_target*wgt_fsi*wgt_coh*wgt_geant*wgt_lowq2pi;
+	double wgt_mk = 1.0;// univ.GetMKReWeight();
+ 	return weight*wgt_diff*wgt_mich*wgt_target*wgt_fsi*wgt_coh*wgt_geant*wgt_lowq2pi*wgt_mk;
                 
 	
       };

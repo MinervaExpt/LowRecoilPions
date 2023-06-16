@@ -4,7 +4,6 @@
 #include "CVUniverse.h"
 #include "Cluster.h"
 
-
 class Michel;
 
 class Michel
@@ -133,7 +132,7 @@ class Michel
   double down_vtx_y = -9999.;
   double down_vtx_z = -9999.;
   double is_overlay = -1;  
-  double pionKE = -9999.; 
+  double pionKE = 99999.; 
   // Adding the following member data to determine the true endpoint position of the Michel
   int trueEndpoint = -1; // 0 = Overlay Michel, 1 = Endpoint 1 is correct intial position of Michel, 2 = Endpoint 2 is correct Initial Position of Michel
  // ~DeleteMichel(){delete this;};  // This is going to be the main destructor.
@@ -280,7 +279,6 @@ void Michel::GetPionAngle(const CVUniverse& univ){
   double angle = univ.thetaWRTBeam(range.x(), range.y(), range.z()); 
   double xyp = -1.0 *sin( MinervaUnits::numi_beam_angle_rad + 0.00000001 )*range.z() + cos( MinervaUnits::numi_beam_angle_rad + 0.00000001)*range.y();
   double phiangle = std::atan2(xyp,range.x());
-  range.RotateX(MinervaUnits::numi_beam_angle_rad);
   double phi = phiangle; //range.Phi();//univ.phiWRTBeam(range.x(), range.y(), range.z());
    
   //std::cout << "The Theta calculated using displacement vector: " << angle*180/M_PI << std::endl;
@@ -292,10 +290,9 @@ void Michel::GetPionAngle(const CVUniverse& univ){
   this->best_phi = phi; // in Radians
   
   double tpi = univ.GetTpiFromRange(this->Best3Ddist);
-  double gamma = tpi/139.57 + 1;
-  //double ppi = sqrt(tpi*2*139.57)/gamma; //MeV
-  double Epi = sqrt(139.57*139.57 + 2*139.57*tpi + tpi*tpi); //sqrt(ppi*ppi + 139.57*139.57); 
-  double ppi = sqrt(2*tpi*139.57 + tpi*tpi); //sqrt(Epi*Epi - 139.57*139.57); //sqrt(tpi*2*139.57)/gamma; //MeV
+  double Epi = tpi + 139.57 ; 
+  //double ppi = sqrt(2*tpi*139.57 + tpi*tpi); //June 10 2023 Definition
+  double ppi = sqrt(2*tpi*139.57 + tpi*tpi);
   double pz = ppi*cos(angle);
   double px = ppi*sin(angle)*cos(phi);
   double py = ppi*sin(angle)*sin(phi);

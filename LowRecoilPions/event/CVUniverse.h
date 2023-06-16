@@ -18,6 +18,7 @@
 #include <chrono>
 #include "PlotUtils/MinervaUniverse.h"
 #include "TVector.h"
+
 //#include "event/Cluster.h"
 class CVUniverse : public PlotUtils::MinervaUniverse {
 
@@ -27,7 +28,8 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
   #include "PlotUtils/LowRecoilFunctions.h" // GetEAvailable()
   #include "PlotUtils/WeightFunctions.h" // Get COH Weight functions  
   #include "PlotUtils/MichelFunctions.h"
-  //#include "PlotUtils/RecoilEnergyFunctions.h"
+  #include "RecoilEnergyFunctions.h"
+  #include "PlotUtils/MnvTuneSystematics.h"
   // ========================================================================
   // Constructor/Destructor
   // ========================================================================
@@ -48,6 +50,8 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
   static constexpr int PDG_n = 2112;
   static constexpr int PDG_p = 2212;
   static constexpr double M_pi = 139.57039; //in MeV
+  
+  
   // ========================================================================
   // Write a "Get" function for all quantities access by your analysis.
   // For composite quantities (e.g. Enu) use a calculator function.
@@ -201,6 +205,10 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
   double GetZero() const{
     return 0.0;
   }
+ 
+  double GetDefault() const{
+    return 99999.;
+  }
 
   double GetBjorkenYTrue() const {
     return GetDouble("mc_Bjorkeny");
@@ -229,11 +237,52 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
     result.SetCoordinates(GetVec<double>("mc_vtx").data());
     return result;
   }
+  
+  virtual double  GetIntVtxXTrue() const
+  {
+    return GetTrueVertex().X();
+  }
+  virtual double  GetIntVtxYTrue() const
+  {
+    return GetTrueVertex().Y();
+  }
+  virtual double  GetIntVtxZTrue() const
+  {
+    return GetTrueVertex().Z();
+  }
 
   virtual int GetTDead() const {
     return GetInt("phys_n_dead_discr_pair_upstream_prim_track_proj");
   }
   
+  //=== Response Systematic Definitions
+  virtual double GetCalRecoilEnergy() const {
+    return NewEavail(); // Use calorimetric recoil energy used. 	
+  }
+ /* 
+  virtual double GetNonCalRecoilEnergy() {
+    if (GetNMichels() == 0) {
+#ifndef NDEBUG
+      std::cout << "CVU::GetNonCalRecoilEnergy WARNING: no michel candidates!\n";
+#endif
+      return 0.;
+    }
+    else{
+      return ;
+    }
+    
+  }
+  */
+
+  virtual double GetEventPionTpi(double range){
+     double tpi = GetTpiFromRange(range);
+     double energy = tpi + M_pi;
+     return energy;
+  }
+  
+  // =============== 
+
+ 
   //TODO: If there was a spline correcting Eavail, it might not really be Eavail.
   //      Our energy correction spline, one of at least 2 I know of, corrects q0
   //      so that we get the right neutrino energy in an inclusive sample.  So,
@@ -381,7 +430,16 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
   {   
       //double weight = GetLowQ2PiWeight("MENU1PI");
       //if (weight != 1.0) PrintTrueArachneLink();
-      return GetLowQ2PiWeight("MENU1PI");
+      double w = GetDouble("mc_w");
+      int npion = 0.0;
+      int pdgsize = GetInt("mc_nFSPart");
+      for (int i = 0; i< pdgsize; i++)
+      {
+           int pdg = GetVecElem("mc_FSPartPDG", i);
+           if (pdg == 211) npion++;
+      }
+      if (npion == 1 and w < 1.4) return GetLowQ2PiWeight("MENU1PI");
+      else return 1.0; 
   }
 
   virtual double GetMichelEfficiencyReWeight() const{
@@ -400,15 +458,49 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
   virtual double GetTargetMassReWeight() const {
     return GetTargetMassWeight();
   }
+  virtual double GetMKReWeight() const {
+    return GetMKWeight();
+
+  }
+  
+  virtual double Gettreco(double tpi, TVector3 p_pi) const {
+	double Emu = GetEmuGeV(); // in GeV
+	double epi = tpi + 139.57/1000.; // in GeV
+	double plmu = GetPZmu()/1000.; // GeV
+	double plpi = p_pi.Z()/1000.; //GeV Should be Z component of the pion momentum
+  	double epsub = (Emu - plmu) + (epi - plpi); // GeV
+	double pxtot = GetPXmu()/1000. + p_pi.X()/1000.;
+	double pytot = GetPYmu()/1000. + p_pi.Y()/1000.;
+	double pTmag2 = pxtot*pxtot + pytot*pytot; // GeV squared
+	double treco = epsub*epsub + pTmag2;
+	return treco;
+  }
+
+  virtual double GetTruet(int idx) const {
+	if (idx == 9999) return -9999.;
+	double ppix = GetVecElem("mc_FSPartPx", idx)/1000.;
+	TVector3 ppi(ppix, GetTruePpiyEvent(idx)/1000., GetTruePpizEvent(idx)/1000.); 
+	TVector3 pmu(GetMuonPxTrue(), GetMuonPyTrue(), GetMuonPzTrue()); //GeV
+	double emu = GetElepTrueGeV();
+	double epi = GetVecElem("mc_FSPartE", idx)/1000.; //GetTrueEpiEvent(idx);
+	double epsub = (emu - pmu.Z()) + (epi - ppi.Z());
+        double pxtot = ppi.X() + pmu.X();
+	double pytot = ppi.Y() + pmu.Y();
+	double pTmag2 = pxtot*pxtot + pytot*pytot; // GeV squared
+	double ttrue = epsub*epsub + pTmag2; 
+	return ttrue;
+  }
+
  
   virtual double GetCOHPionWeight() const {
     double weight = 1.0;
-    if(!GetInt("mc_intType") == 4) return 1.0;
+    if(GetInt("mc_intType") != 4) return 1.0;
     if(GetInt("mc_intType") == 4){
        //int npi = GetTrueNPionsinEvent();
        //if (npi == 0) return 1.0;
        double angle = GetTrueAngleHighTpi();//*180./M_PI; //this is now in degrees
-       
+       //Angle is already in degrees GetTrueAngleHighTpi()
+       //std::cout << "Printing Angle for COH event " << angle << std::endl;
        double KE = GetTrueHighEpi()/1000.; // This is supposed to be the energy of the pion!!!! 
        if (KE < 0) return 1.0;
        else {
@@ -716,7 +808,7 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
           int pdg = GetVecElem("mc_FSPartPDG", i);
           if (pdg == 211) npion++;
       }
-      return npion;
+     return npion;
 
  }
  
@@ -779,7 +871,40 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
 
  }
 
- virtual double GetTrueLowestPpiEvent() const{
+ virtual TVector3 GetTrueLowestPpiEvent() const{
+    double tpi = 99999.;
+    double Epi = 9999.;
+    TVector3 ppi;
+    int pdgsize = GetInt("mc_nFSPart");
+    for (int i = 0; i< pdgsize; i++)
+        {
+            int pdg = GetVecElem("mc_FSPartPDG", i);
+            if (pdg != 211) continue;
+            double energy = GetVecElem("mc_FSPartE", i);
+            double momentumx = GetVecElem("mc_FSPartPx", i)/1000.;
+            double momentumy = GetVecElem("mc_FSPartPy", i)/1000.;
+            double momentumz = GetVecElem("mc_FSPartPz", i)/1000.;
+            double pionmomentum = TMath::Sqrt(pow(momentumx, 2) + pow(momentumy,2)+pow(momentumz,2));
+            double pionmass = TMath::Sqrt(pow(energy, 2) - pow(pionmomentum, 2));
+            double KE = energy - pionmass;
+            if (tpi > KE) {
+                   tpi = KE;
+		   ppi.SetX(momentumx);
+		   ppi.SetY(momentumy);
+		   ppi.SetZ(momentumz);			
+            }
+        }
+     return ppi;
+
+ }
+
+
+  virtual double GetTrueLowestEpiEventGEV() const{
+     
+     return GetTrueLowestEpiEvent()/1000.; // in GeV
+  }
+
+ virtual double GetTrueLowestPpiEventGEV() const{
     double tpi = 99999.;
     double Ppi = 9999.;
     int pdgsize = GetInt("mc_nFSPart");
@@ -800,7 +925,7 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
                         Ppi = pionmomentum;
             }
         }
-     return Ppi;
+     return Ppi/1000.;
 
  }
 
@@ -816,6 +941,8 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
        double pzp = cos( MinervaUnits::numi_beam_angle_rad )*z + sin( MinervaUnits::numi_beam_angle_rad )*y;
        return pzp;
  }
+
+ 
  
  virtual double GetTruePpiyEvent(int i) const{
        double y = GetVecElem("mc_FSPartPy", i);
@@ -825,8 +952,8 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
  }
 
  virtual double GetTruePpiEvent(int i) const{
-	int pdg = GetVecElem("mc_FSPartPDG", i);
-        double energy = GetVecElem("mc_FSPartE", i);
+	//int pdg = GetVecElem("mc_FSPartPDG", i);
+        //double energy = GetVecElem("mc_FSPartE", i);
         double momentumx = GetVecElem("mc_FSPartPx", i);
         double momentumy = GetVecElem("mc_FSPartPy", i);
         double momentumz = GetVecElem("mc_FSPartPz", i);
@@ -839,12 +966,12 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
  virtual double GetTrueEpiEvent(int i) const{
         int pdg = GetVecElem("mc_FSPartPDG", i);
         double energy = GetVecElem("mc_FSPartE", i);
-        double momentumx = GetVecElem("mc_FSPartPx", i);
-        double momentumy = GetVecElem("mc_FSPartPy", i);
-        double momentumz = GetVecElem("mc_FSPartPz", i);
-        double pionmomentum = TMath::Sqrt(pow(momentumx, 2) + pow(momentumy,2)+pow(momentumz,2));
-        double pionmass = TMath::Sqrt(pow(energy, 2) - pow(pionmomentum, 2));
-        double KE = energy - pionmass;
+        //double momentumx = GetVecElem("mc_FSPartPx", i);
+        //double momentumy = GetVecElem("mc_FSPartPy", i);
+        //double momentumz = GetVecElem("mc_FSPartPz", i);
+        //double pionmomentum = TMath::Sqrt(pow(momentumx, 2) + pow(momentumy,2)+pow(momentumz,2));
+        //double pionmass = TMath::Sqrt(pow(energy, 2) - pow(pionmomentum, 2));
+        //double KE = energy - pionmass;
         return energy;
  }
 
@@ -871,6 +998,28 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
     return idx;
  }
 
+ virtual int GetTrueEavMinusTpi() const{
+     std::vector<int> pdgs = GetVecInt("mc_FSPartPDG");
+     int count = std::count(pdgs.begin(), pdgs.end(), 211);
+     double tpi = 9999.;
+     if (count < 1) tpi = 0;
+     else  tpi = GetTrueLowestTpiEvent();
+     double eavl =  GetTrueEAvail();
+     if (tpi > eavl) return 0.0;
+     else return (eavl - tpi);  
+		
+ }
+ 
+ virtual int GetTrueEavMinusTpiGEV() const{
+    std::vector<int> pdgs = GetVecInt("mc_FSPartPDG");
+     int count = std::count(pdgs.begin(), pdgs.end(), 211);
+     double tpi = 9999.;
+     if (count < 1) tpi = 0;
+     else  tpi = GetTrueLowestTpiEventGEV();
+     double eavl =  GetTrueEAvailGEV();
+     if (tpi > eavl) return 0.0;
+     else return (eavl - tpi);
+ }
 
  virtual int GetTrueHighestKEPion() const{
     double tpi = -9999.;
@@ -907,9 +1056,6 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
 	    double momentumy = GetVecElem("mc_FSPartPy", i);
 	    double momentumz = GetVecElem("mc_FSPartPz", i);
             double pionmomentum = TMath::Sqrt(pow(momentumx, 2) + pow(momentumy,2)+pow(momentumz,2));
-	   // ROOT::Math::PxPyPzEVector pion;
-	   // pion.SetPxPyPzE(momentumx, momentumy,momentumz, energy); 
-           // double momentum = pion.P();
 	    double pionmass = TMath::Sqrt(pow(energy, 2) - pow(pionmomentum, 2));  
 	    double KE = energy - pionmass;
 	    if (tpi > KE) tpi = KE;     
@@ -917,7 +1063,49 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
     ///if(tpi < 99999.) std::cout << "Lowest Energy Primary Pion KE is " << tpi << std::endl;
     return tpi;
  } 
-  
+
+  virtual double GetTrueLowestTpiEventGEV() const {
+	 double tpi = 999999.;
+    int pdgsize = GetInt("mc_nFSPart");
+    for (int i = 0; i< pdgsize; i++)
+        {   
+            int pdg = GetVecElem("mc_FSPartPDG", i);
+            if (pdg != 211) continue;
+            double energy = GetVecElem("mc_FSPartE", i); 
+            double momentumx = GetVecElem("mc_FSPartPx", i);
+            double momentumy = GetVecElem("mc_FSPartPy", i);
+            double momentumz = GetVecElem("mc_FSPartPz", i); 
+            double pionmomentum = TMath::Sqrt(pow(momentumx, 2) + pow(momentumy,2)+pow(momentumz,2));
+            double pionmass = TMath::Sqrt(pow(energy, 2) - pow(pionmomentum, 2));
+            double KE = energy - pionmass;
+            if (tpi > KE) tpi = KE;
+        }	
+       return tpi/1000.; //GeV
+  } 
+
+  virtual int GetTrueLowestTpiIdx() const {
+    double tpi = 999999.;
+    int pdgsize = GetInt("mc_nFSPart");
+    int idx = 9999;
+    for (int i = 0; i< pdgsize; i++)
+        {
+            int pdg = GetVecElem("mc_FSPartPDG", i);
+            if (pdg != 211) continue;
+            double energy = GetVecElem("mc_FSPartE", i);
+            double momentumx = GetVecElem("mc_FSPartPx", i);
+            double momentumy = GetVecElem("mc_FSPartPy", i);
+            double momentumz = GetVecElem("mc_FSPartPz", i);
+            double pionmomentum = TMath::Sqrt(pow(momentumx, 2) + pow(momentumy,2)+pow(momentumz,2));
+            double pionmass = TMath::Sqrt(pow(energy, 2) - pow(pionmomentum, 2));
+            double KE = energy - pionmass;
+            if (tpi > KE) {
+		tpi = KE;
+		idx = i;
+	    }
+        }
+       return idx; //returns index of lowest energy pion
+  }
+ 
   virtual int GetTrueNPions() const{
       return GetInt("truth_FittedMichel_all_piontrajectory_pdg_sz");
   }
@@ -1169,13 +1357,18 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
 
  virtual double NewEavail() const
  {
-    //double recoiltracker =  GetDouble("blob_recoil_E_tracker") -  GetTrackerMuFuzz(); 
-    double recoiltracker = GetClusterEnergyTracker() - GetTrackerECALMuFuzz()[0]; // GetTrackerMuFuzz();
-    //double recoilEcal = GetDouble("blob_recoil_E_ecal") - GetECALMuFuzz();
-    double recoilEcal = GetClusterEnergyECAL() - GetTrackerECALMuFuzz()[1]; //GetECALMuFuzz();
+    double recoiltracker =  GetDouble("blob_recoil_E_tracker") - GetTrackerECALMuFuzz()[0];  //GetTrackerMuFuzz(); 
+    //double recoiltracker = GetClusterEnergyTracker() - GetTrackerECALMuFuzz()[0]; // GetTrackerMuFuzz();
+    double recoilEcal = GetDouble("blob_recoil_E_ecal") - GetTrackerECALMuFuzz()[1]; //GetECALMuFuzz();
+    //double recoilEcal = GetClusterEnergyECAL() - GetTrackerECALMuFuzz()[1]; //GetECALMuFuzz();
     const double Eavailable_scale = 1.17;
     double eavail = recoiltracker + recoilEcal;
     return eavail*Eavailable_scale;
+ }
+
+ virtual double NewEavailGEV() const
+ {
+    return NewEavail()/1000.;
  }
 
  virtual double NewRecoilE() const
@@ -1190,7 +1383,29 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
     return  newrecoil;
 
  } 
- 
+
+ virtual double GetTrueEAvailGEV() const
+ {
+     double Eavail = 0.0;
+     int pdgsize = GetInt("mc_nFSPart");
+     for (int i = 0; i< pdgsize; i++)
+     {
+        int pdg = GetVecElem("mc_FSPartPDG", i);
+        double energy = GetVecElem("mc_FSPartE", i);
+ 	if (pdg == 211 || pdg == -211) Eavail+= energy - 139.57; // subtracting pion mass to get Kinetic energy
+        else if (pdg == 2212) Eavail += energy - 938.28; // proton
+        else if (pdg == 111) Eavail += energy; // pi0
+        else if (pdg == 22) Eavail += energy; // photons
+        else if (pdg == 311) Eavail += energy - 497.611/2.0; // K0 ???? - Kaon rest mass / 2
+        else if (abs(pdg) == 321) Eavail += energy - 497.611/2.0; // Kaon+ Kinetic Energy  divide by Kmass/2 
+        else if (pdg == 221) Eavail += energy; //Adding etas
+
+     }
+     
+     return Eavail/1000.;//in GEV
+
+
+ } 
 
 
  virtual double GetTrueEAvail() const

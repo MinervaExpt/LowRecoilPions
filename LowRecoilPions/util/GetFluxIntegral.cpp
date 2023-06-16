@@ -17,6 +17,7 @@ class CVUniverse;
 namespace PlotUtils
 {
   class MnvH1D;
+  class MnvH2D;
 }
 
 namespace util

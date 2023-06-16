@@ -7,6 +7,7 @@
 #include "util/Categorized.h"
 //#include "util/TruthInteractionStudies.h"
 #include "util/PionFSCategory.h"
+#include "util/PionProtonFSCategory.h"
 //PlotUtils includes
 #include "PlotUtils/VariableBase.h"
 #include "PlotUtils/HistWrapper.h"
@@ -50,7 +51,8 @@ class Variable: public PlotUtils::VariableBase<CVUniverse>
                                                            GetBinVec(), mc_error_bands);
 
       fSignalByPionsInVar = new util::Categorized<Hist, FSCategory*>(pionFSCategories,(GetName()+"_top").c_str(),(GetName()).c_str() , GetBinVec(),mc_error_bands);
-     
+      fSignalByPionProtonInVar = new util::Categorized<Hist, FSpCategory*>(pionprotonFSCategories,(GetName()+"_picat").c_str(),(GetName()).c_str() , GetBinVec(),mc_error_bands); 
+    
       //fSideBandByPionsInVar = new util::Categorized<Hist, FSCategory*>(pionFSCategories,GetName().c_str(),(GetName()).c_str() , GetBinVec(),mc_error_bands);
 
       efficiencyNumerator = new Hist((GetName() + "_efficiency_numerator").c_str(), GetName().c_str(), GetBinVec(), mc_error_bands);
@@ -78,6 +80,7 @@ class Variable: public PlotUtils::VariableBase<CVUniverse>
     util::Categorized<Hist, int>* m_sidebandHists;
     util::Categorized<Hist, int>* m_MChists;
     util::Categorized<Hist, FSCategory*>* fSignalByPionsInVar;
+    util::Categorized<Hist, FSpCategory*>* fSignalByPionProtonInVar;
     //util::Categorized<Hist, FSCategory*>* fSideBandByPionsInVar;
     Hist* dataHist;
     Hist* efficiencyNumerator;
@@ -126,6 +129,13 @@ class Variable: public PlotUtils::VariableBase<CVUniverse>
                                                     Hist.hist->SetDirectory(&file);
                                                     Hist.hist->Write();
                                                 });
+     
+      fSignalByPionProtonInVar->visit([&file](auto& Hist) {
+                                                    Hist.SyncCVHistos();
+                                                    Hist.hist->SetDirectory(&file);
+                                                    Hist.hist->Write();
+                                                });
+
       if(efficiencyNumerator)
       {
         efficiencyNumerator->hist->SetDirectory(&file); //TODO: Can I get around having to call SetDirectory() this many times somehow?
@@ -179,6 +189,7 @@ class Variable: public PlotUtils::VariableBase<CVUniverse>
       m_backgroundHists->visit([](Hist& categ) { categ.SyncCVHistos(); });
       m_MChists->visit([](Hist& categ) { categ.SyncCVHistos(); });
       fSignalByPionsInVar->visit([](auto& Hist) {Hist.SyncCVHistos();});
+      fSignalByPionProtonInVar->visit([](auto& Hist) {Hist.SyncCVHistos();});
       //fSideBandByPionsInVar->visit([](auto& Hist) {Hist.SyncCVHistos();});
       if(dataHist) dataHist->SyncCVHistos();
       if(efficiencyNumerator) efficiencyNumerator->SyncCVHistos();
@@ -194,7 +205,9 @@ class Variable: public PlotUtils::VariableBase<CVUniverse>
     {
       const auto pionCat = std::find_if(pionFSCategories.begin(), pionFSCategories.end(), [&univ](auto& category) { return (*category)(univ); });
       (*fSignalByPionsInVar)[*pionCat].FillUniverse(&univ, var, weight);
-      //(*fSideBandByPionsInVar)[*pionCat].FillUniverse(&univ, var, weight);
+      const auto pionprotonCat = std::find_if(pionprotonFSCategories.begin(), pionprotonFSCategories.end(), [&univ](auto& category) { return (*category)(univ); });
+      (*fSignalByPionProtonInVar)[*pionprotonCat].FillUniverse(&univ, var, weight);
+       //(*fSideBandByPionsInVar)[*pionCat].FillUniverse(&univ, var, weight);
     }
 };
 

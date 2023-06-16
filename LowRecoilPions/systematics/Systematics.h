@@ -18,6 +18,8 @@
 #include "PlotUtils/MuonSystematics.h"
 #include "PlotUtils/NSFDefaults.h"
 #include "PlotUtils/ResponseSystematics.h"
+#include "CohDiffractiveSystematics.h"
+#include "PlotUtils/GeantHadronSystematics.h"
 
 typedef std::map<std::string, std::vector<CVUniverse*>> UniverseMap;
 
@@ -41,7 +43,7 @@ UniverseMap GetStandardSystematics(PlotUtils::ChainWrapper* chain)
   //========================================================================
   // Standard
   UniverseMap bands_genie =
-      PlotUtils::GetGenieSystematicsMap<CVUniverse>(chain); //PlotUtils::GetStandardGenieSystematicsMap<CVUniverse>(chain);
+      PlotUtils::GetGenieSystematicsMap<CVUniverse>(chain, false); //PlotUtils::GetStandardGenieSystematicsMap<CVUniverse>(chain);
   error_bands.insert(bands_genie.begin(), bands_genie.end());
 
   //========================================================================
@@ -74,13 +76,14 @@ UniverseMap GetStandardSystematics(PlotUtils::ChainWrapper* chain)
   error_bands.insert(bands_muon_minos.begin(), bands_muon_minos.end());
 
   // Vertical only
+  // MINOS Efficiency
   UniverseMap bands_minoseff =
       PlotUtils::GetMinosEfficiencySystematicsMap<CVUniverse>(chain);
   error_bands.insert(bands_minoseff.begin(), bands_minoseff.end());
-
+  // MUON RESOLUTION
   UniverseMap bands_muon_resolution = PlotUtils::GetMuonResolutionSystematicsMap<CVUniverse>(chain);
   error_bands.insert(bands_muon_resolution.begin(), bands_muon_resolution.end());
-
+  //GEANT HADRON SYSTEMATICS
   UniverseMap bands_geant = PlotUtils::GetGeantHadronSystematicsMap<CVUniverse>(chain);
   error_bands.insert(bands_geant.begin(), bands_geant.end());
 
@@ -115,7 +118,25 @@ UniverseMap GetStandardSystematics(PlotUtils::ChainWrapper* chain)
   UniverseMap new_ep_genie_error_bands = PlotUtils::GetGenieEPMvResSystematicsMap<CVUniverse>(chain);
   error_bands.insert(new_ep_genie_error_bands.begin(), new_ep_genie_error_bands.end());
   
+  // Response Systematics 
+  const bool use_neutron = false;
+  const bool use_new = true;
+  UniverseMap bands_response =
+        PlotUtils::GetResponseSystematicsMap<CVUniverse>(chain, use_neutron,
+                                                         use_new);
+    error_bands.insert(bands_response.begin(), bands_response.end());
 
+  // Diffractive Error Bands
+  UniverseMap error_bands_cohdiff =
+        GetCohDiffractiveSystematicsMap( chain );
+  error_bands.insert(error_bands_cohdiff.begin(), error_bands_cohdiff.end());
+
+  // LowQ2SystematicsMap
+  UniverseMap lowq2_error_bands = PlotUtils::GetLowQ2PiSystematicsMap<CVUniverse>(chain); 
+  error_bands.insert(lowq2_error_bands.begin(), lowq2_error_bands.end());
+
+
+  
 
   return error_bands;
 }

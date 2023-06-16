@@ -3,7 +3,6 @@
 
 #include "Michel.h"
 #include "CVUniverse.h"
-#include "Cluster.h"
 
 struct MichelEvent {
     int m_idx = -1; // Index for Best Michel in nmichels

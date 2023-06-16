@@ -106,24 +106,29 @@ namespace PlotUtils
  
         std::vector<double> tpilowbins = {1., 4., 8., 12., 16., 20., 24., 28., 32., 36., 40., 46., 52.,60., 70., 80., 100., 125.,150., 175., 200., 225., 250., 275., 300., 350., 400., 500., 700.,1000.}; 
         if (univ.GetTrueNPionsinEvent() == 0) return 1.0;
-        double tpi = univ.GetTrueLowestTpiEvent();
+        else if(univ.GetInt("mc_intType") == 4) return 1.0;
+	else {
+		double tpi = univ.GetTrueLowestTpiEvent();
         //std::cout << "Printing the q3 of the event " << q3_mecAna << std::endl;	
 	//std::cout << "Printing the lowest Tpi in Event " << tpi << std::endl;
         //double angle = cos(univ.GetTrueAngleLowTpi());	
         //double tpi = myevent.m_nmichels[0].pionKE/1000.;
-        for (int i = 0; i< tpilowbins.size(); i++){
-                if (i < tpilowbins.size() and tpi >= tpilowbins[i] and tpi < tpilowbins[i+1]){
-		   weight2 = tpiweights[i];
- 		   break;
-		}
-		else if (tpi >= 1000.){
-	           weight2 = abs(tpiweights[29]);
-       		   break; 
-                }
-        }
+        	for (int i = 0; i< tpilowbins.size(); i++){
+                	if (i < tpilowbins.size() and tpi >= tpilowbins[i] and tpi < tpilowbins[i+1]){
+		   		weight2 = tpiweights[i];
+ 		   		break;
+			}
+			else if (tpi >= 1000.){
+	           		weight2 = abs(tpiweights[29]);
+       		  		 break; 
+               		}
+        	}
         //if (angle > 0.10) weight2 = 0.90*weight2; //Correcting for Forward going Pions 
-	return weight2;
+		return weight2;
+      }
+
       };
+
       virtual std::string GetName() const {return "LowRecPionReweight"; }
 
       virtual bool DependsReco() const {return false;}

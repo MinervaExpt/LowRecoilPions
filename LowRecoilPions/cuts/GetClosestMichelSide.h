@@ -99,6 +99,7 @@ class GetClosestMichelSide: public PlotUtils::Cut<UNIVERSE, EVENT>
        evt.m_nmichels.clear();
        evt.m_nmichels = closestMichel;
        if (evt.m_nmichels.empty()) return false;
+       //if (closestMichel[0].Best3Ddist < 2600.) return false; 
        //if (closestMichel[0].Best3Ddist > 2400.) return false;
        else return true;       
        //return !evt.m_nmichels.empty();

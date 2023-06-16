@@ -41,8 +41,8 @@ Cluster::Cluster(const CVUniverse &univ, int &ci)
     	pos    = univ.GetVecElem("cluster_pos", ci); // in mm
     	zpos   = univ.GetVecElem("cluster_z", ci); // in mm
     	view   = univ.GetVecElem("cluster_view", ci); // 1 = X view, 2 = U view, 3 = V view
-        //subdet = univ.GetVecElem("cluster_subdet", ci); // 1 = nuke, 2 = tracker, 3 = ecal, 4  = hcal
-        //ecalo = univ.GetVecElem("cluster_ecalo", ci); // passive material corrected energy of cluster      
+        subdet = univ.GetVecElem("cluster_subdet", ci); // 1 = nuke, 2 = tracker, 3 = ecal, 4  = hcal
+        ecalo = univ.GetVecElem("cluster_ecalo", ci); // passive material corrected energy of cluster      
 }
 
 

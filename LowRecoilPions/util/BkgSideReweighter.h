@@ -36,12 +36,13 @@ namespace PlotUtils
         bool isSignal = false;	
         bool isBackground = false;
         if (univ.GetTrueNPionsinEvent() >= 1) isSignal = true;
-        else if (univ.GetTrueNPi0inEvent() > 0) isBackground = true;
-        else if (univ.GetTrueNPionsinEvent() == 0 and univ.GetTrueNPi0inEvent() == 0 and univ.GetTrueNKaonsinEvent() == 0 and univ.GetTrueNNeutralKaonsinEvent() == 0) isBackground = true;
+        else{ isBackground = true;}
+	//else if (univ.GetTrueNPi0inEvent() > 0) isBackground = true;
+        //else if (univ.GetTrueNPionsinEvent() == 0 and univ.GetTrueNPi0inEvent() == 0 and univ.GetTrueNKaonsinEvent() == 0 and univ.GetTrueNNeutralKaonsinEvent() == 0) isBackground = true;
 
-        double eavail = univ.GetTrueEAvail();//NewEavail();
-        std::vector<double> eavailbins = {1.0, 150., 225., 300., 400., 500., 600., 700., 800., 900., 1000.};
-        
+        double eavail = univ.GetTrueEAvailGEV();  //GetTrueEAvail();//NewEavail();
+        std::vector<double> eavbinsGEV = {0.0, .075, .150, .225, .300, .400, .500, .600, .700, .800, .900, 1.000};
+	/*        
         for (int i =0; i < eavailbins.size(); i++){
 	     if (i < eavailbins.size() and eavail >= eavailbins[i] and eavail < eavailbins[i+1]){
                    if(isSignal) weight = sigScaleFactors[i];
@@ -55,9 +56,38 @@ namespace PlotUtils
 	     }
 
 
-        }
+        }*/
 
-	return weight;
+	//mehreenpTBins = {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6}	
+	double pT = univ.GetMuonPTTrue();
+	double p0 = 1.0;
+	double p1 = 1.0;
+	if (isBackground == true and eavail < .250){
+		if (pT <= 0.2){
+			p0 = 1.21456;
+			p1 = 1.35223;
+		}
+		else if (pT > 0.2 and pT <= 0.4){
+			p0 = 1.30892;
+			p1 = -1.11561;
+
+		}
+		else if (pT > 0.4 and pT <= 0.6){
+			p0 =  1.35141;
+			p1 = -0.999961;
+		}
+		else if (pT > 0.6 and pT <= 0.8){
+			p0 = 1.54076;
+			p1 =  -1.42152;
+
+		}
+	        weight = p0 + p1*eavail;
+		return weight;
+	}
+	else{
+		return 1.0;	
+	}
+	
       };
       virtual std::string GetName() const {return "BkgSideReweight"; }
 

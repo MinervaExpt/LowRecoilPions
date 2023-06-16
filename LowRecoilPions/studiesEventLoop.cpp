@@ -113,7 +113,7 @@ enum ErrorCodes
 #include "util/COHPionReweighter.h"
 #include "util/TargetMassReweighter.h"
 #include "util/MnvTunev431Reweighter.h"
-#include "util/BkgSigReweighter.h"
+#include "util/BkgSideReweighter.h"
 #pragma GCC diagnostic pop
 
 //ROOT includes
@@ -525,8 +525,8 @@ int main(const int argc, const char** argv)
   //MnvTunev4.emplace_back(new PlotUtils::COHPionReweighter<CVUniverse, MichelEvent>());
   //MnvTunev4.emplace_back(new PlotUtils::TargetMassReweighter<CVUniverse, MichelEvent>());  
   MnvTunev4.emplace_back(new PlotUtils::MnvTunev431Reweighter<CVUniverse, MichelEvent>()); 
-  //MnvTunev4.emplace_back(new PlotUtils::PionReweighter<CVUniverse,MichelEvent>()); 
-  //MnvTunev4.emplace_back(new PlotUtils::BkgSigReweighter<CVUniverse,MichelEvent>());
+  MnvTunev4.emplace_back(new PlotUtils::PionReweighter<CVUniverse,MichelEvent>()); 
+  //MnvTunev4.emplace_back(new PlotUtils::BkgSideReweighter<CVUniverse,MichelEvent>());
   PlotUtils::Model<CVUniverse, MichelEvent> model(std::move(MnvTunev4));
   
   // Make a map of systematic universes
