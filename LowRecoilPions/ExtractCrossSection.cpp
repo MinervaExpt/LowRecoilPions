@@ -9,7 +9,7 @@
 
 //util includes
 #include "util/GetIngredient.h"
-
+#include "util/SafeROOTName.h"
 //UnfoldUtils includes
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Woverloaded-virtual"
@@ -62,8 +62,132 @@ void Plot(PlotUtils::MnvH1D& hist, const std::string& stepName, const std::strin
 
   //Uncertainty summary
   PlotUtils::MnvPlotter plotter;
-  plotter.ApplyStyle(PlotUtils::kCCQENuStyle);
+  plotter.ApplyStyle(PlotUtils::kCCNuPionIncStyle);
   plotter.axis_maximum = 0.4;
+
+
+  plotter.error_summary_group_map.clear();
+  plotter.error_summary_group_map["Flux"].push_back("Flux");
+
+  plotter.error_summary_group_map["Muon"].push_back("Muon_Energy_MINOS");
+  plotter.error_summary_group_map["Muon"].push_back("Muon_Energy_MINERvA");
+  plotter.error_summary_group_map["Muon"].push_back(
+      "Muon_Energy_Resolution");
+  plotter.error_summary_group_map["Muon"].push_back(
+      "MINOS_Reconstruction_Efficiency");
+  plotter.error_summary_group_map["Muon"].push_back("MuonAngleXResolution");
+
+  plotter.error_summary_group_map["Muon"].push_back("MuonResolution");
+  plotter.error_summary_group_map["PhysicsModel"].push_back(
+      "MichelEfficiency");
+  plotter.error_summary_group_map["PhysicsModel"].push_back(
+      "Target_Mass_CH");
+  plotter.error_summary_group_map["PhysicsModel"].push_back(
+      "Target_Mass_C");
+  plotter.error_summary_group_map["PhysicsModel"].push_back(
+      "Target_Mass_Fe");
+  plotter.error_summary_group_map["PhysicsModel"].push_back(
+      "Target_Mass_H2O");
+  plotter.error_summary_group_map["PhysicsModel"].push_back(
+      "Target_Mass_Pb");
+  plotter.error_summary_group_map["Diffractive"].push_back("DiffractiveModelUnc");
+  plotter.error_summary_group_map["Diffractive"].push_back("CoherentPiUnc_C");
+  plotter.error_summary_group_map["Diffractive"].push_back("CoherentPiUnc_CH");
+  plotter.error_summary_group_map["Diffractive"].push_back("CoherentPiUnc_Fe");
+  plotter.error_summary_group_map["Diffractive"].push_back("CoherentPiUnc_H2O");
+  plotter.error_summary_group_map["Diffractive"].push_back("CoherentPiUnc_Pb");
+  plotter.error_summary_group_map["Detector"].push_back("EmuRangeCurve");
+  plotter.error_summary_group_map["Detector"].push_back("Birks");
+  plotter.error_summary_group_map["Detector"].push_back("BetheBloch");
+  plotter.error_summary_group_map["Detector"].push_back("Mass");
+  plotter.error_summary_group_map["Detector"].push_back("PartResp");
+  plotter.error_summary_group_map["Detector"].push_back("TrackAngle");
+  plotter.error_summary_group_map["Detector"].push_back("BeamAngle");
+  plotter.error_summary_group_map["Detector"].push_back("NodeCutEff");
+  plotter.error_summary_group_map["Detector"].push_back("BeamAngleX");
+  plotter.error_summary_group_map["Detector"].push_back("BeamAngleY");
+  plotter.error_summary_group_map["FSI_Model"].push_back("GENIE_FrAbs_N");
+  plotter.error_summary_group_map["FSI_Model"].push_back("GENIE_FrAbs_pi");
+  plotter.error_summary_group_map["FSI_Model"].push_back("GENIE_FrCEx_N");
+  plotter.error_summary_group_map["FSI_Model"].push_back("GENIE_FrCEx_pi");
+  plotter.error_summary_group_map["FSI_Model"].push_back("GENIE_FrElas_N");
+  plotter.error_summary_group_map["FSI_Model"].push_back("GENIE_FrElas_pi");
+  plotter.error_summary_group_map["FSI_Model"].push_back("GENIE_FrInel_N");
+  plotter.error_summary_group_map["FSI_Model"].push_back("GENIE_FrInel_pi");
+  plotter.error_summary_group_map["FSI_Model"].push_back("GENIE_FrPiProd_N");
+  plotter.error_summary_group_map["FSI_Model"].push_back("GENIE_FrPiProd_pi");
+  plotter.error_summary_group_map["FSI_Model"].push_back("GENIE_MFP_N");
+  plotter.error_summary_group_map["FSI_Model"].push_back("GENIE_MFP_pi");
+
+  auto genieint = util::SafeROOTName("Genie Others");
+  plotter.error_summary_group_map[genieint].push_back("GENIE_AGKYxF1pi");
+  plotter.error_summary_group_map[genieint].push_back("GENIE_AhtBY");
+  plotter.error_summary_group_map[genieint].push_back("GENIE_BhtBY");
+  plotter.error_summary_group_map[genieint].push_back("GENIE_CV1uBY");
+  plotter.error_summary_group_map[genieint].push_back("GENIE_CV2uBY");
+  plotter.error_summary_group_map[genieint].push_back("GENIE_EtaNCEL");
+  plotter.error_summary_group_map[genieint].push_back("GENIE_NormDISCC");
+  plotter.error_summary_group_map[genieint].push_back("GENIE_MaNCEL");
+  plotter.error_summary_group_map[genieint].push_back("GENIE_RDecBR1gamma");
+  auto genieint2 = util::SafeROOTName("Genie CCQE");
+  plotter.error_summary_group_map[genieint2].push_back("GENIE_MaCCQEshape");
+  plotter.error_summary_group_map[genieint2].push_back("GENIE_MaNCEL");
+  plotter.error_summary_group_map[genieint2].push_back("GENIE_NormCCQE");
+  plotter.error_summary_group_map[genieint2].push_back("GENIE_NormDISCC");
+  plotter.error_summary_group_map[genieint2].push_back("GENIE_VecFFCCQEshape");
+  plotter.error_summary_group_map[genieint2].push_back("GENIE_MaCCQE");
+  plotter.error_summary_group_map[genieint2].push_back("GENIE_CCQEPauliSupViaKF");
+  auto genieint3 = util::SafeROOTName("Genie RES");
+  plotter.error_summary_group_map[genieint3].push_back("GENIE_MvRES");
+  plotter.error_summary_group_map[genieint3].push_back("GENIE_MaRES");
+  plotter.error_summary_group_map[genieint3].push_back("GENIE_D2_MaRES");
+  plotter.error_summary_group_map[genieint3].push_back("GENIE_D2_NormCCRES");
+  plotter.error_summary_group_map[genieint3].push_back("GENIE_EP_MvRES");
+  plotter.error_summary_group_map[genieint3].push_back("GENIE_NormCCRES");
+  plotter.error_summary_group_map[genieint3].push_back("GENIE_NormNCRES");
+  auto genieint4 = util::SafeROOTName("Genie Pion Interaction Model");
+  plotter.error_summary_group_map[genieint4].push_back("GENIE_Rvn1pi");
+  plotter.error_summary_group_map[genieint4].push_back("GENIE_Rvn2pi");
+  plotter.error_summary_group_map[genieint4].push_back("GENIE_Rvn3pi");
+  plotter.error_summary_group_map[genieint4].push_back("GENIE_Rvp1pi");
+  plotter.error_summary_group_map[genieint4].push_back("GENIE_Rvp2pi");
+  plotter.error_summary_group_map[genieint4].push_back("GENIE_Theta_Delta2Npi");
+
+
+  plotter.error_summary_group_map["Tune"].push_back("RPA_LowQ2");
+  plotter.error_summary_group_map["Tune"].push_back("RPA_HighQ2");
+  plotter.error_summary_group_map["Tune"].push_back("NonResPi");
+  plotter.error_summary_group_map["Tune"].push_back("2p2h");
+  plotter.error_summary_group_map["Tune"].push_back("LowQ2Pi");
+  plotter.error_summary_group_map["Tune"].push_back("Low_Recoil_2p2h_Tune");
+
+  plotter.error_summary_group_map["Response"].push_back("response_em");
+  plotter.error_summary_group_map["Response"].push_back("response_proton");
+  plotter.error_summary_group_map["Response"].push_back("response_pion");
+  plotter.error_summary_group_map["Response"].push_back("response_meson");
+  plotter.error_summary_group_map["Response"].push_back("response_other");
+  plotter.error_summary_group_map["Response"].push_back("response_low_neutron");
+  plotter.error_summary_group_map["Response"].push_back("response_mid_neutron");
+  plotter.error_summary_group_map["Response"].push_back("response_high_neutron");
+
+  plotter.error_summary_group_map["Geant"].push_back("GEANT_Neutron");
+  plotter.error_summary_group_map["Geant"].push_back("GEANT_Proton");
+  plotter.error_summary_group_map["Geant"].push_back("GEANT_Pion");
+
+  plotter.error_color_map["Geant"] = kViolet+2;
+  plotter.error_color_map["Response"] =  kOrange;
+  plotter.error_color_map["Detector"] = kYellow+2;
+  plotter.error_color_map["Flux"] = kOrange+2;
+  plotter.error_color_map["Muon"] = kRed;
+  plotter.error_color_map[genieint] = kCyan+2;
+  plotter.error_color_map["FSI Model"] = kPink+2;
+  plotter.error_color_map["PhysicsModel"] = kTeal+2;
+  plotter.error_color_map["NonResPi"] =  kAzure+2;
+  plotter.error_color_map["Tune"] =  kRed+2;
+  plotter.error_color_map[genieint2] = kYellow;
+  plotter.error_color_map[genieint3] = kViolet-1;
+  plotter.error_color_map[genieint4] = kMagenta-1;
+  std::vector<std::string> groupnames = {"Tune","Geant", "Response", "Detector", "Flux", "Muon", genieint, genieint2, genieint3, genieint4, "FSI Model", "Diffractive", "PhysicsModel"};
 
   plotter.DrawErrorSummary(&hist);
   can.Print((prefix + "_" + stepName + "_uncertaintySummary.png").c_str());
@@ -71,6 +195,21 @@ void Plot(PlotUtils::MnvH1D& hist, const std::string& stepName, const std::strin
   plotter.DrawErrorSummary(&hist, "TR", true, true, 1e-5, false, "Other");
   can.Print((prefix + "_" + stepName + "_otherUncertainties.png").c_str());
 
+  for(int j = 0; j<groupnames.size(); j++){
+            auto groupname = util::SafeROOTName(groupnames[j]);
+            std::cout << "Name of group is " << groupname << std::endl;
+            plotter.SetLegendNColumns(1);
+            plotter.DrawErrorSummary(&hist, "TR", true, true, 1e-5, false, groupname, true);
+            can.Draw("c");
+            can.Print((prefix + "_" + stepName + "_uncertaintysummary_" + groupname + ".png").c_str());
+  }
+
+  auto hist2 = hist;
+  hist2.Add(&hist, -1);
+  plotter.DrawErrorSummary(&hist2,"TR", true, true, 1e-5, false, "", true);
+  can.Print((prefix + "_" + stepName + "_uncertaintySummary_JUSTLEGEND.png").c_str());
+
+  /*
   const std::string systname("Cross Section Models");
   plotter.DrawErrorSummary(&hist, "TR", true, true, 0.00001, false, systname);
   can.Print((prefix + "_" + stepName + "_CrossSectionModels.png").c_str());
@@ -78,7 +217,7 @@ void Plot(PlotUtils::MnvH1D& hist, const std::string& stepName, const std::strin
   const std::string fsiname("FSI Models");
   plotter.DrawErrorSummary(&hist, "TR", true, true, 0.00001, false, fsiname);
   can.Print((prefix + "_" + stepName + "_FSIModels.png").c_str());
-
+  */
 
 
 }
@@ -163,27 +302,48 @@ int main(const int argc, const char** argv)
   #endif
 
   TH1::AddDirectory(kFALSE); //Needed so that MnvH1D gets to clean up its own MnvLatErrorBands (which are TH1Ds).
-
+  /*
   if(argc != 4)
   {
     std::cerr << "Expected 3 arguments, but I got " << argc-1 << ".\n"
               << "USAGE: ExtractCrossSection <unfolding iterations> <data.root> <mc.root>\n";
     return 1;
   }
-
+  */
   const int nIterations = std::stoi(argv[1]);
+  double totmcPOT = 0.0;
+  double totalPOT = 0.0;
   auto dataFile = TFile::Open(argv[2], "READ");
-  if(!dataFile)
-  {
+  auto mcFile = TFile::Open(argv[3], "READ");
+  auto potFile = TFile::Open(argv[4], "READ");
+  if (argc >= 4){
+   //const int nIterations = std::stoi(argv[1]);
+   //auto dataFile = TFile::Open(argv[2], "READ");
+   if(!dataFile)
+   {
     std::cerr << "Failed to open data file " << argv[2] << ".\n";
     return 2;
-  }
+   }
 
-  auto mcFile = TFile::Open(argv[3], "READ");
-  if(!mcFile)
-  {
+   //auto mcFile = TFile::Open(argv[3], "READ");
+   if(!mcFile)
+   {
     std::cerr << "Failed to open MC file " << argv[3] << ".\n";
     return 3;
+   }
+
+   if (argc == 5)
+   {
+      //auto potFile = TFile::Open(argv[4], "READ");
+      if(!potFile)
+      {
+        std::cerr << "Failed to open total POT file " << argv[3] << ".\n";
+        return 3;
+      }
+      totalPOT =  util::GetIngredient<TParameter<double>>(*potFile, "dataPOTUsed")->GetVal();
+      totmcPOT =  util::GetIngredient<TParameter<double>>(*potFile, "mcPOTUsed")->GetVal();
+    }   
+
   }
 
   std::vector<std::string> crossSectionPrefixes;
@@ -268,6 +428,7 @@ int main(const int argc, const char** argv)
                                            {
                                              std::cout << "Subtracting " << hist->GetName() << " scaled by " << -dataPOT/mcPOT << " from " << sum->GetName() << "\n";
                                              sum->Add(hist, -dataPOT/mcPOT);
+					     //sum->Add(hist, -1); // To Scale to POT: -dataPOT/mcPOT);
                                              return sum;
                                            });
       
@@ -295,7 +456,7 @@ int main(const int argc, const char** argv)
       recosignal->Clone()->Write("Signalreco");
       truesignal->Scale(dataPOT/mcPOT);
       Plot(*truesignal,"Signaltrue", prefix);
-      truesignal->Clone()->Write();
+      truesignal->Clone()->Write("trueSignal");
       Plot(*purnum, "Purity", prefix);
       purnum->Clone()->Write("Purity");
       
@@ -306,15 +467,17 @@ int main(const int argc, const char** argv)
       effNum->Clone()->Write("Efficiency");
       unfolded->Divide(unfolded, effNum);
       Plot(*unfolded, "efficiencyCorrected", prefix);
-
-      auto crossSection = normalize(unfolded, flux, nNucleons->GetVal(), dataPOT);
+      unfolded->Clone()->Write("efficiencyCorrected");
+      auto crossSection = normalize(unfolded, flux, nNucleons->GetVal(), dataPOT); //totalPOT); //dataPOT);
       Plot(*crossSection, "crossSection", prefix);
       crossSection->Clone()->Write("crossSection");
-
+      auto effnume = simEventRate->Clone();
+      effnume->Scale(dataPOT/mcPOT);
+      effnume->Clone()->Write("SimEventRate");
       //Write a "simulated cross section" to compare to the data I just extracted.
       //If this analysis passed its closure test, this should be the same cross section as
       //what GENIEXSecExtract would produce.
-      normalize(simEventRate, flux, nNucleons->GetVal(), mcPOT);
+      normalize(simEventRate, flux, nNucleons->GetVal(), mcPOT);//totalPOT); //mcPOT
       
       Plot(*simEventRate, "simulatedCrossSection", prefix);
       simEventRate->Write("simulatedCrossSection");

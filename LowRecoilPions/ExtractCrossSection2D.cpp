@@ -9,6 +9,8 @@
 
 //util includes
 #include "util/GetIngredient.h"
+#include "util/SyncBands.h"
+#include "util/SafeROOTName.h"
 
 //UnfoldUtils includes
 #pragma GCC diagnostic push
@@ -19,6 +21,11 @@
 #include "PlotUtils/MnvH1D.h"
 #include "PlotUtils/MnvH2D.h"
 #include "PlotUtils/MnvPlotter.h"
+#include "PlotUtils/MnvVertErrorBand.h"
+#include "PlotUtils/TargetUtils.h"
+#include "PlotUtils/FluxReweighter.h"
+
+
 #include "MinervaUnfold/MnvResponse.h"
 #include "MinervaUnfold/MnvUnfold.h"
 #pragma GCC diagnostic pop
@@ -41,6 +48,9 @@
 #include <exception>
 #include <algorithm>
 #include <numeric>
+
+//PlotStyleIncludes
+//#include "myPlotStyle.h"
 
 //Convince the STL to talk to TIter so I can use std::find_if()
 namespace std
@@ -70,22 +80,188 @@ TMatrixD ZeroDiagonal(const TMatrixD &m){
 //Plot a step in cross section extraction.
 void Plot(PlotUtils::MnvH2D& hist, const std::string& stepName, const std::string& prefix)
 {
+  //myPlotStyle();
   TCanvas can(stepName.c_str());
   hist.GetCVHistoWithError().Clone()->Draw();
   can.Print((prefix + "_" + stepName + ".png").c_str());
 
   //Uncertainty summary
   PlotUtils::MnvPlotter plotter;
-  plotter.ApplyStyle(PlotUtils::kCCQENuStyle);
+  plotter.ApplyStyle(PlotUtils::kCCNuPionIncStyle);
   plotter.axis_maximum = 0.4;
   
+  plotter.error_summary_group_map.clear();
+  plotter.error_summary_group_map["Flux"].push_back("Flux");
+  //plotter.error_summary_group_map["NonResPi"].push_back("GENIE_Rvn1pi");
+  //plotter.error_summary_group_map["NonResPi"].push_back("GENIE_Rvp1pi");
+  //plotter.error_summary_group_map["NonResPi"].push_back("GENIE_Rvn2pi");
+  //plotter.error_summary_group_map["NonResPi"].push_back("GENIE_Rvp2pi");
+  //plotter.error_summary_group_map["2p2h"].push_back("Low_Recoil_2p2h_Tune");
+  //plotter.error_summary_group_map["LowQ2Pi"].push_back("LowQ2Pi");
+  plotter.error_summary_group_map["Muon"].push_back("Muon_Energy_MINOS");
+  plotter.error_summary_group_map["Muon"].push_back("Muon_Energy_MINERvA");
+  plotter.error_summary_group_map["Muon"].push_back(
+      "Muon_Energy_Resolution");
+  plotter.error_summary_group_map["Muon"].push_back(
+      "MINOS_Reconstruction_Efficiency");
+  plotter.error_summary_group_map["Muon"].push_back("MuonAngleXResolution");
+  //plotter.error_summary_group_map["Muon"].push_back("MuonAngleYResolution");
+  plotter.error_summary_group_map["Muon"].push_back("MuonResolution");
+  plotter.error_summary_group_map["PhysicsModel"].push_back(
+      "MichelEfficiency");
+  plotter.error_summary_group_map["PhysicsModel"].push_back(
+      "Target_Mass_CH");
+  plotter.error_summary_group_map["PhysicsModel"].push_back(
+      "Target_Mass_C");
+  plotter.error_summary_group_map["PhysicsModel"].push_back(
+      "Target_Mass_Fe");
+  plotter.error_summary_group_map["PhysicsModel"].push_back(
+      "Target_Mass_H2O");
+  plotter.error_summary_group_map["PhysicsModel"].push_back(
+      "Target_Mass_Pb");
+  plotter.error_summary_group_map["Diffractive"].push_back("DiffractiveModelUnc");
+  plotter.error_summary_group_map["Diffractive"].push_back("CoherentPiUnc_C");
+  plotter.error_summary_group_map["Diffractive"].push_back("CoherentPiUnc_CH");
+  plotter.error_summary_group_map["Diffractive"].push_back("CoherentPiUnc_Fe");
+  plotter.error_summary_group_map["Diffractive"].push_back("CoherentPiUnc_H2O");
+  plotter.error_summary_group_map["Diffractive"].push_back("CoherentPiUnc_Pb");
+  plotter.error_summary_group_map["Detector"].push_back("EmuRangeCurve");
+  plotter.error_summary_group_map["Detector"].push_back("Birks");
+  plotter.error_summary_group_map["Detector"].push_back("BetheBloch");
+  plotter.error_summary_group_map["Detector"].push_back("Mass");
+  plotter.error_summary_group_map["Detector"].push_back("PartResp");
+  plotter.error_summary_group_map["Detector"].push_back("TrackAngle");
+  plotter.error_summary_group_map["Detector"].push_back("BeamAngle");
+  plotter.error_summary_group_map["Detector"].push_back("NodeCutEff");
+  plotter.error_summary_group_map["Detector"].push_back("BeamAngleX");
+  plotter.error_summary_group_map["Detector"].push_back("BeamAngleY");
+
+  //plotter.error_summary_group_map["RPA"].push_back("RPA_LowQ2");
+  //plotter.error_summary_group_map["RPA"].push_back("RPA_HighQ2");
+  
+  plotter.error_summary_group_map["FSI_Model"].push_back("GENIE_FrAbs_N");
+  plotter.error_summary_group_map["FSI_Model"].push_back("GENIE_FrAbs_pi");
+  plotter.error_summary_group_map["FSI_Model"].push_back("GENIE_FrCEx_N");
+  plotter.error_summary_group_map["FSI_Model"].push_back("GENIE_FrCEx_pi");
+  plotter.error_summary_group_map["FSI_Model"].push_back("GENIE_FrElas_N");
+  plotter.error_summary_group_map["FSI_Model"].push_back("GENIE_FrElas_pi");
+  plotter.error_summary_group_map["FSI_Model"].push_back("GENIE_FrInel_N");
+  plotter.error_summary_group_map["FSI_Model"].push_back("GENIE_FrInel_pi");
+  plotter.error_summary_group_map["FSI_Model"].push_back("GENIE_FrPiProd_N");
+  plotter.error_summary_group_map["FSI_Model"].push_back("GENIE_FrPiProd_pi");
+  plotter.error_summary_group_map["FSI_Model"].push_back("GENIE_MFP_N");
+  plotter.error_summary_group_map["FSI_Model"].push_back("GENIE_MFP_pi");    
+
+  auto genieint = util::SafeROOTName("Genie Others");
+  plotter.error_summary_group_map[genieint].push_back("GENIE_AGKYxF1pi");
+  plotter.error_summary_group_map[genieint].push_back("GENIE_AhtBY");
+  plotter.error_summary_group_map[genieint].push_back("GENIE_BhtBY");
+  plotter.error_summary_group_map[genieint].push_back("GENIE_CV1uBY");
+  plotter.error_summary_group_map[genieint].push_back("GENIE_CV2uBY");
+  plotter.error_summary_group_map[genieint].push_back("GENIE_EtaNCEL");
+  plotter.error_summary_group_map[genieint].push_back("GENIE_NormDISCC"); 
+  plotter.error_summary_group_map[genieint].push_back("GENIE_MaNCEL");  
+  plotter.error_summary_group_map[genieint].push_back("GENIE_RDecBR1gamma");
+  auto genieint2 = util::SafeROOTName("Genie CCQE");
+  plotter.error_summary_group_map[genieint2].push_back("GENIE_MaCCQEshape");
+  plotter.error_summary_group_map[genieint2].push_back("GENIE_MaNCEL");
+  plotter.error_summary_group_map[genieint2].push_back("GENIE_NormCCQE");
+  plotter.error_summary_group_map[genieint2].push_back("GENIE_NormDISCC");
+  plotter.error_summary_group_map[genieint2].push_back("GENIE_VecFFCCQEshape");
+  plotter.error_summary_group_map[genieint2].push_back("GENIE_MaCCQE");
+  plotter.error_summary_group_map[genieint2].push_back("GENIE_CCQEPauliSupViaKF"); 
+  auto genieint3 = util::SafeROOTName("Genie RES");
+  plotter.error_summary_group_map[genieint3].push_back("GENIE_MvRES");
+  plotter.error_summary_group_map[genieint3].push_back("GENIE_MaRES");
+  plotter.error_summary_group_map[genieint3].push_back("GENIE_D2_MaRES");
+  plotter.error_summary_group_map[genieint3].push_back("GENIE_D2_NormCCRES");
+  plotter.error_summary_group_map[genieint3].push_back("GENIE_EP_MvRES");
+  plotter.error_summary_group_map[genieint3].push_back("GENIE_NormCCRES");
+  plotter.error_summary_group_map[genieint3].push_back("GENIE_NormNCRES");
+  auto genieint4 = util::SafeROOTName("Genie Pion Interaction Model");  
+  plotter.error_summary_group_map[genieint4].push_back("GENIE_Rvn1pi");
+  plotter.error_summary_group_map[genieint4].push_back("GENIE_Rvn2pi");
+  plotter.error_summary_group_map[genieint4].push_back("GENIE_Rvn3pi");
+  plotter.error_summary_group_map[genieint4].push_back("GENIE_Rvp1pi");
+  plotter.error_summary_group_map[genieint4].push_back("GENIE_Rvp2pi");
+  plotter.error_summary_group_map[genieint4].push_back("GENIE_Theta_Delta2Npi");
+  
+ 
+  plotter.error_summary_group_map["Tune"].push_back("RPA_LowQ2");
+  plotter.error_summary_group_map["Tune"].push_back("RPA_HighQ2");
+  plotter.error_summary_group_map["Tune"].push_back("NonResPi");
+  plotter.error_summary_group_map["Tune"].push_back("2p2h");
+  plotter.error_summary_group_map["Tune"].push_back("LowQ2Pi");
+  plotter.error_summary_group_map["Tune"].push_back("Low_Recoil_2p2h_Tune");
+
+  plotter.error_summary_group_map["Response"].push_back("response_em");
+  plotter.error_summary_group_map["Response"].push_back("response_proton");
+  plotter.error_summary_group_map["Response"].push_back("response_pion");
+  plotter.error_summary_group_map["Response"].push_back("response_meson");
+  plotter.error_summary_group_map["Response"].push_back("response_other");
+  plotter.error_summary_group_map["Response"].push_back("response_low_neutron");
+  plotter.error_summary_group_map["Response"].push_back("response_mid_neutron");
+  plotter.error_summary_group_map["Response"].push_back("response_high_neutron");
+ 
+  plotter.error_summary_group_map["Geant"].push_back("GEANT_Neutron");
+  plotter.error_summary_group_map["Geant"].push_back("GEANT_Proton");
+  plotter.error_summary_group_map["Geant"].push_back("GEANT_Pion");
+  
+  //std::vector<std::string> groupnames = {"Flux", "Recoil Reconstruction", "Cross Section Models", "FSI Models", "Muon Reconstruction", "Others", "Low Recoil Fits"};
+ 
+  plotter.error_color_map["Geant"] = kViolet+2;
+  plotter.error_color_map["Response"] =  kOrange;
+  plotter.error_color_map["Detector"] = kYellow+2;
+  plotter.error_color_map["Flux"] = kOrange+2;
+  plotter.error_color_map["Muon"] = kRed;
+  plotter.error_color_map[genieint] = kCyan+2;
+  plotter.error_color_map["FSI Model"] = kPink+2;
+  plotter.error_color_map["PhysicsModel"] = kTeal+2;
+  plotter.error_color_map["NonResPi"] =  kAzure+2; 
+  plotter.error_color_map["Tune"] =  kRed+2;
+  plotter.error_color_map[genieint2] = kYellow;
+  plotter.error_color_map[genieint3] = kViolet-1; 
+  plotter.error_color_map[genieint4] = kMagenta-1;
+  std::vector<std::string> groupnames = {"Tune","Geant", "Response", "Detector", "Flux", "Muon", genieint, genieint2, genieint3, genieint4, "FSI Model", "Diffractive", "PhysicsModel"};  //#include "util/SafeROOTName.h"
   int nbinsy = hist.GetNbinsY()+2;
-  for (int i = 0; i < nbinsy; i++)
+  for (int i = 1; i < nbinsy; i++)
   {
-	plotter.DrawErrorSummary(hist.ProjectionX("e",i,i));
+        //auto plothist = hist.ProjectionX("e",i,i);
+	
+        //plothist->Draw("hist");
+        //can.Print((prefix + "_bin" + std::to_string(i) +  "_" + stepName + ".png").c_str());
+        //can.Print((prefix + "_bin" + std::to_string(i) +  "_" + stepName + ".root").c_str());      
+        plotter.SetLegendNColumns(2); 
+	plotter.legend_text_size = 0.02;
+        plotter.height_nspaces_per_hist = 1.0;
+        
+         
+
+        plotter.DrawErrorSummary(hist.ProjectionX("e",i,i), "N", true, true, 1e-5, false, "", true);
+        can.Draw("c");
         can.Print((prefix + "_bin" + std::to_string(i) +"_" + stepName + "_uncertaintySummary.png").c_str());
-	plotter.DrawErrorSummary(hist.ProjectionX("e",i,i), "TR", true, true, 1e-5, false, "Other");
-        can.Print((prefix + "_bin" + std::to_string(i) + "_" + stepName + "_otherUncertainties.png").c_str());
+	
+	plotter.DrawErrorSummary(hist.ProjectionX("e",i,i), "N", true, true, 1e-5, false, "Others", true);
+        can.Draw("c");
+	can.Print((prefix + "_bin" + std::to_string(i) + "_" + stepName + "_otherUncertainties.png").c_str());
+        
+        for(int j = 0; j<groupnames.size(); j++){
+	    auto groupname = util::SafeROOTName(groupnames[j]);
+  	    std::cout << "Name of group is " << groupname << std::endl;
+	    plotter.SetLegendNColumns(1);        
+            plotter.DrawErrorSummary(hist.ProjectionX("e",i,i), "TR", true, true, 1e-5, false, groupname, true);
+            can.Draw("c");
+            can.Print((prefix + "_bin" + std::to_string(i) + "_" + stepName + "_uncertaintysummary_" + groupname + ".png").c_str());
+        }
+        if(i == 6){
+	  plotter.axis_maximum = 1000;
+          plotter.axis_maximum_group = 1000;
+          plotter.headroom = 1.;
+          plotter.DrawErrorSummary(hist.ProjectionX("e", i,i),  "TR", true, true, 1e-5, false, "", true);
+          can.Draw("c");
+                 
+          can.Print((prefix + "_bin" + std::to_string(i) +"_" + stepName + "_JUSTLEGEND.root").c_str());
+	}
   }
   //plotter.DrawErrorSummary(&hist);
   //can.Print((prefix + "_" + stepName + "_uncertaintySummary.png").c_str());
@@ -95,7 +271,8 @@ void Plot(PlotUtils::MnvH2D& hist, const std::string& stepName, const std::strin
 }
 
 void Plot(PlotUtils::MnvH1D& hist, const std::string& stepName, const std::string& prefix)
-{ 
+{
+  //myPlotStyle(); 
   TCanvas can(stepName.c_str());
   hist.GetCVHistoWithError().Clone()->Draw();
   can.Print((prefix + "_" + stepName + ".png").c_str());
@@ -122,8 +299,9 @@ PlotUtils::MnvH2D* DoResponseUnfolding(std::string basename, PlotUtils::MnvH2D* 
   std::cout << " no migration, stop here for " << basename << std::endl;
     return bkgsub;
   }
-
-  migration->PopVertErrorBand("cv");
+ 
+  util::SyncBands(migration); 
+  //migration->PopVertErrorBand("cv");
 
   std::string unsmearedname = std::string(bkgsub->GetName()) + "_unfolded";
 
@@ -166,7 +344,7 @@ PlotUtils::MnvH2D* DoResponseUnfolding(std::string basename, PlotUtils::MnvH2D* 
   }
   TMatrix unfoldingCov = ZeroDiagonal(unfoldingCovMatrixOrig_hist_type);
   unsmeared->FillSysErrorMatrix("Unfolding",unfoldingCov);
-  //SyncBands(unsmeared);
+  util::SyncBands(unsmeared);
   return unsmeared;
 
 }
@@ -226,17 +404,80 @@ PlotUtils::MnvH2D* UnfoldHist( PlotUtils::MnvH2D* h_folded, PlotUtils::MnvH2D* h
 }
 */
 //The final step of cross section extraction: normalize by flux, bin width, POT, and number of targets
-PlotUtils::MnvH2D* normalize(PlotUtils::MnvH2D* efficiencyCorrected, PlotUtils::MnvH2D* fluxIntegral, const double nNucleons, const double POT)
+PlotUtils::MnvH2D* normalize(PlotUtils::MnvH2D* efficiencyCorrected, PlotUtils::MnvH2D* fluxIntegral, const double  nNucleons, const double POT)
 {
-  //double integral = (fluxIntegral->GetIntegral());
+  //fluxIntegral->Scale(1./POT);
   efficiencyCorrected->Divide(efficiencyCorrected, fluxIntegral);
-  //efficiencyCorrected->Scale(1./integral);//fluxIntegral->GetIntegral());
-  efficiencyCorrected->Scale(1./nNucleons/POT);
+  //efficiencyCorrected->Divide(efficiencyCorrected, nNucleons);
+  //fluxIntegral->Scale(1./POT);
+  efficiencyCorrected->Scale(1./nNucleons/POT);///POT);
   efficiencyCorrected->Scale(1.e4); //Flux histogram is in m^-2, but convention is to report cm^2
   efficiencyCorrected->Scale(1., "width");
 
   return efficiencyCorrected;
 }
+
+PlotUtils::MnvH2D* getFluxNormalized(const PlotUtils::MnvH2D* effCorrData)
+{
+   PlotUtils::MnvH2D* effcorrData = effCorrData->Clone();
+   PlotUtils::MnvH2D* h_flux_normalization = 
+          (PlotUtils::MnvH2D*)effcorrData->Clone("flux_normalization");
+   h_flux_normalization->ClearAllErrorBands();
+   h_flux_normalization->Reset();
+   const bool use_hundred_universes = true;
+   static PlotUtils::FluxReweighter* frw = 
+   new PlotUtils::FluxReweighter( 14, true, "minervame1d1m1nweightedave",
+                                  PlotUtils::FluxReweighter::gen2thin, 
+                                  PlotUtils::FluxReweighter::g4numiv6,
+                                  100);
+
+   h_flux_normalization = 
+          frw->GetIntegratedFluxReweighted(14, effcorrData, 0., 100.);
+    // remove redundant error bands
+   h_flux_normalization->PopVertErrorBand("Flux_BeamFocus");
+   h_flux_normalization->PopVertErrorBand("ppfx1_Total"); 
+    // Convert flux units from nu/m^2/POT to nu/cm^2/POT
+   h_flux_normalization->Scale( 1.0e-4 );
+   return h_flux_normalization;
+}
+
+PlotUtils::MnvH2D* expandBinning(const PlotUtils::MnvH2D* toExpand, const PlotUtils::MnvH2D* toMatch)
+{
+  assert(toExpand->GetXaxis()->GetNbins() == 1 && "expandBinning() only works with histograms that have exactly 1 bin");
+  auto result = toMatch->Clone((std::string(toExpand->GetName()) + "_expanded").c_str());
+  result->Clear("ICEM"); //Keep only the binning
+   //Put the same content of toExpand's single bin in each bin of the CV...
+  const int nBinsx = result->GetNbinsX();
+  const int nBinsy = result->GetNbinsY();
+  for(int whichBin = 0; whichBin <= nBinsx; ++whichBin) 
+     {
+       for(int whichBiny = 0; whichBiny <= nBinsy; ++whichBiny) result->SetBinContent(whichBin, whichBiny, toExpand->GetBinContent(1));
+    
+     }
+
+  //...and in each bin of each universe
+  const auto bandNames = result->GetVertErrorBandNames();
+  for(const auto& bandName: bandNames)
+  {
+    auto band = result->GetVertErrorBand(bandName);
+    for(size_t whichUniv = 0; whichUniv < band->GetNHists(); ++whichUniv)
+    {
+      auto hist = band->GetHist(whichUniv);
+      const double expandedContent = toExpand->GetVertErrorBand(bandName)->GetHist(whichUniv)->GetBinContent(1);
+      for(int whichBin = 0; whichBin <= nBinsx; ++whichBin) 
+      {
+        for(int whichBiny = 0; whichBiny <= nBinsy; ++whichBiny)
+          { 
+             hist->SetBinContent(whichBin, whichBiny, expandedContent);
+	  }
+      }
+    }
+  }
+
+  return result;
+}
+
+
 
 int main(const int argc, const char** argv)
 {
@@ -245,14 +486,14 @@ int main(const int argc, const char** argv)
   #endif
 
   TH1::AddDirectory(kFALSE); //Needed so that MnvH1D gets to clean up its own MnvLatErrorBands (which are TH1Ds).
-
+  /*
   if(argc != 4)
   {
     std::cerr << "Expected 3 arguments, but I got " << argc-1 << ".\n"
               << "USAGE: ExtractCrossSection <unfolding iterations> <data.root> <mc.root>\n";
     return 1;
   }
-
+  */
   const int nIterations = std::stoi(argv[1]);
   auto dataFile = TFile::Open(argv[2], "READ");
   if(!dataFile)
@@ -265,6 +506,13 @@ int main(const int argc, const char** argv)
   if(!mcFile)
   {
     std::cerr << "Failed to open MC file " << argv[3] << ".\n";
+    return 3;
+  }
+
+  auto potFile = TFile::Open(argv[4], "READ");
+  if(!potFile)
+  {
+    std::cerr << "Failed to open MC file " << argv[4] << ".\n";
     return 3;
   }
 
@@ -285,7 +533,9 @@ int main(const int argc, const char** argv)
   }
 
   const double mcPOT = util::GetIngredient<TParameter<double>>(*mcFile, "POTUsed")->GetVal(),
-               dataPOT = util::GetIngredient<TParameter<double>>(*dataFile, "POTUsed")->GetVal();
+               dataPOT = util::GetIngredient<TParameter<double>>(*dataFile, "POTUsed")->GetVal(),
+	       totmcPOT = util::GetIngredient<TParameter<double>>(*potFile, "mcPOTUsed")->GetVal(),
+	       totalPOT = util::GetIngredient<TParameter<double>>(*potFile, "dataPOTUsed")->GetVal();
 
   for(const auto& prefix: crossSectionPrefixes)
   {
@@ -304,8 +554,10 @@ int main(const int argc, const char** argv)
       auto flux = util::GetIngredient<PlotUtils::MnvH2D>(*mcFile, "reweightedflux_integrated", prefix);
       //PlotUtils::MnvH2D* flux = new PlotUtils::MnvH2D(xflux, yflux); 
       auto folded = util::GetIngredient<PlotUtils::MnvH2D>(*dataFile, "data", prefix);
-      Plot(*folded, "data", prefix);
+      //Plot(*folded, "data", prefix);
       //auto mnvresp = util::GetIngredient<MinervaUnfold::MnvResponse>(*mcFile, "migration", prefix);
+      auto mcfolded = util::GetIngredient<PlotUtils::MnvH2D>(*mcFile, "MC", prefix); 
+      Plot(*mcfolded, "MCselection", prefix);
       
       PlotUtils::MnvH1D* hTruth_dummy     = nullptr;//new PlotUtils::MnvH2D("MnvRespTruth");
       PlotUtils::MnvH1D* hReco_dummy     = nullptr;//new PlotUtils::MnvH2D("MnvRespReco");
@@ -320,7 +572,14 @@ int main(const int argc, const char** argv)
       auto effDenom = util::GetIngredient<PlotUtils::MnvH2D>(*mcFile, "efficiency_denominator", prefix);
       auto simEventRate = effDenom->Clone(); //Make a copy for later
       auto recosignal = util::GetIngredient<PlotUtils::MnvH2D>(*mcFile, "signal_reco", prefix);
-      auto purdenom = util::GetIngredient<PlotUtils::MnvH2D>(*dataFile, "data", prefix); 
+      auto purdenom = util::GetIngredient<PlotUtils::MnvH2D>(*mcFile, "MC", prefix); 
+
+      std::cout << "Check folded: " << folded->Integral() << std::endl;
+      std::cout << "Check selSig: " << recosignal->Integral() << std::endl;
+      std::cout << "Check migration: " << migration->Integral() << std::endl;
+      std::cout << "Check effNum: " << effNum->Integral() << std::endl;
+      std::cout << "Check effDenom: " << effDenom->Integral() << std::endl;
+      std::cout << "Check simEventRate: " << simEventRate->Integral() << std::endl;
 
       //folded->GetXaxis()->SetRangeUser(0.0, 800.);
       //migration->GetXaxis()->SetRangeUser(0.0, 800.);
@@ -335,12 +594,16 @@ int main(const int argc, const char** argv)
                                               [&prefix](const auto key)
                                               {
                                                 const std::string keyName = key->GetName();
-                                                const size_t fiducialEnd = keyName.find("_fiducial_nucleons");
+                                                const size_t fiducialEnd = keyName.find("_pTmubins_fiducial_nucleons");
                                                 return (fiducialEnd != std::string::npos) && (prefix.find(keyName.substr(0, fiducialEnd)) != std::string::npos);
                                               });
       if(fiducialFound == mcFile->GetListOfKeys()->end()) throw std::runtime_error("Failed to find a number of nucleons that matches prefix " + prefix);
 
-      auto nNucleons = util::GetIngredient<TParameter<double>>(*mcFile, (*fiducialFound)->GetName()); 
+      //const auto nNucleons = expandBinning(util::GetIngredient<PlotUtils::MnvH2D>(*mcFile, (*fiducialFound)->GetName()), effNum); //Dan: Use the same truth fiducial volume for all extractions.  The acceptance correction corrects data back to this fiducial even if the reco fiducial cut is different.
+      
+
+      //auto nNucleons = util::GetIngredient<TParameter<double>>(*potFile, (*fiducialFound)->GetName());
+      auto nNucleons = util::GetIngredient<TParameter<double>>(*potFile, "fiducialNucleons" );
 
       //Look for backgrounds with <prefix>_<analysis>_Background_<name>
       std::vector<PlotUtils::MnvH2D*> backgrounds;
@@ -366,11 +629,13 @@ int main(const int argc, const char** argv)
                                           return sum;
                                         });
       Plot(*toSubtract, "BackgroundSum", prefix);
+      mcfolded->Add(toSubtract, -1);
+      Plot(*mcfolded, "mcFolded_bkgsubtracted", prefix);  
       Plot(*flux, "Flux",prefix);
       //toSubtract->Write();
       auto bkgtoSubtract = toSubtract->GetBinNormalizedCopy();//.GetCVHistoWithError().Clone();
       bkgtoSubtract.GetXaxis()->SetTitle("Available Energy (MeV)");
-      bkgtoSubtract.GetYaxis()->SetRangeUser(0.0, 17000.);
+      bkgtoSubtract.GetYaxis()->SetRangeUser(0.0, toSubtract->GetMaximum()*1.5);
       bkgtoSubtract.GetYaxis()->SetTitle("N Background Events");
       Plot(bkgtoSubtract, "BackgroundSumNorm", prefix);
       auto bkgSubtracted = std::accumulate(backgrounds.begin(), backgrounds.end(), folded->Clone(),
@@ -388,8 +653,8 @@ int main(const int argc, const char** argv)
         std::cerr << "Could not create a file called " << prefix + "_crossSection.root" << ".  Does it already exist?\n";
         return 5;
       }
-
-      bkgSubtracted->Write("backgroundSubtracted");
+      toSubtract->Clone()->Write("background");
+      bkgSubtracted->Clone()->Write("backgroundSubtracted");
 
       //d'Aogstini unfolding
       MinervaUnfold::MnvUnfold unfold;
@@ -399,23 +664,85 @@ int main(const int argc, const char** argv)
       Plot(*unfolded, "unfolded", prefix);
       unfolded->Clone()->Write("unfolded"); //TODO: Seg fault first appears when I uncomment this line
       std::cout << "Survived writing the unfolded histogram.\n" << std::flush; //This is evidence that the problem is on the final file Write() and not unfolded->Clone()->Write().
+      Plot(*recosignal, "recoSignal", prefix);
+      auto recosig = recosignal->Clone();
+      recosig->Scale(dataPOT/mcPOT);
+      recosig->Write("recoSignal_potnorm"); 
       recosignal->Divide(recosignal, purdenom);
       Plot(*recosignal, "Purity", prefix);   
       recosignal->Clone()->Write("Purity");
       effNum->Divide(effNum, effDenom); //Only the 2 parameter version of MnvH1D::Divide()
                                         //handles systematics correctly.
       Plot(*effNum, "efficiency", prefix);
-
+      effNum->Clone()->Write("Efficiency");
       unfolded->Divide(unfolded, effNum);
       Plot(*unfolded, "efficiencyCorrected", prefix);
+      unfolded->Clone()->Write("EfficiencyCorrected");
+      /* // STart of the code that gets xsec for ALL playlists. Normalization happens differently in this stage
+ 
+      auto h_flux_normalization = getFluxNormalized(unfolded);
+   
+      auto h_cross_section = 
+          (PlotUtils::MnvH2D*)unfolded->Clone();
+      h_cross_section->AddMissingErrorBandsAndFillWithCV(*h_flux_normalization);
+   
+      h_cross_section->Divide( h_cross_section, h_flux_normalization );
 
+      
+       
+      static const double apothem    = 865.;
+      static const double upstream   = 5900.; // ~module 25 plane 1
+      static const double downstream = 8430.; // ~module 81 plane 1
+
+      double n_target_nucleons = 
+          PlotUtils::TargetUtils::Get().GetTrackerNNucleons(upstream, downstream,
+                                                            // false, // isMC
+                                                          //  apothem);
+      
+      static const double data_scale = 1.0 / ( n_target_nucleons*totalPOT);
+     
+      h_cross_section->Scale( data_scale, "width" ); 
+   
+      auto crossSection =  h_cross_section->Clone();
+
+      */ // ===== End of All statistics 
+
+      //==== Start of xsec for 1 playlist. Normalization happens here...using standard tutorial way
+      //
+      
       auto crossSection = normalize(unfolded, flux, nNucleons->GetVal(), dataPOT);
       Plot(*crossSection, "crossSection", prefix);
       crossSection->Clone()->Write("crossSection");
+      
+
+
+
+      //auto crossSection = normalize(unfolded, flux, n_target_nucleons, totalPOT);//totalPOT); //dataPOT if you are going playlist by playlist
+      Plot(*crossSection, "crossSection", prefix);
+      crossSection->Write("crossSection");
+
+      /*  // Start of Simulated xsec extraction for all playlists
+      auto h_mc_cross_section = simEventRate->Clone();
+   
+      h_mc_cross_section->Divide( h_mc_cross_section, h_flux_normalization );
+
+      static const double mc_scale = 1.0 / ( n_target_nucleons *totalPOT /* * util.m_mc_pot*/ // );
+      /* h_mc_cross_section->Scale(mc_scale, "width");
+
+      //double fake_data_integral = h_cross_section->Integral();
+      //double mc_integral = h_mc_cross_section->Integral();
 
       //Write a "simulated cross section" to compare to the data I just extracted.
       //If this analysis passed its closure test, this should be the same cross section as
       //what GENIEXSecExtract would produce.
+      //normalize(simEventRate, flux, nNucleons->GetVal(),1.0);// totalPOT); //mcPOT if you go playlist by playlist
+      auto mcxsec = h_mc_cross_section->Clone();
+      Plot(*mcxsec,"simulatedCrossSection", prefix);
+      mcxsec->Write("simulatedCrossSection");       
+
+      */ // ==== End of Simulated xsec extraction for all playlists
+      //simEventRate->Write("simulatedCrossSection");
+      //
       normalize(simEventRate, flux, nNucleons->GetVal(), mcPOT);
       
       Plot(*simEventRate, "simulatedCrossSection", prefix);
