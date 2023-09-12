@@ -50,7 +50,9 @@ enum ErrorCodes
 
 //Includes from this package
 #include "event/CVUniverse.h"
-#include "event/MichelEvent.h"
+#include "PlotUtils/LowRecoilPionReco.h"
+typedef LowRecoilPion::Michel<CVUniverse> Michel;
+typedef LowRecoilPion::MichelEvent<CVUniverse> MichelEvent;
 #include "systematics/Systematics.h"
 #include "cuts/MaxPzMu.h"
 #include "util/Variable.h"
@@ -71,7 +73,6 @@ enum ErrorCodes
 #include "studies/PerEventVarBin.h"
 #include "studies/PerMichelVarVecFSPart.h"
 #include "cuts/hasMichel.h"
-#include "event/Michel.h"
 #include "cuts/BestMichelDistance2D.h"
 #include "cuts/VtxMatchFirst.h"
 #include "cuts/hasTruePion.h"

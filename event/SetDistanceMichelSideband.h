@@ -1,4 +1,5 @@
-#include "event/MichelEvent.h"
+#include "PlotUtils/LowRecoilPionReco.h"
+typedef LowRecoilPion::Michel<CVUniverse> Michel;
 
 template <class UNIVERSE, class EVENT>
 void setDistanceMichelSidebands(const UNIVERSE& univ, EVENT& evt, const double selectedDist, const double sidebandDist)

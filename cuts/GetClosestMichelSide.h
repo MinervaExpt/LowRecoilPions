@@ -1,5 +1,3 @@
-//#include "CVUniverse.h"
-//#include "Michel.h"
 //Cutter written to select Michels 
 //PlotUtils includes
 #include "PlotUtils/Cut.h"

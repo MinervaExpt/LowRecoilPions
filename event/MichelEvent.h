@@ -1,7 +1,9 @@
 #ifndef MichelEvent_h
 #define MichelEvent_h
 
-#include "Michel.h"
+#include "PlotUtils/LowRecoilPionReco.h"
+typedef LowRecoilPion::Michel<CVUniverse> Michel;
+
 #include "CVUniverse.h"
 
 struct MichelEvent {

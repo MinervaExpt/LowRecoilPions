@@ -4,7 +4,8 @@
 
 //PlotUtils includes
 #include "PlotUtils/Cut.h"
-#include "event/Michel.h"
+#include "PlotUtils/LowRecoilPionReco.h"
+typedef LowRecoilPion::Michel<CVUniverse> Michel;
 
 template <class UNIVERSE, class EVENT>
 class Distance2DSideband: public PlotUtils::Cut<UNIVERSE, EVENT>
