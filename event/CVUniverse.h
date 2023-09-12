@@ -19,6 +19,8 @@
 #include "PlotUtils/MinervaUniverse.h"
 #include "TVector.h"
 
+typedef LowRecoilPion::Cluster Cluster;
+
 //#include "event/Cluster.h"
 class CVUniverse : public PlotUtils::MinervaUniverse {
 
