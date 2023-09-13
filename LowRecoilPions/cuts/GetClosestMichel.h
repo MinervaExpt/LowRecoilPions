@@ -53,11 +53,11 @@ class GetClosestMichel: public PlotUtils::Cut<UNIVERSE, EVENT>
 	evt.m_nmichels[i].GetPionAngle(univ);
         double dist = evt.m_nmichels[i].Best3Ddist; 
 	evt.m_nmichelspass.clear();
-	if (dist < 2600.){
+	//if (dist < 2600.){
 	   //std::cout << evt.m_nmichelspass.size() << std::endl;
-	   evt.m_nmichelspass.push_back(evt.m_nmichels[i]);
+	//   evt.m_nmichelspass.push_back(evt.m_nmichels[i]);
 
-	}
+	//}
 	if (evt.m_nmichels[i].OrderOfMichel == 1) {
            //closestMichel.push_back(evt.m_nmichels[i]);
 	   //if (dist > 1000.) return false; // mimicing aaron's cuts to remove high tpi events > 350 MeV. 1000 - 1200 mm in range is approximately the bin with the most events in that tpi bins. . 
@@ -104,15 +104,15 @@ class GetClosestMichel: public PlotUtils::Cut<UNIVERSE, EVENT>
        evt.m_nmichels.clear();
        evt.m_nmichels = closestMichel;
        //std::cout << "Get Closest Distance Michel Done looping over Michels. Closest Distance is: " << closestMichel[0].Best3Ddist << std::endl;
-       if (univ.GetMuonPT() < .20 and univ.NewEavail() < 50. and !evt.m_nmichels.empty())
-       {
-	     double vtx_t = univ.GetVertex().T()/pow(10, 3); //mus
+       //if (univ.GetMuonPT() < .20 and univ.NewEavail() < 50. and !evt.m_nmichels.empty())
+       //{
+       //	     double vtx_t = univ.GetVertex().T()/pow(10, 3); //mus
 	     
 	    // univ.PrintTrueArachneLink();
 	   //  univ.PrintDataArachneLink();
 	   //  std::cout << "Available Energy: " << univ.NewEavail() << " Muon pT Reco: " << univ.GetMuonPT()  << " Primary Vtx time: " << vtx_t << " Best Michel at time: " << evt.m_nmichels[0].time << " range: " << evt.m_nmichels[0].Best3Ddist << " energy: " << evt.m_nmichels[0].energy << " Matched to : " <<  evt.m_nmichels[0].BestMatch << std::endl;
           
-       }
+       //}
        //if (closestMichel[0].Best3Ddist > 60.) return false;
        //if (closestMichel[0].Best3Ddist < 60 || closestMichel[0].Best3Ddist > 1338.) return false;
        //if (evt.m_nmichelspass.size() > 1) return false; // Lets look at single pi+ events only

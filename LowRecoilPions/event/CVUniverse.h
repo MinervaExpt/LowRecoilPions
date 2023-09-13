@@ -215,8 +215,10 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
   }
 
   virtual bool IsMinosMatchMuon() const {
-    bool ismatch = GetBool("isMinosMatchTrack");
-    return ismatch;
+    int ismatch = GetInt("isMinosMatchTrack");
+   
+    if (ismatch > 0) return true;
+    else return false;
   }
  
   virtual bool isMuonCharge() const{
@@ -430,16 +432,16 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
   {   
       //double weight = GetLowQ2PiWeight("MENU1PI");
       //if (weight != 1.0) PrintTrueArachneLink();
-      double w = GetDouble("mc_w");
-      int npion = 0.0;
-      int pdgsize = GetInt("mc_nFSPart");
-      for (int i = 0; i< pdgsize; i++)
-      {
-           int pdg = GetVecElem("mc_FSPartPDG", i);
-           if (pdg == 211) npion++;
-      }
-      if (npion == 1 and w < 1.4) return GetLowQ2PiWeight("MENU1PI");
-      else return 1.0; 
+      //double w = GetDouble("mc_w");
+      //int npion = 0.0;
+      //int pdgsize = GetInt("mc_nFSPart");
+      //for (int i = 0; i< pdgsize; i++)
+      //{
+      //     int pdg = GetVecElem("mc_FSPartPDG", i);
+      //     if (pdg == 211) npion++;
+      //}
+      return GetLowQ2PiWeight("MENU1PI");
+      //else return 1.0; 
   }
 
   virtual double GetMichelEfficiencyReWeight() const{
@@ -501,10 +503,10 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
        double angle = GetTrueAngleHighTpi();//*180./M_PI; //this is now in degrees
        //Angle is already in degrees GetTrueAngleHighTpi()
        //std::cout << "Printing Angle for COH event " << angle << std::endl;
-       double KE = GetTrueHighEpi()/1000.; // This is supposed to be the energy of the pion!!!! 
-       if (KE < 0) return 1.0;
+       double epi = GetTrueHighEpi()/1000.; // This is supposed to be the energy of the pion!!!! 
+       if (epi < 0) return 1.0;
        else {
-	weight *= GetCoherentPiWeight(angle, KE); //Inputs are in Degrees and GeV
+	weight *= GetCoherentPiWeight(angle, epi); //Inputs are in Degrees and GeV
         //std::cout << "Printing COHerent weight for COH event for angle: " << angle << " degrees and KE : " << KE << " GeV. And weight: " << weight << std::endl;
 	return weight;
        }
@@ -670,7 +672,7 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
      delete tpirange;
      //file->Close();
      */
-     double tpiest = 0.2142*range + 2.864*sqrt(range);
+     double tpiest = 0.213206*range + 2.70387*sqrt(range);
      return tpiest; //Tpi in MeV
 
   }
