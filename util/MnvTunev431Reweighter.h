@@ -39,10 +39,12 @@ namespace PlotUtils
         double wgt_fsi = univ.GetFSIReWeight();
         double wgt_geant = univ.GetGeantHadronReWeight();
         double wgt_coh = univ.GetCOHPionWeight();
+	double wgt_cohm = 1.0;
 	//double q2Gev = univ.GetQ2True()/1000000.;
 	if(univ.GetInt("mc_intType") == 4){
 	  //std::cout << "Printing Scale APplied ot COH events in MnvTuneReweighter: " << 1.4 << std::endl;
           wgt_diff = 1.436;
+	  wgt_cohm = 1.0;
         } // This is a correction to COH events Aaron's adds to account for missing diffractive model in our simulation
         /*
 	std::cout << "Printing LowQ2 weight for Q2: " << q2Gev << " and weight: " << wgt_lowq2pi << "\n"
@@ -54,7 +56,7 @@ namespace PlotUtils
 		  << "Printing COH weight: " << wgt_coh << "\n" << std::endl;
         */
 	double wgt_mk = 1.0;// univ.GetMKReWeight();
- 	return weight*wgt_diff*wgt_mich*wgt_target*wgt_fsi*wgt_coh*wgt_geant*wgt_lowq2pi*wgt_mk;
+ 	return weight*wgt_diff*wgt_mich*wgt_target*wgt_fsi*wgt_coh*wgt_geant*wgt_lowq2pi*wgt_mk*wgt_cohm;
                 
 	
       };

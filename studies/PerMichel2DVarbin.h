@@ -10,8 +10,8 @@
 #include "event/CVUniverse.h"
 #include "PlotUtils/VariableBase.h"
 //#include "studies/TruthInteractionStudies.h"
-#include "util/PionFSCategory.h"
-
+//#include "util/PionFSCategory.h"
+#include "util/PionProtonFSCategory.h"
 //c++ includes
 #include <functional> //for std::function
 

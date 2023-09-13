@@ -65,7 +65,19 @@ namespace PlotUtils
        1.0232318, 0.8816901, 0.6715675, 0.4520906, 0.4597239, 0.4883855,
        0.8576775, 0.6477114, 0.8632815, 0.8529108, 0.7252371, 0.7618927};
         */
+
+	// The Following are weights for MnvTunev4 with LowQ3Pion tune bug fix to apply to only single pions Aug 10 2023
+	std::vector<double> tpiweights = {0.139855,0.15291,0.391857,0.632001,0.804802,0.858462,0.580174,0.928241,1.15861,0.989334,1.10499,1.18818,0.835503,0.950168,1.28937,1.44994,1.32275,0.994931,1.14384,1.14747,1.08596,1.12892,1.08526,0.427295,0.248945,0.555842,0.460325,0.459072,0.70149,0.988857,1.18221,1.01983,1.27742};
+       //{0.3001734, 0.205635 , 0.391616 , 0.4490954, 0.6253065, 0.7556647,
+       //0.8651642, 0.793211 , 0.9517659, 0.795099 , 1.2009783, 1.1992148,
+       //0.7801471, 1.360189 , 1.2073192, 1.1646516, 1.1246983, 1.221112 ,
+       //0.9991071, 0.7578642, 0.6299031, 0.5376419, 0.4185675, 0.3667492,
+       //0.503713 , 0.6648915, 0.7311991, 0.6562241, 0.8383291};
+
+	//{0.293864,0.196046,0.393396,0.471505,0.617888,0.778893,0.853757,0.80451,0.945084,0.833698,1.22184,1.05137,0.893121,1.29162,1.21509,1.27859,1.18455,1.0168,1.0297,0.541475,0.454208,0.518975,0.487075,0.386514,0.579016,0.833624,0.894075,0.713617,0.958852};
        
+        //The following was the old one presented at collab meting June 2023
+        /* 
         	
  	// The following are weights for MnvTunev4 WITH LOW Q2 and COH 1.4 Scale with Tolerance of 0.07
  	std::vector<double> tpiweights = {0.1534289, 0.237346 , 0.2876974, 0.3249536, 0.3703255, 0.4318609,
@@ -73,7 +85,7 @@ namespace PlotUtils
         0.8521217, 0.9518031, 0.940611 , 1.0160305, 1.0223265, 0.9392733,
         0.7938145, 0.8337927, 0.669412 , 0.4371018, 0.4065332, 0.387446 ,
         0.6604237, 0.4872857, 0.6294078, 0.7870024, 0.7605439, 0.8498398}; //This is the weights for me1A, 1B, 1C, 1L, 1O combined 
-
+	*/
 
          /*{0.1191236, 0.2020399, 0.2212095, 0.2770364, 0.3469764, 0.3706979,
       	 0.4700661, 0.5407503, 0.6600101, 0.5904604, 0.8462214, 0.8231438,
@@ -104,26 +116,33 @@ namespace PlotUtils
 	// {0.133636,0.217564,0.230035,0.304639,0.381746,0.463561,0.582943,0.702102,0.792977,0.701658,0.915696,0.896688,1.14943,1.08327,0.892555,1.21387,1.02105,1.10431,1.01738,0.876281,0.667025,0.450283,0.457366,0.484879,0.851214,0.642544,0.856433,0.846765,0.720108,0.755901}; Mathematica 1.2 Tol Weights
 	*/
  
-        std::vector<double> tpilowbins = {1., 4., 8., 12., 16., 20., 24., 28., 32., 36., 40., 46., 52.,60., 70., 80., 100., 125.,150., 175., 200., 225., 250., 275., 300., 350., 400., 500., 700.,1000.}; 
+        //std::vector<double> tpilowbins = {0.0, 10., 15., 20., 24., 28., 32., 36., 40., 46., 52.,60., 70., 80., 100., 125.,150., 175., 200., 225., 250., 275., 300., 325., 350., 400., 500., 700., 1000.}; 
+	 std::vector<double> tpilowbins = {1., 10., 15., 20., 25., 30., 36., 42., 48., 54.,60., 66., 72., 78.,  84., 90., 100., 110., 125., 140., 155., 175., 200., 225., 250., 275., 300., 325., 350., 400., 500., 700., 1000.};
+
+	
         if (univ.GetTrueNPionsinEvent() == 0) return 1.0;
         else if(univ.GetInt("mc_intType") == 4) return 1.0;
 	else {
+		
 		double tpi = univ.GetTrueLowestTpiEvent();
-        //std::cout << "Printing the q3 of the event " << q3_mecAna << std::endl;	
-	//std::cout << "Printing the lowest Tpi in Event " << tpi << std::endl;
-        //double angle = cos(univ.GetTrueAngleLowTpi());	
-        //double tpi = myevent.m_nmichels[0].pionKE/1000.;
+        	//if (tpi > 1000.) weight2 = 1.0;
+		//std::cout << "Printing the q3 of the event " << q3_mecAna << std::endl;	
+		//std::cout << "Printing the lowest Tpi in Event " << tpi << std::endl;
+        	//double angle = cos(univ.GetTrueAngleLowTpi());	
+        	//double tpi = myevent.m_nmichels[0].pionKE/1000.;
         	for (int i = 0; i< tpilowbins.size(); i++){
                 	if (i < tpilowbins.size() and tpi >= tpilowbins[i] and tpi < tpilowbins[i+1]){
 		   		weight2 = tpiweights[i];
  		   		break;
 			}
 			else if (tpi >= 1000.){
-	           		weight2 = abs(tpiweights[29]);
+	           		 weight2 = 1.0; //abs(tpiweights[29]);
        		  		 break; 
                		}
         	}
         //if (angle > 0.10) weight2 = 0.90*weight2; //Correcting for Forward going Pions 
+		
+		//std::cout << "tpi re weight: " << weight2 << std::endl;
 		return weight2;
       }
 
