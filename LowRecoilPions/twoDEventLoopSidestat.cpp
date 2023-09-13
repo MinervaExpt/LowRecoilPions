@@ -1,5 +1,5 @@
-#define MC_OUT_FILE_NAME "runSBEventLoopMC.root"
-#define DATA_OUT_FILE_NAME "runSBEventLoopData.root"
+#define MC_OUT_FILE_NAME "runEventLoopMC.root"
+#define DATA_OUT_FILE_NAME "runEventLoopData.root"
 #define MC_SIDE_FILE_NAME "runEventLoopMC_Aug312022_Sideband_nopmu_noreweight.root"
 #define DATA_SIDE_FILE_NAME "runEventLoopDATA_Aug312022_Sideband_nopmu_noreweight.root"
 
@@ -89,8 +89,8 @@ enum ErrorCodes
 
 //Sideband Cuts
 //
-#include "cuts/RemoveSignalEvents.h"
-#include "cuts/GetClosestMichelSide.h"
+//#include "cuts/RemoveSignalEvents.h"
+//#include "cuts/GetClosestMichelSide.h"
 //#include "cuts/Distance2DSideband.h"
 
 
@@ -293,11 +293,9 @@ void LoopAndFillEventSelection(
                            var->FillCategHistos(*universe,t_reco, var->GetRecoValueY(*universe), weight2);
 			}
 			else if(endOfPrefix4 != std::string::npos &&  endOfPrefix2 == std::string::npos && endOfPrefix1 == std::string::npos){
-			   if( EavMinusTpi > 25 and EavMinusTpi < 50){
-				var->mcTotalHist->FillUniverse(universe, t_reco, recotpi, weight2);
-                           	(*var->m_MChists)[universe->GetInteractionType()].FillUniverse(universe, t_reco, recotpi, weight2);
-                           	var->FillCategHistos(*universe,t_reco, recotpi, weight2);
-			   }
+			   var->mcTotalHist->FillUniverse(universe, t_reco, recotpi, weight2);
+                           (*var->m_MChists)[universe->GetInteractionType()].FillUniverse(universe, t_reco, recotpi, weight2);
+                           var->FillCategHistos(*universe,t_reco, recotpi, weight2);
 			}
 			else if(endOfPrefix5 != std::string::npos &&  endOfPrefix2 == std::string::npos && endOfPrefix1 == std::string::npos){
 		 	   //double eav = var->GetRecoValueY(*universe);
@@ -397,11 +395,10 @@ void LoopAndFillEventSelection(
                                         var->FillResponse(t_reco, var->GetRecoValueY(*universe),t_truth, var->GetTrueValueY(*universe),universe->ShortName(),weight2,unv_count);
 				}
 				else if(endOfPrefix4 != std::string::npos &&  endOfPrefix2 == std::string::npos && endOfPrefix1 == std::string::npos){
-				     if ( EavMinusTpi > 25 and EavMinusTpi < 50){
 					var->selectedSignalReco->FillUniverse(universe, t_reco, recotpi, weight2);
                                         var->efficiencyNumerator->FillUniverse(universe, t_truth, var->GetTrueValueY(*universe), weight2);
                                         var->FillResponse(t_reco, recotpi, t_truth, var->GetTrueValueY(*universe),universe->ShortName(),weight2,unv_count);
-				     }
+
 				}
 				else if(endOfPrefix5 != std::string::npos &&  endOfPrefix2 == std::string::npos && endOfPrefix1 == std::string::npos){
 					//double eav = var->GetRecoValueY(*universe);
@@ -489,9 +486,8 @@ void LoopAndFillEventSelection(
 
 				}
 				else if(endOfPrefix4 != std::string::npos &&  endOfPrefix2 == std::string::npos && endOfPrefix1 == std::string::npos){
-				    if ( EavMinusTpi > 25 and EavMinusTpi < 50){		
 					 (*var->m_backgroundHists)[bkgd_ID].FillUniverse(universe, t_reco, recotpi, weight2);
-				    }
+			
 				}
 				else if(endOfPrefix5 != std::string::npos &&  endOfPrefix2 == std::string::npos && endOfPrefix1 == std::string::npos){
 					 //double eav = var->GetRecoValueY(*universe);
@@ -606,10 +602,8 @@ void LoopAndFillData( PlotUtils::ChainWrapper* data,
 				var->dataHist->FillUniverse(universe, t_reco, var->GetRecoValueY(*universe), 1);
 			}
 			else if(endOfPrefix4 != std::string::npos &&  endOfPrefix2 == std::string::npos && endOfPrefix1 == std::string::npos){
-			     if ( EavMinusTpi > 25 and EavMinusTpi < 50){	 
-				var->dataHist->FillUniverse(universe, t_reco, recotpi, 1);
-                             }
-			}
+				 var->dataHist->FillUniverse(universe, t_reco, recotpi, 1);
+                        }
                         else if(endOfPrefix5 != std::string::npos &&  endOfPrefix2 == std::string::npos && endOfPrefix1 == std::string::npos){
 				 var->dataHist->FillUniverse(universe, t_reco, EavMinusTpi, 1);
 			}
@@ -870,7 +864,7 @@ int main(const int argc, const char** argv)
   //preCuts.emplace_back(new BestMichelDistance2D<CVUniverse, MichelEvent>(150.));
   //preCuts.emplace_back(new GetClosestMichel<CVUniverse, MichelEvent>(0));
 
-  //Sideband Cuts
+  a/Sideband Cuts
   preCuts.emplace_back(new RemoveSignalEvents<CVUniverse, MichelEvent>(150.));
   preCuts.emplace_back(new Distance2DSideband<CVUniverse, MichelEvent>(1000.));
   preCuts.emplace_back(new GetClosestMichelSide<CVUniverse, MichelEvent>(1));
@@ -928,7 +922,7 @@ int main(const int argc, const char** argv)
   //MnvTunev4.emplace_back(new PlotUtils::COHPionReweighter<CVUniverse, MichelEvent>());
   MnvTunev4.emplace_back(new PlotUtils::MnvTunev431Reweighter<CVUniverse, MichelEvent>());
   //MnvTunev4.emplace_back(new PlotUtils::TargetMassReweighter<CVUniverse, MichelEvent>()); 
-  MnvTunev4.emplace_back(new PlotUtils::PionReweighter<CVUniverse,MichelEvent>());
+  //MnvTunev4.emplace_back(new PlotUtils::PionReweighter<CVUniverse,MichelEvent>());
   //MnvTunev4.emplace_back(new PlotUtils::BkgSideReweighter<CVUniverse,MichelEvent>());
   //MnvTunev4.emplace_back(new PlotUtils::BkgSigReweighter<CVUniverse,MichelEvent>());
   //MnvTunev4.emplace_back(new PlotUtils::MKReweighter<CVUniverse,MichelEvent>());
