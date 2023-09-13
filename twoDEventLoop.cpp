@@ -72,7 +72,7 @@ typedef LowRecoilPion::MichelEvent<CVUniverse> MichelEvent;
 #include "studies/PerMichelEvent2DVarBin.h"
 #include "studies/PerEventVarBin.h"
 #include "studies/PerMichelVarVecFSPart.h"
-#include "cuts/hasMichel.h"
+#include "PlotUtils/LowRecoilPionCuts.h"
 #include "cuts/BestMichelDistance2D.h"
 #include "cuts/VtxMatchFirst.h"
 //#include "cuts/hasTruePion.h"
@@ -886,10 +886,14 @@ int main(const int argc, const char** argv)
   preCuts.emplace_back(new RecoilERange<CVUniverse, MichelEvent>(0.0,1.2));
   preCuts.emplace_back(new PmuCut<CVUniverse, MichelEvent>(1.5));
   preCuts.emplace_back(new PzmuCut<CVUniverse, MichelEvent>(20.));
-  preCuts.emplace_back(new hasMichel<CVUniverse, MichelEvent>());
-   
-  preCuts.emplace_back(new BestMichelDistance2D<CVUniverse, MichelEvent>(150.));
-  preCuts.emplace_back(new GetClosestMichel<CVUniverse, MichelEvent>(0));
+
+  //typedef LowRecoilPion::hasMichel<CVUniverse, MichelEvent> hasMichel;
+  //preCuts.emplace_back(new hasMichel<CVUniverse, MichelEvent>());
+
+  preCuts.emplace_back(new LowRecoilPion::hasMichel<CVUniverse, MichelEvent>());
+  preCuts.emplace_back(new LowRecoilPion::BestMichelDistance2D<CVUniverse, MichelEvent>(150.));
+  preCuts.emplace_back(new LowRecoilPion::GetClosestMichel<CVUniverse, MichelEvent>(0));
+
   //nosidebands.emplace_back(new BestMichelDistance2D<CVUniverse, MichelEvent>(150.));
   //nosidebands.emplace_back(new GetClosestMichel<CVUniverse, MichelEvent>(0));
 
