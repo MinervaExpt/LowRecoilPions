@@ -1,8 +1,0 @@
-# Target labels
- MAT-MINERvA
-# Source files and their labels
-/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/CMakeFiles/MAT-MINERvA-update
-/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/CMakeFiles/MAT-MINERvA-update.rule
-/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/MAT-MINERvA-prefix/src/MAT-MINERvA-stamp/MAT-MINERvA-update.rule
-/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/MAT-MINERvA-prefix/src/MAT-MINERvA-stamp/MAT-MINERvA-download.rule
-/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build/MAT-MINERvA-prefix/src/MAT-MINERvA-stamp/MAT-MINERvA-mkdir.rule
