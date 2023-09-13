@@ -42,12 +42,13 @@ virtual double GetLowQ2PiWeight(std::string channel) const {
       return PlotUtils::weight_lowq2pi().getWeight(GetQ2True() * 1e-6 /*GeV^2*/,
                                                    channel, variation, GetInt("mc_targetNucleus"));
   }
-
-  if (!PlotUtils::IsCCRes(*this) )
-    return 1.;
-  else
-    return PlotUtils::weight_lowq2pi().getWeight(GetQ2True() * 1e-6 /*GeV^2*/,
-                                                 channel, variation, GetInt("mc_targetNucleus"));
+  
+  //if (!PlotUtils::IsCCRes(*this) )
+  //  return 1.;
+  //else
+  //  return PlotUtils::weight_lowq2pi().getWeight(GetQ2True() * 1e-6 /*GeV^2*/,
+  //                                               channel, variation, GetInt("mc_targetNucleus"));
+  
 }
 
 virtual double GetCoherentPiWeight(double thpi_true /*deg*/,

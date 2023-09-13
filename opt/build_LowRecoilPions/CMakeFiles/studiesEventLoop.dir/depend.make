@@ -177,6 +177,7 @@ CMakeFiles/studiesEventLoop.dir/studiesEventLoop.cpp.o: /minerva/app/users/sulta
 CMakeFiles/studiesEventLoop.dir/studiesEventLoop.cpp.o: /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/event/GetClosestMichel.h
 CMakeFiles/studiesEventLoop.dir/studiesEventLoop.cpp.o: /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/event/Michel.h
 CMakeFiles/studiesEventLoop.dir/studiesEventLoop.cpp.o: /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/event/MichelEvent.h
+CMakeFiles/studiesEventLoop.dir/studiesEventLoop.cpp.o: /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/event/RecoilEnergyFunctions.h
 CMakeFiles/studiesEventLoop.dir/studiesEventLoop.cpp.o: /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/event/SetDistanceMichelSelection.h
 CMakeFiles/studiesEventLoop.dir/studiesEventLoop.cpp.o: /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/event/SetDistanceMichelSideband.h
 CMakeFiles/studiesEventLoop.dir/studiesEventLoop.cpp.o: /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/studies/PerEventVarBin.h
@@ -188,8 +189,9 @@ CMakeFiles/studiesEventLoop.dir/studiesEventLoop.cpp.o: /minerva/app/users/sulta
 CMakeFiles/studiesEventLoop.dir/studiesEventLoop.cpp.o: /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/studies/PerMichelVarVecFSPart.h
 CMakeFiles/studiesEventLoop.dir/studiesEventLoop.cpp.o: /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/studies/Study.h
 CMakeFiles/studiesEventLoop.dir/studiesEventLoop.cpp.o: /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/studiesEventLoop.cpp
+CMakeFiles/studiesEventLoop.dir/studiesEventLoop.cpp.o: /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/systematics/CohDiffractiveSystematics.h
 CMakeFiles/studiesEventLoop.dir/studiesEventLoop.cpp.o: /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/systematics/Systematics.h
-CMakeFiles/studiesEventLoop.dir/studiesEventLoop.cpp.o: /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/BkgSigReweighter.h
+CMakeFiles/studiesEventLoop.dir/studiesEventLoop.cpp.o: /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/BkgSideReweighter.h
 CMakeFiles/studiesEventLoop.dir/studiesEventLoop.cpp.o: /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/COHPionReweighter.h
 CMakeFiles/studiesEventLoop.dir/studiesEventLoop.cpp.o: /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/Categorized.h
 CMakeFiles/studiesEventLoop.dir/studiesEventLoop.cpp.o: /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/DiffractiveReweighter.h
@@ -197,6 +199,7 @@ CMakeFiles/studiesEventLoop.dir/studiesEventLoop.cpp.o: /minerva/app/users/sulta
 CMakeFiles/studiesEventLoop.dir/studiesEventLoop.cpp.o: /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/GetPlaylist.h
 CMakeFiles/studiesEventLoop.dir/studiesEventLoop.cpp.o: /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/MnvTunev431Reweighter.h
 CMakeFiles/studiesEventLoop.dir/studiesEventLoop.cpp.o: /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/PionFSCategory.h
+CMakeFiles/studiesEventLoop.dir/studiesEventLoop.cpp.o: /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/PionProtonFSCategory.h
 CMakeFiles/studiesEventLoop.dir/studiesEventLoop.cpp.o: /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/PionReweighter.h
 CMakeFiles/studiesEventLoop.dir/studiesEventLoop.cpp.o: /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/SafeROOTName.h
 CMakeFiles/studiesEventLoop.dir/studiesEventLoop.cpp.o: /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/TargetMassReweighter.h
@@ -221,6 +224,8 @@ CMakeFiles/studiesEventLoop.dir/studiesEventLoop.cpp.o: /minerva/app/users/sulta
 CMakeFiles/studiesEventLoop.dir/studiesEventLoop.cpp.o: /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/FluxSystematics.cxx
 CMakeFiles/studiesEventLoop.dir/studiesEventLoop.cpp.o: /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/FluxSystematics.h
 CMakeFiles/studiesEventLoop.dir/studiesEventLoop.cpp.o: /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/GENIEReweighter.h
+CMakeFiles/studiesEventLoop.dir/studiesEventLoop.cpp.o: /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/GeantHadronSystematics.cxx
+CMakeFiles/studiesEventLoop.dir/studiesEventLoop.cpp.o: /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/GeantHadronSystematics.h
 CMakeFiles/studiesEventLoop.dir/studiesEventLoop.cpp.o: /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/GeantNeutronCVReweighter.h
 CMakeFiles/studiesEventLoop.dir/studiesEventLoop.cpp.o: /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/GenieSystematics.cxx
 CMakeFiles/studiesEventLoop.dir/studiesEventLoop.cpp.o: /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/GenieSystematics.h

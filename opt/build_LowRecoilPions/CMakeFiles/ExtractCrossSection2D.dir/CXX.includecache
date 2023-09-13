@@ -959,6 +959,8 @@ util/GetIngredient.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/GetIngredient.h
 util/SyncBands.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/SyncBands.h
+util/SafeROOTName.h
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/SafeROOTName.h
 MinervaUnfold/MnvUnfold.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/MinervaUnfold/MnvUnfold.h
 PlotUtils/MnvH1D.h
@@ -967,6 +969,12 @@ PlotUtils/MnvH2D.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/PlotUtils/MnvH2D.h
 PlotUtils/MnvPlotter.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/PlotUtils/MnvPlotter.h
+PlotUtils/MnvVertErrorBand.h
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/PlotUtils/MnvVertErrorBand.h
+PlotUtils/TargetUtils.h
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/PlotUtils/TargetUtils.h
+PlotUtils/FluxReweighter.h
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/PlotUtils/FluxReweighter.h
 MinervaUnfold/MnvResponse.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/MinervaUnfold/MnvResponse.h
 MinervaUnfold/MnvUnfold.h
@@ -1000,6 +1008,10 @@ TDirectoryFile.h
 string
 -
 exception
+-
+
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/SafeROOTName.h
+string
 -
 
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/SyncBands.h
@@ -1403,6 +1415,8 @@ iostream
 -
 math.h
 -
+
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/TargetUtils.h
 
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/TreeWrapper.h
 TTree.h

@@ -112,6 +112,7 @@ ExtractCrossSection2D: /cvmfs/minerva.opensciencegrid.org/minerva/hep_hpc_produc
 ExtractCrossSection2D: /cvmfs/minerva.opensciencegrid.org/minerva/hep_hpc_products/root/v6_10_04d/Linux64bit+3.10-2.17-e14-prof/lib/libGenVector.so
 ExtractCrossSection2D: /cvmfs/minerva.opensciencegrid.org/minerva/hep_hpc_products/root/v6_10_04d/Linux64bit+3.10-2.17-e14-prof/lib/libMinuit2.so
 ExtractCrossSection2D: /cvmfs/minerva.opensciencegrid.org/minerva/hep_hpc_products/root/v6_10_04d/Linux64bit+3.10-2.17-e14-prof/lib/libMinuit.so
+ExtractCrossSection2D: systematics/libsystematics.a
 ExtractCrossSection2D: util/libutil.a
 ExtractCrossSection2D: /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/lib/libUnfoldUtils.so
 ExtractCrossSection2D: /cvmfs/minerva.opensciencegrid.org/minerva/hep_hpc_products/root/v6_10_04d/Linux64bit+3.10-2.17-e14-prof/lib/libGeom.so

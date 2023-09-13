@@ -646,6 +646,19 @@ util/fast:
 	$(MAKE) -f util/CMakeFiles/util.dir/build.make util/CMakeFiles/util.dir/build
 .PHONY : util/fast
 
+#=============================================================================
+# Target rules for targets named systematics
+
+# Build rule for target.
+systematics: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 systematics
+.PHONY : systematics
+
+# fast build rule for target.
+systematics/fast:
+	$(MAKE) -f systematics/CMakeFiles/systematics.dir/build.make systematics/CMakeFiles/systematics.dir/build
+.PHONY : systematics/fast
+
 ExtractCrossSection.o: ExtractCrossSection.cpp.o
 
 .PHONY : ExtractCrossSection.o
@@ -912,6 +925,7 @@ help:
 	@echo "... ContinuousStart"
 	@echo "... ContinuousUpdate"
 	@echo "... util"
+	@echo "... systematics"
 	@echo "... ExtractCrossSection.o"
 	@echo "... ExtractCrossSection.i"
 	@echo "... ExtractCrossSection.s"

@@ -212,6 +212,7 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build_LowRecoilPions/playlists/cmake_install.cmake")
   include("/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build_LowRecoilPions/util/cmake_install.cmake")
+  include("/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/build_LowRecoilPions/systematics/cmake_install.cmake")
 
 endif()
 

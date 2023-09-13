@@ -1,0 +1,2 @@
+/usr/bin/ar qc libsystematics.a  CMakeFiles/systematics.dir/CohDiffractiveSystematics.cpp.o
+/usr/bin/ranlib libsystematics.a

@@ -19,3 +19,4 @@
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/etc/playlists/MAD_minervame1A_MC_andrewsGPVM.txt
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/etc/playlists/MAD_minervame1A_DATA_andrewsGPVM.txt
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/lib/libutil.a
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/lib/libsystematics.a

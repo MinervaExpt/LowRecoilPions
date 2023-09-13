@@ -1313,6 +1313,10 @@ PlotUtils/WeightFunctions.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/event/PlotUtils/WeightFunctions.h
 PlotUtils/MichelFunctions.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/event/PlotUtils/MichelFunctions.h
+RecoilEnergyFunctions.h
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/event/RecoilEnergyFunctions.h
+PlotUtils/MnvTuneSystematics.h
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/event/PlotUtils/MnvTuneSystematics.h
 PlotUtils/WeightFunctions.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/event/PlotUtils/WeightFunctions.h
 
@@ -1333,8 +1337,8 @@ Michel.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/event/Michel.h
 CVUniverse.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/event/CVUniverse.h
-Cluster.h
-/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/event/Cluster.h
+
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/event/RecoilEnergyFunctions.h
 
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/event/SetDistanceMichelSelection.h
 event/MichelEvent.h
@@ -1385,8 +1389,8 @@ event/CVUniverse.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/studies/event/CVUniverse.h
 PlotUtils/VariableBase.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/studies/PlotUtils/VariableBase.h
-util/PionFSCategory.h
-/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/studies/util/PionFSCategory.h
+util/PionProtonFSCategory.h
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/studies/util/PionProtonFSCategory.h
 functional
 -
 
@@ -1451,8 +1455,8 @@ event/CVUniverse.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/studies/event/CVUniverse.h
 PlotUtils/VariableBase.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/studies/PlotUtils/VariableBase.h
-util/PionFSCategory.h
-/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/studies/util/PionFSCategory.h
+util/PionProtonFSCategory.h
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/studies/util/PionProtonFSCategory.h
 functional
 -
 unordered_set
@@ -1465,6 +1469,12 @@ PlotUtils/HistFolio.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/studies/PlotUtils/HistFolio.h
 PlotUtils/HistWrapper.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/studies/PlotUtils/HistWrapper.h
+
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/systematics/CohDiffractiveSystematics.h
+event/CVUniverse.h
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/systematics/event/CVUniverse.h
+PlotUtils/ChainWrapper.h
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/systematics/PlotUtils/ChainWrapper.h
 
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/systematics/Systematics.h
 event/CVUniverse.h
@@ -1493,6 +1503,10 @@ PlotUtils/NSFDefaults.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/systematics/PlotUtils/NSFDefaults.h
 PlotUtils/ResponseSystematics.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/systematics/PlotUtils/ResponseSystematics.h
+CohDiffractiveSystematics.h
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/systematics/CohDiffractiveSystematics.h
+PlotUtils/GeantHadronSystematics.h
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/systematics/PlotUtils/GeantHadronSystematics.h
 
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/twoDEventLoopFull.cpp
 event/CVUniverse.h
@@ -1672,6 +1686,26 @@ functional
 unordered_set
 -
 
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/PionProtonFSCategory.h
+studies/Study.h
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/studies/Study.h
+util/SafeROOTName.h
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/util/SafeROOTName.h
+event/MichelEvent.h
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/event/MichelEvent.h
+util/Categorized.h
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/util/Categorized.h
+event/CVUniverse.h
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/event/CVUniverse.h
+PlotUtils/VariableBase.h
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/PlotUtils/VariableBase.h
+util/SafeROOTName.h
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/util/SafeROOTName.h
+functional
+-
+unordered_set
+-
+
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/PionReweighter.h
 string
 -
@@ -1711,6 +1745,8 @@ util/Categorized.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/util/Categorized.h
 util/PionFSCategory.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/util/PionFSCategory.h
+util/PionProtonFSCategory.h
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/util/PionProtonFSCategory.h
 PlotUtils/VariableBase.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/PlotUtils/VariableBase.h
 PlotUtils/HistWrapper.h
@@ -1727,6 +1763,8 @@ util/Categorized.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/util/Categorized.h
 util/PionFSCategory.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/util/PionFSCategory.h
+util/PionProtonFSCategory.h
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/util/PionProtonFSCategory.h
 MinervaUnfold/MnvResponse.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/MinervaUnfold/MnvResponse.h
 TArrayD.h
@@ -1796,6 +1834,8 @@ Math/Vector4D.h
 PlotUtils/Cut.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/PlotUtils/Cut.h
 sstream
+-
+typeinfo
 -
 
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/CCInclusiveSignal.h
@@ -1907,6 +1947,28 @@ universes/MnvTuneSystematics.cxx
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/universes/MnvTuneSystematics.cxx
 weighters/Reweighter.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/weighters/Reweighter.h
+
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/GeantHadronSystematics.cxx
+universes/GeantHadronSystematics.h
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/universes/GeantHadronSystematics.h
+PlotUtils/TreeWrapper.h
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/PlotUtils/TreeWrapper.h
+cassert
+-
+iostream
+-
+utilities/NSFDefaults.h
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/utilities/NSFDefaults.h
+
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/GeantHadronSystematics.h
+weighters/MnvHadronReweight.h
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/weighters/MnvHadronReweight.h
+utilities/NSFDefaults.h
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/utilities/NSFDefaults.h
+cstdlib
+-
+GeantHadronSystematics.cxx
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/GeantHadronSystematics.cxx
 
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/GeantNeutronCVReweighter.h
 utilities/NSFDefaults.h

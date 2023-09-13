@@ -22,6 +22,7 @@
 
 #include "PlotUtils/Cut.h"
 #include <sstream>
+#include <typeinfo>
 #ifndef BEN_CCINCLUSIVECUTS_H
 #define BEN_CCINCLUSIVECUTS_H
 
@@ -52,8 +53,7 @@ namespace reco
       // THE cut function
       bool checkCut(const UNIVERSE& univ, EVENT& /*evt*/) const override
       {
-        // Call a CVUniverse member function to make the cut
-        return univ.IsMinosMatchMuon();
+  	return univ.IsMinosMatchMuon();	
       }
   };
 

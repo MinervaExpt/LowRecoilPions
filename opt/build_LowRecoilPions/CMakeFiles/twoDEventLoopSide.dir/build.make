@@ -112,6 +112,7 @@ twoDEventLoopSide: /cvmfs/minerva.opensciencegrid.org/minerva/hep_hpc_products/r
 twoDEventLoopSide: /cvmfs/minerva.opensciencegrid.org/minerva/hep_hpc_products/root/v6_10_04d/Linux64bit+3.10-2.17-e14-prof/lib/libGenVector.so
 twoDEventLoopSide: /cvmfs/minerva.opensciencegrid.org/minerva/hep_hpc_products/root/v6_10_04d/Linux64bit+3.10-2.17-e14-prof/lib/libMinuit2.so
 twoDEventLoopSide: /cvmfs/minerva.opensciencegrid.org/minerva/hep_hpc_products/root/v6_10_04d/Linux64bit+3.10-2.17-e14-prof/lib/libMinuit.so
+twoDEventLoopSide: systematics/libsystematics.a
 twoDEventLoopSide: util/libutil.a
 twoDEventLoopSide: /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/lib/libUnfoldUtils.so
 twoDEventLoopSide: /cvmfs/minerva.opensciencegrid.org/minerva/hep_hpc_products/root/v6_10_04d/Linux64bit+3.10-2.17-e14-prof/lib/libGeom.so

@@ -841,6 +841,8 @@ sys/types.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/ExtractCrossSection.cpp
 util/GetIngredient.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/GetIngredient.h
+util/SafeROOTName.h
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/SafeROOTName.h
 MinervaUnfold/MnvUnfold.h
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/MinervaUnfold/MnvUnfold.h
 PlotUtils/MnvH1D.h
@@ -876,6 +878,10 @@ TDirectoryFile.h
 string
 -
 exception
+-
+
+/minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/SafeROOTName.h
+string
 -
 
 /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/MinervaUnfold/MnvUnfold.h

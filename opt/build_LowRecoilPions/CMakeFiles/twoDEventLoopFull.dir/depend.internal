@@ -176,6 +176,7 @@ CMakeFiles/twoDEventLoopFull.dir/twoDEventLoopFull.cpp.o
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/event/GetClosestMichel.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/event/Michel.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/event/MichelEvent.h
+ /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/event/RecoilEnergyFunctions.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/event/SetDistanceMichelSelection.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/event/SetDistanceMichelSideband.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/studies/PerEventVarBin.h
@@ -186,6 +187,7 @@ CMakeFiles/twoDEventLoopFull.dir/twoDEventLoopFull.cpp.o
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/studies/PerMichelVarVec.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/studies/PerMichelVarVecFSPart.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/studies/Study.h
+ /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/systematics/CohDiffractiveSystematics.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/systematics/Systematics.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/twoDEventLoopFull.cpp
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/COHPionReweighter.h
@@ -194,6 +196,7 @@ CMakeFiles/twoDEventLoopFull.dir/twoDEventLoopFull.cpp.o
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/GetFluxIntegral.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/GetPlaylist.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/PionFSCategory.h
+ /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/PionProtonFSCategory.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/PionReweighter.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/SafeROOTName.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/LowRecoilPions/util/TargetMassReweighter.h
@@ -218,6 +221,8 @@ CMakeFiles/twoDEventLoopFull.dir/twoDEventLoopFull.cpp.o
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/FluxSystematics.cxx
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/FluxSystematics.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/GENIEReweighter.h
+ /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/GeantHadronSystematics.cxx
+ /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/GeantHadronSystematics.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/GeantNeutronCVReweighter.h
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/GenieSystematics.cxx
  /minerva/app/users/sultana/cmtuser/WorkingArea/LowRecoilPions/opt/include/PlotUtils/GenieSystematics.h

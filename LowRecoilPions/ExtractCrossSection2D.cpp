@@ -508,14 +508,14 @@ int main(const int argc, const char** argv)
     std::cerr << "Failed to open MC file " << argv[3] << ".\n";
     return 3;
   }
-
+  /*
   auto potFile = TFile::Open(argv[4], "READ");
   if(!potFile)
   {
     std::cerr << "Failed to open MC file " << argv[4] << ".\n";
     return 3;
   }
-
+  */
   std::vector<std::string> crossSectionPrefixes;
   std::vector<std::string> prefix1D;
   for(auto key: *dataFile->GetListOfKeys())
@@ -533,9 +533,9 @@ int main(const int argc, const char** argv)
   }
 
   const double mcPOT = util::GetIngredient<TParameter<double>>(*mcFile, "POTUsed")->GetVal(),
-               dataPOT = util::GetIngredient<TParameter<double>>(*dataFile, "POTUsed")->GetVal(),
-	       totmcPOT = util::GetIngredient<TParameter<double>>(*potFile, "mcPOTUsed")->GetVal(),
-	       totalPOT = util::GetIngredient<TParameter<double>>(*potFile, "dataPOTUsed")->GetVal();
+               dataPOT = util::GetIngredient<TParameter<double>>(*dataFile, "POTUsed")->GetVal();
+	       //totmcPOT = util::GetIngredient<TParameter<double>>(*potFile, "mcPOTUsed")->GetVal(),
+	       //totalPOT = util::GetIngredient<TParameter<double>>(*potFile, "dataPOTUsed")->GetVal();
 
   for(const auto& prefix: crossSectionPrefixes)
   {
@@ -601,9 +601,9 @@ int main(const int argc, const char** argv)
 
       //const auto nNucleons = expandBinning(util::GetIngredient<PlotUtils::MnvH2D>(*mcFile, (*fiducialFound)->GetName()), effNum); //Dan: Use the same truth fiducial volume for all extractions.  The acceptance correction corrects data back to this fiducial even if the reco fiducial cut is different.
       
-
+      
       //auto nNucleons = util::GetIngredient<TParameter<double>>(*potFile, (*fiducialFound)->GetName());
-      auto nNucleons = util::GetIngredient<TParameter<double>>(*potFile, "fiducialNucleons" );
+      auto nNucleons = util::GetIngredient<TParameter<double>>(*mcFile,  (*fiducialFound)->GetName() );
 
       //Look for backgrounds with <prefix>_<analysis>_Background_<name>
       std::vector<PlotUtils::MnvH2D*> backgrounds;
