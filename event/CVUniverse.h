@@ -18,6 +18,7 @@
 #include <chrono>
 #include "PlotUtils/MinervaUniverse.h"
 #include "TVector.h"
+#include "PlotUtils/LowRecoilPionReco.h"
 
 typedef LowRecoilPion::Cluster Cluster;
 

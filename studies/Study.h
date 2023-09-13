@@ -5,8 +5,9 @@
 #include "TDirectory.h"
 #include "PlotUtils/HistFolio.h"
 #include "PlotUtils/HistWrapper.h"
-class MichelEvent;
 class CVUniverse;
+#include "PlotUtils/LowRecoilPionReco.h"
+typedef LowRecoilPion::MichelEvent<CVUniverse> MichelEvent;
 
 class Study
 {
