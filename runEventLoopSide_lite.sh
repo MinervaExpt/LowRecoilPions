@@ -78,7 +78,7 @@ source setup_UnfoldUtils.sh
 source setupROOT6OnGPVMs.sh
 source setup_MAT_IncPions.sh
 
-source setup_weights.sh
+#source setup_weights.sh
 
 cd ../../LowRecoilPions/
 

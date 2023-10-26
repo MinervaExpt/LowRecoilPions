@@ -57,7 +57,7 @@ class Variable2D: public PlotUtils::Variable2DBase<CVUniverse>
       efficiencyDenominator = new Hist((GetNameX() + "_" + GetNameY() + "_efficiency_denominator").c_str(), GetName().c_str(), GetBinVecX(), GetBinVecY(), truth_error_bands);
       fSignalByPionsInVar = new util::Categorized<Hist, FSCategory*>(pionFSCategories,(GetName()+"_top").c_str(),(GetName()).c_str() , GetBinVecX(), GetBinVecY(),mc_error_bands);
       fSignalByPionNucleonInVar = new util::Categorized<Hist, FSpCategory*>(pionprotonFSCategories,(GetName()+"_picat").c_str(),(GetName()).c_str() , GetBinVecX(), GetBinVecY(),mc_error_bands);
-
+      fSignalDenomByPionNucleonInVar = new util::Categorized<Hist, FSpCategory*>(pionprotonFSCategories,(GetName()+"_denom_picat").c_str(),(GetName()).c_str() , GetBinVecX(), GetBinVecY(),mc_error_bands);
       
       mcTotalHist = new Hist((GetNameX() + "_" + GetNameY() + "_MC").c_str(), GetName().c_str(), GetBinVecX(), GetBinVecY(), mc_error_bands);
       selectedSignalReco = new Hist((GetNameX() + "_" + GetNameY() + "_signal_reco").c_str(), GetName().c_str(), GetBinVecX(), GetBinVecY(), mc_error_bands);
@@ -126,6 +126,7 @@ class Variable2D: public PlotUtils::Variable2DBase<CVUniverse>
     Hist* efficiencyDenominator;
     util::Categorized<Hist, FSCategory*>* fSignalByPionsInVar; 
     util::Categorized<Hist, FSpCategory*>* fSignalByPionNucleonInVar;
+    util::Categorized<Hist, FSpCategory*>* fSignalDenomByPionNucleonInVar;
     Hist* mcTotalHist;
     Hist* selectedSignalReco;
     Hist* mc_trueHist;
@@ -177,6 +178,13 @@ class Variable2D: public PlotUtils::Variable2DBase<CVUniverse>
                                                     Hist.hist->SetDirectory(&file);
                                                     Hist.hist->Write();
                                                 });
+
+      fSignalDenomByPionNucleonInVar->visit([&file](auto& Hist) {
+                                                    Hist.SyncCVHistos();
+                                                    Hist.hist->SetDirectory(&file);
+                                                    Hist.hist->Write();
+                                                });
+
 
 
       if (dataHist->hist) {
@@ -253,6 +261,7 @@ class Variable2D: public PlotUtils::Variable2DBase<CVUniverse>
       if(selectedSignalReco) selectedSignalReco->SyncCVHistos();
       fSignalByPionsInVar->visit([](auto& Hist) {Hist.SyncCVHistos();});
       fSignalByPionNucleonInVar->visit([](auto& Hist) {Hist.SyncCVHistos();});
+      fSignalDenomByPionNucleonInVar->visit([](auto& Hist) {Hist.SyncCVHistos();});
       m_backgroundHists->visit([](Hist& categ) { categ.SyncCVHistos(); });
       if(mcTotalHist) mcTotalHist->SyncCVHistos();
       if(dataHist) dataHist->SyncCVHistos();
@@ -274,6 +283,13 @@ class Variable2D: public PlotUtils::Variable2DBase<CVUniverse>
       (*fSignalByPionNucleonInVar)[*pionprotonCat].FillUniverse(&univ, varx, vary, weight);
 
     }
+	
+    void FillCategDenomHistos(const CVUniverse& univ, double varx, double vary, const double weight)
+    {
+ 	const auto pionprotonCat = std::find_if(pionprotonFSCategories.begin(), pionprotonFSCategories.end(), [&univ](auto& category) { return (*category)(univ); });
+        (*fSignalDenomByPionNucleonInVar)[*pionprotonCat].FillUniverse(&univ, varx, vary, weight);	
+    }
+  
 };
 
 #endif //VARIABLE2D_H

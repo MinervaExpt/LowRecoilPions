@@ -51,6 +51,18 @@ class FSpCategory
         std::vector<int> protonidx;
 	std::vector<int> neutronidx;
         const std::vector<int> fsParts = univ.GetTrueFSPDGCodes();
+ 	//npionp =  std::count(fsParts.begin(), fsParts.end(), 211); 
+	//npionm = std::count(fsParts.begin(), fsParts.end(), -211);
+	//npion0 = std::count(fsParts.begin(), fsParts.end(), 111);
+	//nkplus = std::count(fsParts.begin(), fsParts.end(), 321);
+	//nkneut = std::count(fsParts.begin(), fsParts.end(), 311);
+        //nneutron = std::count(fsParts.begin(), fsParts.end(), 2112);
+	//nprotonidx = std::count(fsParts.begin(), fsParts.end(), 2212);
+	
+	
+	std::vector<double> neutE;
+	std::vector<double> protE;
+
         for(auto pdgCode: fsParts)
 	{
   		if(pdgCode == 211) ++npionp;
@@ -60,14 +72,19 @@ class FSpCategory
                 else if(pdgCode == 311) ++nkneut;
 	        else if(pdgCode == 2112){
 			++nneutron;
+			neutE.push_back(univ.GetTrueEpiEvent(npart));
 		        neutronidx.push_back(npart);	
 		}
 		else if(pdgCode == 2212){
 			 ++nproton;
+			 protE.push_back(univ.GetTrueEpiEvent(npart));
 	         	 protonidx.push_back(npart);
 		}
 		npart++;    
         }
+
+	if (!neutE.empty()) std::sort(neutE.begin(), neutE.end());
+	if (!protE.empty()) std::sort(protE.begin(), protE.end());
 
 	bool hasprotonandneutron = false;
         if (nproton == 0 and nneutron == 0) // If no neutron and proton, set booleans to false
@@ -75,6 +92,24 @@ class FSpCategory
 	   leadingneutron = false;
            leadingproton = false;
 	}
+        else if (nproton > 0 and nneutron == 0){ // If there is a proton and no neutron, 
+             leadingproton = true;
+             leadingneutron = false;
+        }
+	else if (nproton == 0 and nneutron > 0){ // If there is a proton and no neutron, 
+             leadingproton = false;
+             leadingneutron = true;
+        }
+	else if (protE.back() > neutE.back()){
+	   leadingproton = true;
+           leadingneutron = false;
+	}
+	else if (protE.back() < neutE.back()){
+	   leadingproton = false;
+           leadingneutron = true;
+	}
+
+	/*
 	else if (protonidx.size() == 1 and neutronidx.empty()){ // If there is a proton and no neutron, 
 	     leadingproton = true;
 	     leadingneutron = false;
@@ -109,7 +144,7 @@ class FSpCategory
 	     leadingneutron = false;
 	     leadingproton = false;
         } 
-	    
+	*/   
 
         bool pion = (npionp > 0); //univ.GetTrueIsFSPartInEvent(211); //univ.GetTrueNPionsinEvent();
 	bool k0 = (nkneut > 0);//univ.GetTrueIsFSPartInEvent(311);//univ.GetTrueNKaonsinEvent();
@@ -138,23 +173,13 @@ class FSpCategory
 		if (npionp == 1 && npionm == 0 && k0 == false && pi0 == false && kplus == false && nproton > 0 && nneutron == 0 && fForbidden.count(9990) == 1) return true; // 1pi+ w/ Leading proton
 	        else if (npionp == 1 && npionm == 0 && k0 == false && pi0 == false && kplus == false && leadingneutron == false && leadingproton == true && fForbidden.count(9990) == 1) return true; // 1pi+ w/ Leading proton
 		else if (npionp == 1 && npionm == 0 && k0 == false && pi0 == false && kplus == false && leadingneutron == true && leadingproton == false && fForbidden.count(9991) == 1) return true; // 1pi+ w/ Leading neutron
-		//else if (npionp == 1 && npionm == 0 && k0 == false && pi0 == false && kplus == false && leadingproton == false && leadingneutron == true && fForbidden.count(9991) == 1) return true; // 1pi+ w/ Leading neutron
 		else if (npionp == 1 && npionm == 0 && k0 == false && pi0 == false && kplus == false && nproton == 0 && nneutron == 0 && fForbidden.count(9992) == 1) return true; // 1pi+ w/o Leading proton or neutron
 		else if (npionp > 1 && npionm == 0 &&  k0 == false && pi0 == false && kplus == false && fForbidden.count(9980) == 1) return true; //Npi+ only;
-		//else if (npionp > 1 && npionm == 0 &&  k0 == false && pi0 == false && kplus == false && leadingproton == true && fForbidden.count(9980) == 1) return true; // Npi+ w/ L proton		
-		//else if (npionp > 1 && npionm == 0 && k0 == false && pi0 == false && kplus == false && leadingproton == false && leadingneutron == true && fForbidden.count(9981) == 1) return true; // Npi+ w/ LEading Neutron
-  		//else if (npionp > 1 && npionm == 0 && k0 == false && pi0 == false && kplus == false && leadingproton == false && leadingneutron == false && fForbidden.count(9982) == 1) return true; // npi+ w/o proton or neutron
  		
-		//if (pion == true && npions >= 1 && k0 == false && pi0 == false && kplus == false && fForbidden.count(9999) == 1) return true;
-		//else if (pion == true && npions >= 1 && (k0 == true or pi0 == true or kplus == true ) && fForbidden.count(2) == 1) return true;
                 else if (npionp > 0 and omesons == true and interaction==2 and fForbidden.count(2) == 1 ) return true; //npi+ with mesons RES
 		else if (npionp > 0 and omesons == true and interaction==3 and fForbidden.count(3) == 1 ) return true; //npi+ with mesons DIS
-		//else if (npionp > 0 and (kplus == true or k0 == true or pi0 == true or npionm > 0) and interaction==2 and fForbidden.count(2) == 1 ) return true; //npi+ with mesons RES
-		//else if (npionp > 0 and (kplus == true or k0 == true or pi0 == true or npionm > 0) and interaction==3 and fForbidden.count(3) == 1 ) return true; //npi+ with mesons DIS
-		//else if (npionp > 0 and (kplus == true or k0 == true or pi0 == true or npionm > 0) and interaction != 3 and interaction != 2 and fForbidden.count(4) == 1 ) return true; //npi+ with mesons from any other process	
 		else if (pion == false && (kplus == true) && fRequired.count(321) == 1 ) return true; //Events with Kaons
 		else if (pion == false && pi0 == true && fRequired.count(111) == 1) return true; // Events with Neutral Pi only
-		//else if (pion == false && (sigma == true or lam == true) && fRequired.count(3122) == 1) return true;
 		else if (npionm == 0 && pion == false && k0 == false && kplus == false && pi0 == false && fRequired.count(9999) == 1) return true; // QE-Like events
 		else return false;
         	//return true;
