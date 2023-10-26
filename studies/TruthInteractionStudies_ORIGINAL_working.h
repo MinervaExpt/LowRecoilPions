@@ -5,7 +5,7 @@
 #ifndef __CINT__ //PlotUtils/VariableBase.h uses std::function which is from c++11
 #include "util/SafeROOTName.h" //TODO: This is a very bad idea
 #endif //__CINT__
-#include "event/MichelEvent.h"
+
 #include "util/Categorized.h"
 #include "event/CVUniverse.h"
 #include "PlotUtils/VariableBase.h"

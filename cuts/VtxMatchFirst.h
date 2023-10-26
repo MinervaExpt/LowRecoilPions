@@ -4,7 +4,9 @@
 
 //PlotUtils includes
 #include "PlotUtils/Cut.h"
-#include "event/Michel.h"
+#include "PlotUtils/LowRecoilPionReco.h"
+typedef LowRecoilPion::Michel<CVUniverse> Michel;
+typedef LowRecoilPion::MichelEvent<CVUniverse> MichelEvent;
 
 template <class UNIVERSE, class EVENT>
 class VtxMatchFirst: public PlotUtils::Cut<UNIVERSE, EVENT>

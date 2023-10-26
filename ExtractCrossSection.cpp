@@ -205,9 +205,9 @@ void Plot(PlotUtils::MnvH1D& hist, const std::string& stepName, const std::strin
   }
 
   auto hist2 = hist;
-  hist2.Add(&hist, -1);
+  //hist2.Add(&hist, -1);
   plotter.DrawErrorSummary(&hist2,"TR", true, true, 1e-5, false, "", true);
-  can.Print((prefix + "_" + stepName + "_uncertaintySummary_JUSTLEGEND.png").c_str());
+  can.Print((prefix + "_" + stepName + "_uncertaintySummary.png").c_str());
 
   /*
   const std::string systname("Cross Section Models");

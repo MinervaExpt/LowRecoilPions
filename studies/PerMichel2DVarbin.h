@@ -5,7 +5,10 @@
 #endif //__CINT__
 
 //Mehreen's includes
-#include "event/MichelEvent.h"
+#include "PlotUtils/LowRecoilPionReco.h"
+typedef LowRecoilPion::Michel<CVUniverse> Michel;
+typedef LowRecoilPion::MichelEvent<CVUniverse> MichelEvent;
+
 #include "util/Categorized.h"
 #include "event/CVUniverse.h"
 #include "PlotUtils/VariableBase.h"

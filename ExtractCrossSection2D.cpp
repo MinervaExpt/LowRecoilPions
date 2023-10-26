@@ -574,6 +574,13 @@ int main(const int argc, const char** argv)
       auto recosignal = util::GetIngredient<PlotUtils::MnvH2D>(*mcFile, "signal_reco", prefix);
       auto purdenom = util::GetIngredient<PlotUtils::MnvH2D>(*mcFile, "MC", prefix); 
 
+      auto npip = util::GetIngredient<PlotUtils::MnvH2D>(*mcFile, "denom_Npip_Only", prefix);
+      auto onepi = util::GetIngredient<PlotUtils::MnvH2D>(*mcFile, "denom_1pip_wo_p_or_n", prefix);
+      auto onepin = util::GetIngredient<PlotUtils::MnvH2D>(*mcFile, "denom_1pip_w_LNeutron", prefix);
+      auto onepip = util::GetIngredient<PlotUtils::MnvH2D>(*mcFile, "denom_1pip_w_LProton", prefix); 	
+      auto npires = util::GetIngredient<PlotUtils::MnvH2D>(*mcFile, "denom_NPi_and_Mesons_RES", prefix); 
+      auto npidis = util::GetIngredient<PlotUtils::MnvH2D>(*mcFile, "denom_NPi_and_Mesons_DIS", prefix);
+      auto cohpi = util::GetIngredient<PlotUtils::MnvH2D>(*mcFile, "denom_COH_Pions", prefix);
       std::cout << "Check folded: " << folded->Integral() << std::endl;
       std::cout << "Check selSig: " << recosignal->Integral() << std::endl;
       std::cout << "Check migration: " << migration->Integral() << std::endl;
@@ -654,7 +661,7 @@ int main(const int argc, const char** argv)
         return 5;
       }
       toSubtract->Clone()->Write("background");
-      bkgSubtracted->Clone()->Write("backgroundSubtracted");
+      bkgSubtracted->Write("backgroundSubtracted");
 
       //d'Aogstini unfolding
       MinervaUnfold::MnvUnfold unfold;
@@ -718,8 +725,8 @@ int main(const int argc, const char** argv)
 
 
       //auto crossSection = normalize(unfolded, flux, n_target_nucleons, totalPOT);//totalPOT); //dataPOT if you are going playlist by playlist
-      Plot(*crossSection, "crossSection", prefix);
-      crossSection->Write("crossSection");
+      //Plot(*crossSection, "crossSection", prefix);
+      //crossSection->Write("crossSection");
 
       /*  // Start of Simulated xsec extraction for all playlists
       auto h_mc_cross_section = simEventRate->Clone();
@@ -747,6 +754,38 @@ int main(const int argc, const char** argv)
       
       Plot(*simEventRate, "simulatedCrossSection", prefix);
       simEventRate->Write("simulatedCrossSection");
+
+
+      normalize(npip, flux, nNucleons->GetVal(), mcPOT);
+      Plot(*npip, "NpiplusOnlyxsec", prefix);
+      npip->Write("NpiplusOnlyxsec");
+ 
+      normalize(onepi, flux, nNucleons->GetVal(), mcPOT);
+      Plot(*onepi, "OnepiNoPNxsec", prefix);
+      onepi->Write("OnepiNoPNxsec");
+
+
+      normalize(onepin, flux, nNucleons->GetVal(), mcPOT);
+      Plot(*onepin, "OnepiplusNeutronxsec", prefix);
+      onepin->Write("OnepiplusNeutronxsec");
+
+
+      normalize(onepip, flux, nNucleons->GetVal(), mcPOT);
+      Plot(*onepip, "OnepiplusProtonxsec", prefix);
+      onepip->Write("OnepiplusProtonxsec");
+
+
+      normalize(npires, flux, nNucleons->GetVal(), mcPOT);
+      Plot(*npires, "NpiplusRESxsec", prefix);
+      npires->Write("NpiplusRESxsec");
+
+      normalize(npidis, flux, nNucleons->GetVal(), mcPOT);
+      Plot(*npidis, "NpiplusDISxsec", prefix);
+      npidis->Write("NpiplusDISxsec");
+
+      normalize(cohpi, flux, nNucleons->GetVal(), mcPOT);
+      Plot(*cohpi, "COHxsec", prefix);
+      cohpi->Write("COHxsec");
     }
     catch(const std::runtime_error& e)
     {

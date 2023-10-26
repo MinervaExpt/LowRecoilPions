@@ -18,6 +18,9 @@
 #include <chrono>
 #include "PlotUtils/MinervaUniverse.h"
 #include "TVector.h"
+#include "PlotUtils/LowRecoilPionReco.h"
+#include "TLorentzVector.h"
+typedef LowRecoilPion::Cluster Cluster;
 
 //#include "event/Cluster.h"
 class CVUniverse : public PlotUtils::MinervaUniverse {
@@ -494,7 +497,7 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
   }
 
  
-  virtual double GetCOHPionWeight() const {
+  virtual double GetCOHPionWeight() const { // This is Alejandro Ramirez's Correction
     double weight = 1.0;
     if(GetInt("mc_intType") != 4) return 1.0;
     if(GetInt("mc_intType") == 4){
@@ -514,6 +517,40 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
      else return 1.0;
   }
 
+  virtual double GetCOHTpiCorrection() const{ // This is Mehreen's Correction. 
+     double weight = 1.0;
+     
+     if(GetInt("mc_intType") != 4) return 1.0;
+     else if(GetInt("mc_intType") == 4){
+        return 3.0;
+	//double tpi = GetTrueLowestTpiEvent();
+        //if (tpi < 0) return 1.0;
+        //double eavl =  GetTrueEAvail();
+	//std::cout << "True E available is " << GetTrueEAvail() << " And True Lowest Tpi is " << GetTrueLowestTpiEvent() << std::endl;
+	//std::cout << "True Eav - Tpi is " << GetTrueEavMinusTpi() << " MeV" << std::endl;
+	
+        //if (GetTrueEavMinusTpi() >= 0. && GetTrueEavMinusTpi() < 25.0){
+	        //PrintTrueArachneLink();
+	        //weight = 3.0;
+	//        return 3.0;
+		/*
+                if (GetTrueLowestTpiEvent() >= 60. && GetTrueLowestTpiEvent() < 200.){
+                   //PrintTrueArachneLink();
+		   weight = 3.0;
+		   return 3.0;
+                }
+		else if (GetTrueLowestTpiEvent() >= 200. && GetTrueLowestTpiEvent() < 300.){
+		    weight = ;
+		    return 1.5;
+		}
+		*/
+        //}
+        //else return 1.0;
+     }
+
+  }
+
+
    virtual double GetTrueAngleHighTpi() const {
      int nFSpi = GetInt("mc_nFSPart");
      double angle = -9999.; //WRTbeam and in degrees
@@ -523,7 +560,8 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
          int pdg = GetVecElem("mc_FSPartPDG",i);
          if(pdg != 211) continue;
          double energy = GetVecElem("mc_FSPartE", i);
-         double mass = 139.569;
+         
+	 double mass = 139.569;
          double tpi = energy - mass;
          if (tpi >= pionKE) {
                pionKE = tpi;
@@ -648,7 +686,85 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
       return GetInt("FittedMichel_michel_fitPass_sz");
   }
 
-  
+  virtual double GetWeightForOnePiWNeutron() const{
+    if (GetTrueEavMinusTpi() > 50) return 1.0;
+    if (GetTrueEavMinusTpi() <= 50){
+	const int interaction = GetInteractionType();
+        if (interaction == 4 || interaction == 1) return 1.0;
+	int npionp = 0;
+        int npion0 = 0;
+        int nkplus = 0;
+        int npionm = 0;
+        int nkneut = 0;
+        int nproton = 0;
+        int nneutron = 0;
+        bool leadingproton = false;
+        bool leadingneutron = false;
+        int npart = -1;
+	std::vector<int> protonidx;
+        std::vector<int> neutronidx;
+	std::vector<double> neutE, protE;
+	const std::vector<int> fsParts = GetTrueFSPDGCodes();	
+        //double weight = 1.3 - 0.8729*GetMuonPT() + 0.2825*GetMuonPT()*GetMuonPT();	
+    	for(auto pdgCode: fsParts)
+       	{
+		npart++;
+                if(pdgCode == 211) ++npionp;
+                else if(pdgCode == -211) return 1.0; //++npionm;
+                else if(pdgCode == 111) return 1.0; //++npion0;
+                else if(abs(pdgCode) == 321) return 1.0; //++nkplus;
+                else if(pdgCode == 311) return 1.0;
+                else if(pdgCode == 2112){
+             		++nneutron;
+	                neutE.push_back(GetTrueEpiEvent(npart));
+                        neutronidx.push_back(npart);
+                }
+                else if(pdgCode == 2212){
+                 	++nproton;
+		        protE.push_back(GetTrueEpiEvent(npart));
+                        protonidx.push_back(npart);
+                }
+
+		if (npionp > 1) return 1.0;	
+         }
+
+	 if (npionp == 0 || npionp > 1 || nneutron == 0) return 1.0;
+	
+         if (!neutE.empty()) std::sort(neutE.begin(), neutE.end());
+         if (!protE.empty()) std::sort(protE.begin(), protE.end());	
+
+	 bool hasprotonandneutron = false;
+         if (nproton == 0 and nneutron == 0) // If no neutron and proton, set booleans to false
+         {
+           leadingneutron = false;
+           leadingproton = false;
+         }
+         else if (nproton > 0 and nneutron == 0){ // If there is a proton and no neutron, 
+             leadingproton = true;
+             leadingneutron = false;
+	     return 1.0;
+         }
+         else if (nproton == 0 and nneutron > 0){ // If there is a proton and no neutron, 
+             leadingproton = false;
+             leadingneutron = true;
+         }
+         else if (protE.back() > neutE.back()){
+           leadingproton = true;
+           leadingneutron = false;
+	   return 1.0;
+         }
+         else if (protE.back() < neutE.back()){
+           leadingproton = false;
+           leadingneutron = true;
+         }	
+	 
+	 if (leadingneutron == true && npionp == 1) return 1.3 - 0.8729*GetMuonPT() + 0.2825*GetMuonPT()*GetMuonPT();
+	 
+    }//end if EavMinusTpi > 75 MeV 
+    else return 1.0;
+
+  } 
+ 
   virtual double GetTpiFromRange(double range) const{
      /*
      char *mweightsfilelocation = std::getenv("UTILPATH");
@@ -860,8 +976,11 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
             double momentumx = GetVecElem("mc_FSPartPx", i);
             double momentumy = GetVecElem("mc_FSPartPy", i);
             double momentumz = GetVecElem("mc_FSPartPz", i);
-            double pionmomentum = TMath::Sqrt(pow(momentumx, 2) + pow(momentumy,2)+pow(momentumz,2));
-	    double pionmass = TMath::Sqrt(pow(energy, 2) - pow(pionmomentum, 2));
+            TLorentzVector pivec;
+	    pivec.SetPxPyPzE(momentumx, momentumy, momentumz, energy);
+		
+	    double pionmomentum = pivec.P(); //TMath::Sqrt(pow(momentumx, 2) + pow(momentumy,2)+pow(momentumz,2));
+	    double pionmass = M_pi;//pivec.M();//TMath::Sqrt(pow(energy, 2) - pow(pionmomentum, 2));
             double KE = energy - pionmass;
             if (tpi > KE) {
 			tpi = KE;
@@ -887,7 +1006,7 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
             double momentumy = GetVecElem("mc_FSPartPy", i)/1000.;
             double momentumz = GetVecElem("mc_FSPartPz", i)/1000.;
             double pionmomentum = TMath::Sqrt(pow(momentumx, 2) + pow(momentumy,2)+pow(momentumz,2));
-            double pionmass = TMath::Sqrt(pow(energy, 2) - pow(pionmomentum, 2));
+            double pionmass = M_pi; //TMath::Sqrt(pow(energy, 2) - pow(pionmomentum, 2));
             double KE = energy - pionmass;
             if (tpi > KE) {
                    tpi = KE;
@@ -918,8 +1037,10 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
             double momentumx = GetVecElem("mc_FSPartPx", i);
             double momentumy = GetVecElem("mc_FSPartPy", i);
             double momentumz = GetVecElem("mc_FSPartPz", i);
-            double pionmomentum = TMath::Sqrt(pow(momentumx, 2) + pow(momentumy,2)+pow(momentumz,2));
-            double pionmass = TMath::Sqrt(pow(energy, 2) - pow(pionmomentum, 2));
+            TLorentzVector pivec; 
+	     pivec.SetPxPyPzE(momentumx, momentumy, momentumz, energy);
+	    double pionmomentum = pivec.P();//TMath::Sqrt(pow(momentumx, 2) + pow(momentumy,2)+pow(momentumz,2));
+            double pionmass = M_pi; //pivec.M(); //TMath::Sqrt(pow(energy, 2) - pow(pionmomentum, 2));
             double KE = energy - pionmass;
             if (tpi > KE) {
                         tpi = KE;
@@ -989,8 +1110,10 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
             double momentumx = GetVecElem("mc_FSPartPx", i);
             double momentumy = GetVecElem("mc_FSPartPy", i);
             double momentumz = GetVecElem("mc_FSPartPz", i);
-            double pionmomentum = TMath::Sqrt(pow(momentumx, 2) + pow(momentumy,2)+pow(momentumz,2));
-	    double pionmass = TMath::Sqrt(pow(energy, 2) - pow(pionmomentum, 2));
+            TLorentzVector pivec; //(momentumx, momentumy, momentumz, energy);
+	     pivec.SetPxPyPzE(momentumx, momentumy, momentumz, energy);
+	    double pionmomentum = pivec.P(); //TMath::Sqrt(pow(momentumx, 2) + pow(momentumy,2)+pow(momentumz,2));
+	    double pionmass = pivec.M();//TMath::Sqrt(pow(energy, 2) - pow(pionmomentum, 2));
             double KE = energy - pionmass;
             if (tpi > KE){
 		tpi = KE;
@@ -1004,10 +1127,10 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
      std::vector<int> pdgs = GetVecInt("mc_FSPartPDG");
      int count = std::count(pdgs.begin(), pdgs.end(), 211);
      double tpi = 9999.;
-     if (count < 1) tpi = 0;
+     if (count < 1) return -1.0;
      else  tpi = GetTrueLowestTpiEvent();
      double eavl =  GetTrueEAvail();
-     if (tpi > eavl) return 0.0;
+     if (tpi < 0 or tpi > eavl) return 0.0;
      else return (eavl - tpi);  
 		
  }
@@ -1016,10 +1139,10 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
     std::vector<int> pdgs = GetVecInt("mc_FSPartPDG");
      int count = std::count(pdgs.begin(), pdgs.end(), 211);
      double tpi = 9999.;
-     if (count < 1) tpi = 0;
+     if (count < 1) return -1.0;
      else  tpi = GetTrueLowestTpiEventGEV();
      double eavl =  GetTrueEAvailGEV();
-     if (tpi > eavl) return 0.0;
+     if (tpi < 0 or tpi > eavl) return 0.0;
      else return (eavl - tpi);
  }
 
@@ -1035,9 +1158,11 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
             double momentumx = GetVecElem("mc_FSPartPx", i);
             double momentumy = GetVecElem("mc_FSPartPy", i);
             double momentumz = GetVecElem("mc_FSPartPz", i);
-            double pionmomentum = TMath::Sqrt(pow(momentumx, 2) + pow(momentumy,2)+pow(momentumz,2));
-            double pionmass = TMath::Sqrt(pow(energy, 2) - pow(pionmomentum, 2));
-            double KE = energy - pionmass;
+            TLorentzVector pivec;//(momentumx, momentumy, momentumz, energy);
+	     pivec.SetPxPyPzE(momentumx, momentumy, momentumz, energy);
+	    double pionmomentum = pivec.P();//TMath::Sqrt(pow(momentumx, 2) + pow(momentumy,2)+pow(momentumz,2));
+            double pionmass = pivec.M();//TMath::Sqrt(pow(energy, 2) - pow(pionmomentum, 2));
+            double KE = energy - M_pi;
             if (tpi < KE){
                 tpi = KE;
                 idx = i;
@@ -1049,6 +1174,9 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
  virtual double GetTrueLowestTpiEvent() const {
     double tpi = 999999.;
     int pdgsize = GetInt("mc_nFSPart");
+    std::vector<int> pdgs = GetVecInt("mc_FSPartPDG");
+    int count = std::count(pdgs.begin(), pdgs.end(), 211);
+    if (count < 1) return -1.0; 
     for (int i = 0; i< pdgsize; i++)
         {
             int pdg = GetVecElem("mc_FSPartPDG", i);
@@ -1057,8 +1185,10 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
 	    double momentumx = GetVecElem("mc_FSPartPx", i);
 	    double momentumy = GetVecElem("mc_FSPartPy", i);
 	    double momentumz = GetVecElem("mc_FSPartPz", i);
-            double pionmomentum = TMath::Sqrt(pow(momentumx, 2) + pow(momentumy,2)+pow(momentumz,2));
-	    double pionmass = TMath::Sqrt(pow(energy, 2) - pow(pionmomentum, 2));  
+            TLorentzVector pivec; //(momentumx, momentumy, momentumz, energy);
+             pivec.SetPxPyPzE(momentumx, momentumy, momentumz, energy);	
+	    double pionmomentum = pivec.P(); //TMath::Sqrt(pow(momentumx, 2) + pow(momentumy,2)+pow(momentumz,2));
+	    double pionmass = M_pi; //TMath::Sqrt(pow(energy, 2) - pow(pionmomentum, 2));  
 	    double KE = energy - pionmass;
 	    if (tpi > KE) tpi = KE;     
         }
@@ -1077,8 +1207,10 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
             double momentumx = GetVecElem("mc_FSPartPx", i);
             double momentumy = GetVecElem("mc_FSPartPy", i);
             double momentumz = GetVecElem("mc_FSPartPz", i); 
-            double pionmomentum = TMath::Sqrt(pow(momentumx, 2) + pow(momentumy,2)+pow(momentumz,2));
-            double pionmass = TMath::Sqrt(pow(energy, 2) - pow(pionmomentum, 2));
+            TLorentzVector pivec;//(momentumx, momentumy, momentumz, energy);
+	     pivec.SetPxPyPzE(momentumx, momentumy, momentumz, energy);
+            double pionmomentum = pivec.P(); //TMath::Sqrt(pow(momentumx, 2) + pow(momentumy,2)+pow(momentumz,2));
+            double pionmass = M_pi; //pivec.M();//TMath::Sqrt(pow(energy, 2) - pow(pionmomentum, 2));
             double KE = energy - pionmass;
             if (tpi > KE) tpi = KE;
         }	
@@ -1097,8 +1229,10 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
             double momentumx = GetVecElem("mc_FSPartPx", i);
             double momentumy = GetVecElem("mc_FSPartPy", i);
             double momentumz = GetVecElem("mc_FSPartPz", i);
-            double pionmomentum = TMath::Sqrt(pow(momentumx, 2) + pow(momentumy,2)+pow(momentumz,2));
-            double pionmass = TMath::Sqrt(pow(energy, 2) - pow(pionmomentum, 2));
+            TLorentzVector pivec;//(momentumx, momentumy, momentumz, energy);
+	    pivec.SetPxPyPzE(momentumx, momentumy, momentumz, energy);
+	    double pionmomentum = pivec.P();//TMath::Sqrt(pow(momentumx, 2) + pow(momentumy,2)+pow(momentumz,2));
+            double pionmass = M_pi;//pivec.M();//TMath::Sqrt(pow(energy, 2) - pow(pionmomentum, 2));
             double KE = energy - pionmass;
             if (tpi > KE) {
 		tpi = KE;
@@ -1207,11 +1341,14 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
        	  std::cout << link << std::endl;
        	  std::cout << "Lepton E: " <<  GetElepTrueGeV() << " Run " << run << "/"<<subrun << "/" << gate << "/" << slice << std::endl;
 	  std::cout << "Printing Available Energy " << NewEavail() << std::endl;
+	  std::cout << "Print True Available Energy " << GetTrueEAvail() << std::endl; 
 	  std::cout << "Muon P: " << GetMuonP() << std::endl;
 	  std::cout << "Get Muon Pt: " << GetMuonPT() << std::endl;
 	  std::cout << "Get Muon Pz: " << GetMuonPz() << std::endl;
 	  std::cout << "Get Muon PT True " << GetMuonPTTrue() << std::endl;
  	  std::cout << "Get Muon E True " << GetElepTrueGeV() << std::endl;
+	  std::cout << "Get True Lowest Epi in Event:" << GetTrueLowestEpiEvent() << std::endl;
+	  std::cout << "Interaction Type: " << GetInt("mc_intType") << std::endl;   
  }
 
  virtual void PrintDataArachneLink() const {
@@ -1226,10 +1363,15 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
           "arachne.html\?det=MV&recoVer=v21r1p1&run=%d&subrun=%d&gate="
           "%d&slice=%d",
           run, subrun, gate, slice);
-       if(NewEavail() < 50. && GetMuonPT() < .20){
         std::cout << link << std::endl;
+	std::cout << " Run " << run << "/"<<subrun << "/" << gate << "/" << slice << std::endl;
+        
+	
+
+	//if(NewEavail() < 50. && GetMuonPT() < .20){
+        //std::cout << link << std::endl;
        // std::cout << "Lepton E: " <<  GetMuonPT() << " Run " << run << "/"<<subrun << "/" << gate << "/" << slice << std::endl;
-       }
+       //}
 
  }
 
@@ -1242,12 +1384,24 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
  }
 
 
- int GetNonMuonClusters() const
+ virtual int GetNonMuonClusters() const
  {
     std::vector<int> ismuclus = GetVecInt("cluster_isMuontrack");
     int count = std::count(ismuclus.begin(), ismuclus.end(), 0);
     //std::cout << "THERE ARE " << count << " N NON MUON CLUSTERS IN EVENT " << std::endl;
     return count;
+ }
+
+ virtual int GetNTrackerClusters() const{
+    std::vector<int> nsubdet = GetVecInt("cluster_subdet");
+    int count2 = std::count(nsubdet.begin(), nsubdet.end(), 2);
+    return count2;
+ } 
+
+ virtual int GetNECALClusters() const{
+    std::vector<int> nsubdet = GetVecInt("cluster_subdet");
+    int count2 = std::count(nsubdet.begin(), nsubdet.end(), 3);
+    return count2;
  }
 
  double GetNClusters() const
@@ -1400,7 +1554,7 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
         else if (pdg == 22) Eavail += energy; // photons
         else if (pdg == 311) Eavail += energy - 497.611/2.0; // K0 ???? - Kaon rest mass / 2
         else if (abs(pdg) == 321) Eavail += energy - 497.611/2.0; // Kaon+ Kinetic Energy  divide by Kmass/2 
-        else if (pdg == 221) Eavail += energy; //Adding etas
+        else if (pdg == 221) Eavail += energy - 547.862; //Adding etas
 
      }
      
@@ -1459,7 +1613,7 @@ class CVUniverse : public PlotUtils::MinervaUniverse {
         else if (pdg == 22) Eavail += energy; // photons
         else if (pdg == 311) Eavail += energy - 497.611/2.0; // K0 ???? - Kaon rest mass / 2
         else if (abs(pdg) == 321) Eavail += energy - 497.611/2.0; // Kaon+ Kinetic Energy  divide by Kmass/2 
-        else if (pdg == 221) Eavail += energy; //Adding etas
+        else if (pdg == 221) Eavail += energy - 547.862; //Adding etas subtracting their mass (not adding eta prime yet tho)
 	//else if (pdg == 3222) Eavail += energy - 1115.683; // mass of Lambda 
 	//else if (pdg == 3122) Eavail += energy - 1189.37 ; // mass of Sigma
         	

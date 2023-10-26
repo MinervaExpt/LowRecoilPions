@@ -50,11 +50,14 @@ enum ErrorCodes
 
 //Includes from this package
 #include "event/CVUniverse.h"
-#include "event/MichelEvent.h"
+#include "PlotUtils/LowRecoilPionReco.h"
+typedef LowRecoilPion::Michel<CVUniverse> Michel;
+typedef LowRecoilPion::MichelEvent<CVUniverse> MichelEvent;
 #include "systematics/Systematics.h"
 #include "cuts/MaxPzMu.h"
 #include "util/Variable.h"
-#include "util/Variable2D.h"
+#include "util/Variable2DResp.h"
+//#include "util/Variable2D.h"
 #include "util/GetFluxIntegral.h"
 #include "util/GetPlaylist.h"
 //#include "cuts/SignalDefinition.h"
@@ -70,8 +73,7 @@ enum ErrorCodes
 #include "studies/PerMichelEvent2DVarBin.h"
 #include "studies/PerEventVarBin.h"
 #include "studies/PerMichelVarVecFSPart.h"
-#include "cuts/hasMichel.h"
-#include "event/Michel.h"
+#include "PlotUtils/LowRecoilPionCuts.h"
 #include "cuts/BestMichelDistance2D.h"
 #include "cuts/VtxMatchFirst.h"
 //#include "cuts/hasTruePion.h"
@@ -209,7 +211,7 @@ void LoopAndFillEventSelection(
                 double t_truth = universe->GetTruet(idxpi);
                 double t_reco = universe->Gettreco(recotpi,p_pi);
 	        double EavMinusTpi = -9999.;
-		double trueEavMinTpi = -9999.;
+		double trueEavMinTpi = universe->GetTrueEavMinusTpi()/1000.; // -9999.;
 		double trueTpi = -9999.;
          	//std::cout << "reco |t| = " << t_reco << std::endl;
 		//std::cout << "truth |t| = " << t_truth << std::endl;	
@@ -234,8 +236,8 @@ void LoopAndFillEventSelection(
 				EavMinusTpi = 0.0;
 			   }
 			   EavMinusTpi = eavtpidiff;
-			   double trueEav = var->GetTrueValue(*universe);
-			   trueEavMinTpi = trueEav - trueTpi;
+			   //double trueEav = var->GetTrueValue(*universe);
+			   //trueEavMinTpi = trueEav; //- trueTpi;
 
 			   if (trueEavMinTpi < 0.0) trueEavMinTpi = 0.0;
 			   //std::cout << "Printing relevant vars: EavMinusTpi " << eavtpidiff << std::endl;
@@ -262,9 +264,14 @@ void LoopAndFillEventSelection(
                            var->FillCategHistos(*universe,EavMinusTpi, weight2);
 			}
 			else{
+				if (var->GetName() == "Abin") continue;
+				if (var->GetName() == "Bbin") continue;
+				if (var->GetName() == "Cbin") continue;
+				if (var->GetName() == "Dbin") continue; // Skip these 1D hists. Only matter for figuring out COH reweight stuff for now. Oct 4 2023
 				var->selectedMCReco->FillUniverse(universe, var->GetRecoValue(*universe), weight2); //"Fake data" for closure
                                 (*var->m_MChists)[universe->GetInteractionType()].FillUniverse(universe, var->GetRecoValue(*universe), weight2);
                                 var->FillCategHistos(*universe,var->GetRecoValue(*universe), weight2);
+			
 			}
 			
   		}
@@ -276,7 +283,12 @@ void LoopAndFillEventSelection(
                         const size_t endOfPrefix4 = keyName.find("texp_Tpibins");
                         const size_t endOfPrefix5 = keyName.find("texp_EavMinTpibins");
 
+			const size_t endOfPrefix6 = keyName.find("Abin_Tpibins");
+			const size_t endOfPrefix7 = keyName.find("Bbin_Tpibins");
+			const size_t endOfPrefix8 = keyName.find("Cbin_Tpibins");
+			const size_t endOfPrefix9 = keyName.find("Dbin_Tpibins");
 		        //std::cout << "looping over 2D vars" << std::endl;
+		        double   trueeavminustpi = trueEavMinTpi;
 			if(endOfPrefix1 != std::string::npos){
 			  double eav = var->GetRecoValueX(*universe);
 			  double eavtpidiff = eav - recotpi;
@@ -297,12 +309,12 @@ void LoopAndFillEventSelection(
                            var->FillCategHistos(*universe,t_reco, var->GetRecoValueY(*universe), weight2);
 			}
 			else if(endOfPrefix4 != std::string::npos &&  endOfPrefix2 == std::string::npos && endOfPrefix1 == std::string::npos){
-			   //if (abs(EavMinusTpi) < 0.025){// and  abs(EavMinusTpi) < 0.050){
+			   //if (abs(EavMinusTpi) > 0.025 and  abs(EavMinusTpi) < 0.050){
 			      //std::cout << "EavMinusTpi < 25 MeV. Interaction Type: " << universe->GetInteractionType() << std::endl;  
 			      var->mcTotalHist->FillUniverse(universe, t_reco, recotpi, weight2);
                               (*var->m_MChists)[universe->GetInteractionType()].FillUniverse(universe, t_reco, recotpi, weight2);
                               var->FillCategHistos(*universe,t_reco, recotpi, weight2);
-			  // }
+			   //}
 			}
 			else if(endOfPrefix5 != std::string::npos &&  endOfPrefix2 == std::string::npos && endOfPrefix1 == std::string::npos){
 		 	   //double eav = var->GetRecoValueY(*universe);
@@ -312,7 +324,54 @@ void LoopAndFillEventSelection(
                            (*var->m_MChists)[universe->GetInteractionType()].FillUniverse(universe, t_reco, EavMinusTpi, weight2);
                            var->FillCategHistos(*universe,t_reco, EavMinusTpi, weight2);
 
-			}	
+			}
+			else if (endOfPrefix6 != std::string::npos &&  endOfPrefix2 == std::string::npos && endOfPrefix1 == std::string::npos){
+			   if (abs(EavMinusTpi) < 0.025){
+				
+				/*if (t_reco < 0.09) {
+					std::cout << " ==================================== " << std::endl;
+					universe->PrintTrueArachneLink();
+					std::cout << "Reco EavMinustpi is " << EavMinusTpi << " Tpi is: " << recotpi << std::endl;
+					std::cout << "True EavMinustpi is " << trueEavMinTpi << " Tpi is: " << trueTpi << std::endl;
+					std::cout << "|t| reco is " << t_reco << std::endl;
+					std::cout << " ==================================== " << std::endl; 
+			 	} */
+				var->mcTotalHist->FillUniverse(universe, t_reco, recotpi, weight2);
+                                (*var->m_MChists)[universe->GetInteractionType()].FillUniverse(universe, t_reco, recotpi, weight2);
+                                var->FillCategHistos(*universe,t_reco, recotpi, weight2);
+			   }
+			}
+			else if (endOfPrefix7 != std::string::npos &&  endOfPrefix2 == std::string::npos && endOfPrefix1 == std::string::npos){
+                           if (abs(EavMinusTpi) > 0.025 && abs(EavMinusTpi) < 0.050){
+                                 /* 
+				 if (t_reco > 0.04 && t_reco < 0.1) {
+                                        std::cout << " ==================================== " << std::endl;
+                                        universe->PrintTrueArachneLink();
+                                        std::cout << "Reco EavMinustpi is " << EavMinusTpi << " Tpi is: " << recotpi << std::endl;
+                                        std::cout << "True EavMinustpi is " << trueEavMinTpi << " Tpi is: " << trueTpi << std::endl;
+                                        std::cout << "|t| reco is " << t_reco << std::endl;
+                                        std::cout << " ==================================== " << std::endl;
+                                }*/
+
+				var->mcTotalHist->FillUniverse(universe, t_reco, recotpi, weight2);
+                                (*var->m_MChists)[universe->GetInteractionType()].FillUniverse(universe, t_reco, recotpi, weight2);
+                                var->FillCategHistos(*universe,t_reco, recotpi, weight2);
+                           }     
+                        }
+			else if (endOfPrefix8 != std::string::npos &&  endOfPrefix2 == std::string::npos && endOfPrefix1 == std::string::npos){
+                           if (abs(EavMinusTpi) > 0.05 && abs(EavMinusTpi) < 0.075){
+                                var->mcTotalHist->FillUniverse(universe, t_reco, recotpi, weight2);
+                                (*var->m_MChists)[universe->GetInteractionType()].FillUniverse(universe, t_reco, recotpi, weight2);
+                                var->FillCategHistos(*universe,t_reco, recotpi, weight2);
+                           }
+                        }
+			else if (endOfPrefix9 != std::string::npos &&  endOfPrefix2 == std::string::npos && endOfPrefix1 == std::string::npos){
+                           if (abs(EavMinusTpi) > 0.075 && abs(EavMinusTpi) < 0.150){
+                                var->mcTotalHist->FillUniverse(universe, t_reco, recotpi, weight2);
+                                (*var->m_MChists)[universe->GetInteractionType()].FillUniverse(universe, t_reco, recotpi, weight2);
+                                var->FillCategHistos(*universe,t_reco, recotpi, weight2);
+                           }
+                        }	
 			else {
                  	   var->mcTotalHist->FillUniverse(universe, var->GetRecoValueX(*universe), var->GetRecoValueY(*universe), weight2);
                 	   (*var->m_MChists)[universe->GetInteractionType()].FillUniverse(universe, var->GetRecoValueX(*universe), var->GetRecoValueY(*universe), weight2);
@@ -336,24 +395,25 @@ void LoopAndFillEventSelection(
 					var->migration->FillUniverse(universe, recotpi, var->GetTrueValue(*universe), weight2);
                                         var->efficiencyNumerator->FillUniverse(universe, var->GetTrueValue(*universe), weight2);
                                         var->selectedSignalReco->FillUniverse(universe, recotpi, weight2); //Ef
-					double resolution = (recotpi - var->GetTrueValue(*universe)); //var->GetTrueValue(*universe);
+					//double resolution = (recotpi - var->GetTrueValue(*universe)); //var->GetTrueValue(*universe);
 					//var->biasMCReco->FillUniverse(universe, resolution, weight2);
 				}
 				else if (var->GetName() == "EavMinusTpi"){ // Get the Variable that is the difference between Available Energy and Tpi. Non pion available energy. Not sure yet what to do about case with multiple pions. 
                            		//double eav = var->GetRecoValue(*universe);
                            		//double eavtpidiff = eav - recotpi;
 					//if (recotpi > eav) eavtpidiff = 0.0;
-					var->migration->FillUniverse(universe, EavMinusTpi, var->GetTrueValue(*universe), weight2);
-                                        var->efficiencyNumerator->FillUniverse(universe, var->GetTrueValue(*universe), weight2);
+					var->migration->FillUniverse(universe, EavMinusTpi,  trueEavMinTpi, weight2);
+                                        var->efficiencyNumerator->FillUniverse(universe,  trueEavMinTpi, weight2);
                                         var->selectedSignalReco->FillUniverse(universe, EavMinusTpi, weight2);
-					double resolution = (EavMinusTpi - var->GetTrueValue(*universe)); ///var->GetTrueValue(*universe);
+					//double resolution = (EavMinusTpi - var->GetTrueValue(*universe)); ///var->GetTrueValue(*universe);
 					//var->biasMCReco->FillUniverse(universe, resolution, weight2);
 				}
 				else if (var->GetName() == "texp"){
+					continue;
 					var->migration->FillUniverse(universe, t_reco, t_truth, weight2);
                                         var->efficiencyNumerator->FillUniverse(universe, t_truth, weight2);
                                         var->selectedSignalReco->FillUniverse(universe, t_reco, weight2);
-				        double resolution = (t_reco - t_truth);// /t_truth;
+				        //double resolution = (t_reco - t_truth);// /t_truth;
 					//var->biasMCReco->FillUniverse(universe, resolution, weight2);
 					
 				}
@@ -361,7 +421,7 @@ void LoopAndFillEventSelection(
 					var->migration->FillUniverse(universe, recotpi, var->GetTrueValue(*universe), weight2);
                                         var->efficiencyNumerator->FillUniverse(universe, var->GetTrueValue(*universe), weight2);
                                         var->selectedSignalReco->FillUniverse(universe, recotpi, weight2);
-				 	double resolution = (recotpi - var->GetTrueValue(*universe));///var->GetTrueValue(*universe);
+				 	//double resolution = (recotpi - var->GetTrueValue(*universe));///var->GetTrueValue(*universe);
                                         //var->biasMCReco->FillUniverse(universe, resolution, weight2);
 			
 				}
@@ -369,18 +429,23 @@ void LoopAndFillEventSelection(
 					//double eav = var->GetRecoValue(*universe);
                                         //double eavtpidiff = eav - recotpi;
                                         //if (recotpi > eav) eavtpidiff = 0.0;
-                                        var->migration->FillUniverse(universe, EavMinusTpi, var->GetTrueValue(*universe), weight2);
-                                        var->efficiencyNumerator->FillUniverse(universe, var->GetTrueValue(*universe), weight2);
+                               		continue;
+				        var->migration->FillUniverse(universe, EavMinusTpi,  trueEavMinTpi, weight2);
+                                        var->efficiencyNumerator->FillUniverse(universe,  trueEavMinTpi, weight2);
                                         var->selectedSignalReco->FillUniverse(universe, EavMinusTpi, weight2);
-					double resolution = (EavMinusTpi - var->GetTrueValue(*universe));///var->GetTrueValue(*universe);
+					//double resolution = (EavMinusTpi - var->GetTrueValue(*universe));///var->GetTrueValue(*universe);
                                         //var->biasMCReco->FillUniverse(universe, resolution, weight2);
 
 				}
 				else {
+					if (var->GetName() == "Abin") continue;
+                                	if (var->GetName() == "Bbin") continue;
+                                	if (var->GetName() == "Cbin") continue;
+                                	if (var->GetName() == "Dbin") continue; // Skip these 1D hists. Only matter for figuring out COH reweight stuff for now. Oct 4 2023
 					var->migration->FillUniverse(universe, var->GetRecoValue(*universe), var->GetTrueValue(*universe), weight2);
                                         var->efficiencyNumerator->FillUniverse(universe, var->GetTrueValue(*universe), weight2);
                                         var->selectedSignalReco->FillUniverse(universe, var->GetRecoValue(*universe), weight2); //Efficiency numerator in reco variables.  Useful for warping studies 
-					double resolution = (var->GetRecoValue(*universe) - var->GetTrueValue(*universe));///var->GetTrueValue(*universe);
+					//double resolution = (var->GetRecoValue(*universe) - var->GetTrueValue(*universe));///var->GetTrueValue(*universe);
 					//var->biasMCReco->FillUniverse(universe, resolution, weight2);
 	
 				}
@@ -389,39 +454,58 @@ void LoopAndFillEventSelection(
 			for(auto& var: vars2D)
           		{
                  		const std::string keyName = var->GetName();
-                        	const size_t endOfPrefix1 = keyName.find("EavMinusTpi");
+                        	const size_t endOfPrefix1 = keyName.find("EavMinusTpi_");
                         	const size_t endOfPrefix2 = keyName.find("Tpi_");
 				const size_t endOfPrefix3 = keyName.find("texp_eavbins");
                         	const size_t endOfPrefix4 = keyName.find("texp_Tpibins");
                         	const size_t endOfPrefix5 = keyName.find("texp_EavMinTpibins");
+				const size_t endOfPrefixAv = keyName.find("AvailableE_pTmubi");
+				const size_t endOfPrefix6 = keyName.find("Abin_Tpibins");
+                        	const size_t endOfPrefix7 = keyName.find("Bbin_Tpibins");
+                        	const size_t endOfPrefix8 = keyName.find("Cbin_Tpibins");
+                        	const size_t endOfPrefix9 = keyName.find("Dbin_Tpibins");
+
 
 				if(endOfPrefix1 != std::string::npos){
                           		//double eav = var->GetRecoValueX(*universe);
                           		//double eavtpidiff = eav - recotpi;
                           		//if (recotpi > eav) eavtpidiff = 0.0;
+				   
 					var->selectedSignalReco->FillUniverse(universe, EavMinusTpi, var->GetRecoValueY(*universe), weight2);
-                                        var->efficiencyNumerator->FillUniverse(universe, var->GetTrueValueX(*universe), var->GetTrueValueY(*universe), weight2);
-					var->FillResponse(EavMinusTpi, var->GetRecoValueY(*universe),var->GetTrueValueX(*universe), var->GetTrueValueY(*universe),universe->ShortName(),weight2,unv_count);
+                                        var->efficiencyNumerator->FillUniverse(universe,  trueEavMinTpi, var->GetTrueValueY(*universe), weight2);
+					var->FillResponse(EavMinusTpi, var->GetRecoValueY(*universe), trueEavMinTpi, var->GetTrueValueY(*universe),universe->ShortName(),weight2,unv_count);
+					//var->m_response->Fill(var->GetRecoValueX(*universe), var->GetRecoValueY(*universe),var->GetTrueValueX(*universe), var->GetTrueValueY(*universe),universe->ShortName(),unv_count,weight2);
 				}
 				else if (endOfPrefix2 != std::string::npos && endOfPrefix1 == std::string::npos && endOfPrefix4 == std::string::npos && endOfPrefix5 == std::string::npos){
 				        //std::cout << keyName << std::endl;
 					var->selectedSignalReco->FillUniverse(universe, recotpi, var->GetRecoValueY(*universe), weight2);
                                         var->efficiencyNumerator->FillUniverse(universe, var->GetTrueValueX(*universe), var->GetTrueValueY(*universe), weight2);
                                         var->FillResponse(recotpi, var->GetRecoValueY(*universe),var->GetTrueValueX(*universe), var->GetTrueValueY(*universe),universe->ShortName(),weight2,unv_count);
+			                //var->m_response->Fill(var->GetRecoValueX(*universe), var->GetRecoValueY(*universe),var->GetTrueValueX(*universe), var->GetTrueValueY(*universe),universe->ShortName(),unv_count,weight2);
+
+				}
+				else if (endOfPrefixAv != std::string::npos && endOfPrefix2 == std::string::npos && endOfPrefix1 == std::string::npos && endOfPrefix4 == std::string::npos && endOfPrefix5 == std::string::npos){
+
+					var->selectedSignalReco->FillUniverse(universe, var->GetRecoValueX(*universe), var->GetRecoValueY(*universe), weight2);
+                                        var->efficiencyNumerator->FillUniverse(universe, var->GetTrueValueX(*universe), var->GetTrueValueY(*universe), weight2);
+                                        var->FillResponse(var->GetRecoValueX(*universe), var->GetRecoValueY(*universe),var->GetTrueValueX(*universe), var->GetTrueValueY(*universe),universe->ShortName(),weight2,unv_count);
+
 
 				}
 				else if(endOfPrefix3 != std::string::npos && endOfPrefix4 == std::string::npos  && endOfPrefix5 == std::string::npos &&  endOfPrefix2 == std::string::npos && endOfPrefix1 == std::string::npos){
 					var->selectedSignalReco->FillUniverse(universe, t_reco, var->GetRecoValueY(*universe), weight2);
                                         var->efficiencyNumerator->FillUniverse(universe, t_truth, var->GetTrueValueY(*universe), weight2);
-                                        var->FillResponse(t_reco, var->GetRecoValueY(*universe),t_truth, var->GetTrueValueY(*universe),universe->ShortName(),weight2,unv_count);
-				
+                                        //var->FillResponse(t_reco, var->GetRecoValueY(*universe),t_truth, var->GetTrueValueY(*universe),universe->ShortName(),weight2,unv_count);
+					//var->m_response->Fill(var->GetRecoValueX(*universe), var->GetRecoValueY(*universe),var->GetTrueValueX(*universe), var->GetTrueValueY(*universe),universe->ShortName(),unv_count,weight2);				
+
 				}
 				else if(endOfPrefix4 != std::string::npos &&  endOfPrefix2 == std::string::npos && endOfPrefix1 == std::string::npos){
-				    // if ( abs(EavMinusTpi) > 0.025){// and  abs(EavMinusTpi) < 0.050) {		
+				     //if ( abs(EavMinusTpi) > 0.025 and abs(EavMinusTpi) < 0.050) {		
 					var->selectedSignalReco->FillUniverse(universe, t_reco, recotpi, weight2);
                                         var->efficiencyNumerator->FillUniverse(universe, t_truth, var->GetTrueValueY(*universe), weight2);
-                                        var->FillResponse(t_reco, recotpi, t_truth, var->GetTrueValueY(*universe),universe->ShortName(),weight2,unv_count);
-				    // }
+                                        //var->FillResponse(t_reco, recotpi, t_truth, var->GetTrueValueY(*universe),universe->ShortName(),weight2,unv_count);
+					//var->m_response->Fill(var->GetRecoValueX(*universe), var->GetRecoValueY(*universe),var->GetTrueValueX(*universe), var->GetTrueValueY(*universe),universe->ShortName(),unv_count,weight2);
+				     //}
 				}
 				else if(endOfPrefix5 != std::string::npos &&  endOfPrefix2 == std::string::npos && endOfPrefix1 == std::string::npos){
 					//double eav = var->GetRecoValueY(*universe);
@@ -429,12 +513,48 @@ void LoopAndFillEventSelection(
                                         //if (recotpi > eav) eavtpidiff = 0.0;
 					var->selectedSignalReco->FillUniverse(universe, t_reco, EavMinusTpi, weight2);
                                         var->efficiencyNumerator->FillUniverse(universe, t_truth, trueEavMinTpi, weight2);
-                                        var->FillResponse(t_reco, EavMinusTpi, t_truth, trueEavMinTpi,universe->ShortName(),weight2,unv_count);
+                                        //var->FillResponse(t_reco, EavMinusTpi, t_truth, trueEavMinTpi,universe->ShortName(),weight2,unv_count);
+					//var->m_response->Fill(var->GetRecoValueX(*universe), var->GetRecoValueY(*universe),var->GetTrueValueX(*universe), var->GetTrueValueY(*universe),universe->ShortName(),unv_count,weight2);				
+
 				}
+				else if(endOfPrefix6 != std::string::npos &&  endOfPrefix2 == std::string::npos && endOfPrefix1 == std::string::npos){
+				     if (abs(EavMinusTpi) < 0.025){
+
+					var->selectedSignalReco->FillUniverse(universe, t_reco, recotpi, weight2);
+                                        var->efficiencyNumerator->FillUniverse(universe, t_truth, var->GetTrueValueY(*universe), weight2);
+
+				     }		
+				}
+				else if(endOfPrefix6 == std::string::npos && endOfPrefix7 != std::string::npos &&  endOfPrefix2 == std::string::npos && endOfPrefix1 == std::string::npos){
+                                     if (abs(EavMinusTpi) > 0.025 && abs(EavMinusTpi) < 0.050){
+
+					var->selectedSignalReco->FillUniverse(universe, t_reco, recotpi, weight2);
+                                        var->efficiencyNumerator->FillUniverse(universe, t_truth, var->GetTrueValueY(*universe), weight2);
+
+                                     }   
+                                }
+				else if(endOfPrefix6 == std::string::npos && endOfPrefix8 != std::string::npos &&  endOfPrefix2 == std::string::npos && endOfPrefix1 == std::string::npos){
+                                     if (abs(EavMinusTpi) > 0.05 && abs(EavMinusTpi) < 0.075){
+                                
+                                        var->selectedSignalReco->FillUniverse(universe, t_reco, recotpi, weight2);
+                                        var->efficiencyNumerator->FillUniverse(universe, t_truth, var->GetTrueValueY(*universe), weight2);
+                                     
+                                     }
+                                }
+				else if(endOfPrefix6 == std::string::npos && endOfPrefix9 != std::string::npos &&  endOfPrefix2 == std::string::npos && endOfPrefix1 == std::string::npos){
+                                     if (abs(EavMinusTpi) > 0.075 && abs(EavMinusTpi) < 0.150){
+                                
+                                        var->selectedSignalReco->FillUniverse(universe, t_reco, recotpi, weight2);
+                                        var->efficiencyNumerator->FillUniverse(universe, t_truth, var->GetTrueValueY(*universe), weight2);
+                                     
+                                     }
+                                }
+				
 				else{
 					var->selectedSignalReco->FillUniverse(universe, var->GetRecoValueX(*universe), var->GetRecoValueY(*universe), weight2);
                                         var->efficiencyNumerator->FillUniverse(universe, var->GetTrueValueX(*universe), var->GetTrueValueY(*universe), weight2);
-					var->FillResponse(var->GetRecoValueX(*universe), var->GetRecoValueY(*universe),var->GetTrueValueX(*universe), var->GetTrueValueY(*universe),universe->ShortName(),weight2,unv_count);
+					//var->FillResponse(var->GetRecoValueX(*universe), var->GetRecoValueY(*universe),var->GetTrueValueX(*universe), var->GetTrueValueY(*universe),universe->ShortName(),weight2,unv_count);
+					//var->m_response->Fill(var->GetRecoValueX(*universe), var->GetRecoValueY(*universe),var->GetTrueValueX(*universe), var->GetTrueValueY(*universe),universe->ShortName(),unv_count,weight2);
 				}
 	
 				//var->m_response->Fill(var->GetRecoValueX(*universe), var->GetRecoValueY(*universe),var->GetTrueValueX(*universe), var->GetTrueValueY(*universe),universe->ShortName(),unv_count,weight2);			 		
@@ -483,7 +603,11 @@ void LoopAndFillEventSelection(
                                         (*var->m_backgroundHists)[bkgd_ID].FillUniverse(universe, EavMinusTpi, weight2);
 				}
 				else {
-				        (*var->m_backgroundHists)[bkgd_ID].FillUniverse(universe, var->GetRecoValue(*universe), weight2);
+				        if (var->GetName() == "Abin") continue;
+                                	if (var->GetName() == "Bbin") continue;
+                                	if (var->GetName() == "Cbin") continue;
+                                	if (var->GetName() == "Dbin") continue; // Skip these 1D hists. Only matter for figuring out COH reweight stuff for now. Oct 4 2023
+					(*var->m_backgroundHists)[bkgd_ID].FillUniverse(universe, var->GetRecoValue(*universe), weight2);
 				}	
 			}
           		for(auto& var: vars2D){
@@ -493,6 +617,12 @@ void LoopAndFillEventSelection(
 				const size_t endOfPrefix3 = keyName.find("texp_eavbins");
                         	const size_t endOfPrefix4 = keyName.find("texp_Tpibins");
                         	const size_t endOfPrefix5 = keyName.find("texp_EavMinTpibins");
+			  	const size_t endOfPrefixAv = keyName.find("AvailableE_pTmubi");	
+				const size_t endOfPrefix6 = keyName.find("Abin_Tpibins");
+                                const size_t endOfPrefix7 = keyName.find("Bbin_Tpibins");
+                                const size_t endOfPrefix8 = keyName.find("Cbin_Tpibins");
+                                const size_t endOfPrefix9 = keyName.find("Dbin_Tpibins");
+				
 				if(endOfPrefix1 != std::string::npos){
                                         //double eav = var->GetRecoValueX(*universe);
                                         //double eavtpidiff = eav - recotpi;
@@ -509,9 +639,9 @@ void LoopAndFillEventSelection(
 
 				}
 				else if(endOfPrefix4 != std::string::npos &&  endOfPrefix2 == std::string::npos && endOfPrefix1 == std::string::npos){
-				    // if( abs(EavMinusTpi) > 0.025){// and  abs(EavMinusTpi) < 0.050 ){
+				     //if( abs(EavMinusTpi) > 0.025 and  abs(EavMinusTpi) < 0.050 ){
 					 (*var->m_backgroundHists)[bkgd_ID].FillUniverse(universe, t_reco, recotpi, weight2);
-				    // }
+				     //}
 				}
 				else if(endOfPrefix5 != std::string::npos &&  endOfPrefix2 == std::string::npos && endOfPrefix1 == std::string::npos){
 					 //double eav = var->GetRecoValueY(*universe);
@@ -519,7 +649,27 @@ void LoopAndFillEventSelection(
                                          //if (recotpi > eav) eavtpidiff = 0.0;
 					 (*var->m_backgroundHists)[bkgd_ID].FillUniverse(universe, t_reco, EavMinusTpi, weight2);
 
-				}				
+				}
+				else if(endOfPrefix6 != std::string::npos &&  endOfPrefix2 == std::string::npos && endOfPrefix1 == std::string::npos){
+                                     if (abs(EavMinusTpi) < 0.025){
+					(*var->m_backgroundHists)[bkgd_ID].FillUniverse(universe, t_reco, recotpi, weight2);
+				     }
+				}
+				else if(endOfPrefix6 == std::string::npos && endOfPrefix7 != std::string::npos &&  endOfPrefix2 == std::string::npos && endOfPrefix1 == std::string::npos){
+                                     if (abs(EavMinusTpi) > 0.025 && abs(EavMinusTpi) < 0.050){
+                                        (*var->m_backgroundHists)[bkgd_ID].FillUniverse(universe, t_reco, recotpi, weight2);
+                                     }
+                                }
+				else if(endOfPrefix6 == std::string::npos && endOfPrefix8 != std::string::npos &&  endOfPrefix2 == std::string::npos && endOfPrefix1 == std::string::npos){
+                                     if (abs(EavMinusTpi) > 0.050 && abs(EavMinusTpi) < 0.075){
+                                        (*var->m_backgroundHists)[bkgd_ID].FillUniverse(universe, t_reco, recotpi, weight2);
+                                     }
+                                }
+				else if(endOfPrefix6 == std::string::npos && endOfPrefix9 != std::string::npos &&  endOfPrefix2 == std::string::npos && endOfPrefix1 == std::string::npos){
+                                     if (abs(EavMinusTpi) > 0.075 && abs(EavMinusTpi) < 0.150){
+                                        (*var->m_backgroundHists)[bkgd_ID].FillUniverse(universe, t_reco, recotpi, weight2);
+                                     }
+                                }					
 				else{
 					(*var->m_backgroundHists)[bkgd_ID].FillUniverse(universe, var->GetRecoValueX(*universe), var->GetRecoValueY(*universe), weight2);
 				}
@@ -534,7 +684,8 @@ void LoopAndFillEventSelection(
   //std::cout << "====================================================== ==========" << std::endl;
   } //End entries loop
   std::cout << " Now Getting Response Objects" << std::endl; 
-  for (auto v : vars2D) v->getResponseObjects(error_bands);
+  for (auto v : vars2D) 
+	if (v->GetName() == "AvailableE_pTmubins" || v->GetName() == "Tpi_pTmubins" || v->GetName() == "EavMinusTpi_pTmubins") v->getResponseObjects(error_bands);
   std::cout << "Finished MC reco loop.\n";
 }
 
@@ -601,6 +752,10 @@ void LoopAndFillData( PlotUtils::ChainWrapper* data,
 			   var->dataHist->FillUniverse(universe, EavMinusTpi, 1);
 			}
 			else{
+			   if (var->GetName() == "Abin") continue;
+                           if (var->GetName() == "Bbin") continue;
+                           if (var->GetName() == "Cbin") continue;
+                           if (var->GetName() == "Dbin") continue; // Skip these 1D hists. Only matter for figuring out COH reweight stuff for now. Oct 4 2023
 			   var->dataHist->FillUniverse(universe, var->GetRecoValue(*universe), 1);
 			}
 		}
@@ -613,6 +768,13 @@ void LoopAndFillData( PlotUtils::ChainWrapper* data,
                 	const size_t endOfPrefix3 = keyName.find("texp_eavbins");
 			const size_t endOfPrefix4 = keyName.find("texp_Tpibins");
                         const size_t endOfPrefix5 = keyName.find("texp_EavMinTpibins");
+
+			const size_t endOfPrefix6 = keyName.find("Abin_Tpibins");
+                        const size_t endOfPrefix7 = keyName.find("Bbin_Tpibins");
+                        const size_t endOfPrefix8 = keyName.find("Cbin_Tpibins");
+                        const size_t endOfPrefix9 = keyName.find("Dbin_Tpibins");
+
+
 		        if(endOfPrefix1 != std::string::npos){
 				//double eav = var->GetRecoValueX(*universe);
                                 //double eavtpidiff = eav - recotpi;
@@ -626,13 +788,56 @@ void LoopAndFillData( PlotUtils::ChainWrapper* data,
 				var->dataHist->FillUniverse(universe, t_reco, var->GetRecoValueY(*universe), 1);
 			}
 			else if(endOfPrefix4 != std::string::npos &&  endOfPrefix2 == std::string::npos && endOfPrefix1 == std::string::npos){
-			     //if ( abs(EavMinusTpi) < 0.025) {// and  abs(EavMinusTpi) < 0.050){	
 				 var->dataHist->FillUniverse(universe, t_reco, recotpi, 1);
-                             //}
 			}
                         else if(endOfPrefix5 != std::string::npos &&  endOfPrefix2 == std::string::npos && endOfPrefix1 == std::string::npos){
 				 var->dataHist->FillUniverse(universe, t_reco, EavMinusTpi, 1);
 			}
+			else if(endOfPrefix6 != std::string::npos &&  endOfPrefix2 == std::string::npos && endOfPrefix1 == std::string::npos){
+                             if ( abs(EavMinusTpi) < 0.025){      
+                                 var->dataHist->FillUniverse(universe, t_reco, recotpi, 1);
+                             }
+                        }
+			else if(endOfPrefix6 == std::string::npos && endOfPrefix7 != std::string::npos &&  endOfPrefix2 == std::string::npos && endOfPrefix1 == std::string::npos){
+                             if ( abs(EavMinusTpi) > 0.025 and  abs(EavMinusTpi) < 0.050){
+                                 var->dataHist->FillUniverse(universe, t_reco, recotpi, 1);
+                            	 /*if (t_reco > 0.04 && t_reco < 0.1) {
+                                        std::cout << " ==================================== " << std::endl;
+                                        universe->PrintDataArachneLink();
+                                        std::cout << "Reco EavMinustpi is " << EavMinusTpi << " Tpi is: " << recotpi << std::endl;
+                                        std::cout << "|t| reco is " << t_reco << std::endl;
+					std::cout << "Michel time : " << myevent.m_nmichels[0].time << std::endl;
+                                        std::cout << " Michel end point 1 position (X Y Z) : " << myevent.m_nmichels[0].m_x1 << "," << myevent.m_nmichels[0].m_y1 << "," << myevent.m_nmichels[0].m_z1 << std::endl;
+					std::cout << " Michel end point 2 position (X Y Z) : " << myevent.m_nmichels[0].m_x2 << "," << myevent.m_nmichels[0].m_y2 << "," << myevent.m_nmichels[0].m_z2 << std::endl; 
+				
+					if (!myevent.m_nmichels[0].cluster_to_up_match.empty()){
+						std::cout << " Cluster 1 Match Endpoint 1 View / Position / Z : " << myevent.m_nmichels[0].cluster_to_up_match[0].view << " / " << myevent.m_nmichels[0].cluster_to_up_match[0].pos << " / " << myevent.m_nmichels[0].cluster_to_up_match[0].zpos << " And energy " << myevent.m_nmichels[0].cluster_to_up_match[0].energy <<  std::endl; 
+						std::cout << " Cluster 2 Match Endpoint 1 View / Position / Z : " << myevent.m_nmichels[0].cluster_to_up_match[1].view << " / " << myevent.m_nmichels[0].cluster_to_up_match[1].pos << " / " << myevent.m_nmichels[0].cluster_to_up_match[1].zpos << " And energy " << myevent.m_nmichels[0].cluster_to_up_match[1].energy <<  std::endl;
+						std::cout << " Cluster 2 Match Endpoint 1 View / Position / Z : " << myevent.m_nmichels[0].cluster_to_up_match[2].view << " / " << myevent.m_nmichels[0].cluster_to_up_match[2].pos << " / " << myevent.m_nmichels[0].cluster_to_up_match[2].zpos << " And energy " << myevent.m_nmichels[0].cluster_to_up_match[2].energy <<  std::endl;
+
+					}
+
+					if (!myevent.m_nmichels[0].cluster_to_down_match.empty()){
+					  std::cout << " Cluster 1 Match Endpoint 2 View / Position / Z " << myevent.m_nmichels[0].cluster_to_down_match[0].view << " / " << myevent.m_nmichels[0].cluster_to_down_match[0].pos << " / " << myevent.m_nmichels[0].cluster_to_down_match[0].zpos << " And energy " << myevent.m_nmichels[0].cluster_to_down_match[0].energy <<  std::endl;
+                                          std::cout << " Cluster 2 Match Endpoint 2 View / Position / Z " << myevent.m_nmichels[0].cluster_to_down_match[1].view << " / " << myevent.m_nmichels[0].cluster_to_down_match[1].pos << " / " << myevent.m_nmichels[0].cluster_to_down_match[1].zpos << " And energy " << myevent.m_nmichels[0].cluster_to_down_match[1].energy <<  std::endl;
+
+					}
+					std::cout << " ==================================== " << std::endl;
+                                }*/	
+				 
+
+			     }
+                        }
+			else if(endOfPrefix6 == std::string::npos &&endOfPrefix8 != std::string::npos &&  endOfPrefix2 == std::string::npos && endOfPrefix1 == std::string::npos){
+                             if ( abs(EavMinusTpi) > 0.050 and  abs(EavMinusTpi) < 0.075){
+                                 var->dataHist->FillUniverse(universe, t_reco, recotpi, 1);
+                             }
+                        }
+			else if(endOfPrefix6 == std::string::npos && endOfPrefix9 != std::string::npos &&  endOfPrefix2 == std::string::npos && endOfPrefix1 == std::string::npos){
+                             if ( abs(EavMinusTpi) > 0.075 and  abs(EavMinusTpi) < 0.150){
+                                 var->dataHist->FillUniverse(universe, t_reco, recotpi, 1);
+                             }
+                        }
 			else { var->dataHist->FillUniverse(universe, var->GetRecoValueX(*universe), var->GetRecoValueY(*universe), 1);}
       		}
       }// End of PreCuts Pass
@@ -714,16 +919,20 @@ void LoopAndFillEffDenom( PlotUtils::ChainWrapper* truth,
 		trueTpi = var->GetTrueValue(*universe);
 	  }
 
-          if (var->GetName() == "texp"){
+          else if (var->GetName() == "texp"){
 		var->efficiencyDenominator->FillUniverse(universe, t_truth, weight);
 	  }
-          if (var->GetName() == "EavMinusTpi"){
+          else if (var->GetName() == "EavMinusTpi"){
 	      double trueEav = var->GetTrueValue(*universe);
 	      trueEavminusTpi = trueEav - trueTpi;
 	      if (trueEavminusTpi < 0.0) trueEavminusTpi = 0.0;
 	      var->efficiencyDenominator->FillUniverse(universe, trueEavminusTpi, weight);
 	  }
 	  else {
+	      if (var->GetName() == "Abin") continue;
+              if (var->GetName() == "Bbin") continue;
+              if (var->GetName() == "Cbin") continue;
+              if (var->GetName() == "Dbin") continue; // Skip these 1D hists. Only matter for figuring out COH reweight stuff for now. Oct 4 2023
 	      var->efficiencyDenominator->FillUniverse(universe, var->GetTrueValue(*universe), weight);
        	  }
 	  //if (var->GetName() == "Tpi"){
@@ -741,13 +950,28 @@ void LoopAndFillEffDenom( PlotUtils::ChainWrapper* truth,
           //const size_t endOfPrefix4 = keyName.find("texp_Tpibins");
           const size_t endOfPrefix2 = keyName.find("EavMinusTpi_pTmubins");
           const size_t endOfPrefix3 = keyName.find("texp_EavMinTpibins");
+	  const size_t endOfPrefixtpi = keyName.find("Tpi_pTmubins");
+	  const size_t endOfPrefixtAE = keyName.find("AvailableE_pTmubins");
+	  const size_t endOfPrefixA = keyName.find("Abin");
+	  const size_t endOfPrefixB = keyName.find("Bbin");
+	  const size_t endOfPrefixC = keyName.find("Cbin");
+	  const size_t endOfPrefixD = keyName.find("Dbin");
+
+	
 
 	  if(endOfPrefix2 != std::string::npos){
 		var->efficiencyDenominator->FillUniverse(universe, trueEavminusTpi, var->GetTrueValueY(*universe), weight);
-	  }
-  	  if(endOfPrefix3 != std::string::npos){
+	 	var->FillCategDenomHistos((*universe),var->GetTrueValueX(*universe), var->GetTrueValueY(*universe), weight);
+          }
+  	  else if(endOfPrefix3 != std::string::npos){
 		var->efficiencyDenominator->FillUniverse(universe, t_truth, trueEavminusTpi, weight);
 	  }
+	  else if (endOfPrefixtpi != std::string::npos or endOfPrefixtAE != std::string::npos){
+		var->FillCategDenomHistos((*universe),var->GetTrueValueX(*universe), var->GetTrueValueY(*universe), weight);
+                var->efficiencyDenominator->FillUniverse(universe, var->GetTrueValueX(*universe), var->GetTrueValueY(*universe), weight);
+
+	  } 
+	  else if(endOfPrefixA != std::string::npos || endOfPrefixB != std::string::npos || endOfPrefixC != std::string::npos || endOfPrefixD != std::string::npos ){continue;}
           else{
 		var->efficiencyDenominator->FillUniverse(universe, var->GetTrueValueX(*universe), var->GetTrueValueY(*universe), weight);
 	  }
@@ -885,10 +1109,14 @@ int main(const int argc, const char** argv)
   preCuts.emplace_back(new RecoilERange<CVUniverse, MichelEvent>(0.0,1.2));
   preCuts.emplace_back(new PmuCut<CVUniverse, MichelEvent>(1.5));
   preCuts.emplace_back(new PzmuCut<CVUniverse, MichelEvent>(20.));
-  preCuts.emplace_back(new hasMichel<CVUniverse, MichelEvent>());
-   
-  preCuts.emplace_back(new BestMichelDistance2D<CVUniverse, MichelEvent>(150.));
-  preCuts.emplace_back(new GetClosestMichel<CVUniverse, MichelEvent>(0));
+
+  //typedef LowRecoilPion::hasMichel<CVUniverse, MichelEvent> hasMichel;
+  //preCuts.emplace_back(new hasMichel<CVUniverse, MichelEvent>());
+
+  preCuts.emplace_back(new LowRecoilPion::hasMichel<CVUniverse, MichelEvent>());
+  preCuts.emplace_back(new LowRecoilPion::BestMichelDistance2D<CVUniverse, MichelEvent>(150.));
+  preCuts.emplace_back(new LowRecoilPion::GetClosestMichel<CVUniverse, MichelEvent>(0));
+
   //nosidebands.emplace_back(new BestMichelDistance2D<CVUniverse, MichelEvent>(150.));
   //nosidebands.emplace_back(new GetClosestMichel<CVUniverse, MichelEvent>(0));
 
@@ -990,7 +1218,7 @@ int main(const int argc, const char** argv)
   
   //std::vector<double> tpibins = {0.0, 4., 8., 12., 16., 20., 24., 28., 32., 36., 40., 46., 52.,60., 70., 80., 100., 125.,150., 175., 200., 225., 250., 275., 300., 325., 350., 400., 500., 700., 1000.};   
   //std::vector<double> rangebins = {0.1, 4., 8., 12., 16., 20., 24., 28., 32., 36., 40., 44., 50., 56., 62., 70., 80.,90., 100., 110.,  120., 140., 160., 180., 200., 220., 240., 260., 280., 300., 325., 350., 375., 400., 450., 500., 550., 600., 650., 700., 800., 900., 1000., 1200., 1400., 1800., 2400.};             
-   std::vector<double> rangebins = {0.01, 8., 16., 24., 32., 40., 50., 65., 80.,95., 110., 140., 170., 200., 230., 260., 290., 310., 360., 400., 450., 500., 550., 600., 650., 700., 800., 900., 1000., 1200., 1400., 1800., 2400.};
+  std::vector<double> rangebins = {0.01, 0.1, 1.0, 8., 16., 24., 32., 40., 50., 65., 80.,95., 110., 140., 170., 200., 230., 260., 290., 310., 360., 400., 450., 500., 550., 600., 650., 700., 800., 900., 1000., 1200., 1400., 1800., 2400.};
   std::vector<double> recoilbins = {0.0, 200., 300., 400., 500., 600., 800., 1000., 1200., 1400., 1600.};
   std::vector<double> recoilbins2 = {0.0, 150., 225., 300., 400., 500., 600., 700., 800., 900., 1000.};//, 1200.};// 2200., 2600., 3000., 6000.};
   std::vector<double> wexpbins = {0.0,0.2, 0.4, .6, .8, 1.0, 1.1, 1.2, 1.3, 1.5, 1.7, 2.0, 2.5, 3.0, 4.0};
@@ -998,6 +1226,9 @@ int main(const int argc, const char** argv)
   std::vector<double> eavbinsGEV = {0.0, .075, .150, .225, .300, .400, .500, .600, .700, .800, .900, 1.000};
   std::vector<double> tpibinsGEV = {.001, .010, .015, .020, .025, .030, .036, .042, .048, .054,.060, .066, 0.072, 0.078,.084, 0.09, 0.096, .102, .110, .125 , .140 , .155, .175, .200, .225, .250, .275, .300, .325, .350, .400, .500,0.700, 1.0}; 
   std::vector<double> tbins = {0.005,0.01, 0.015, 0.020, 0.025, 0.030, 0.036, 0.042, 0.048, 0.054, 0.06, 0.075, 0.10, 0.125, 0.15, 0.175,0.20, 0.25,0.30,0.35, 0.4, 0.45, 0.50, 0.55, 0.60 , 0.7, 0.80,0.9, 1.,1.5, 2.0, 2.5, 3.0};
+ 
+  //std::vector<double> tbins = {0.001, 0.01, 0.02, 0.05, 0.15, 0.3, 0.5, 0.75, 1.0};   
+
   std::vector<double> eavbin2D = {0.0, .075, .150, .225, .300, .500, .700, 1.000};
   std::vector<double> tpibins2D = {0.0, 0.03, 0.06, 0.1, 0.15, 0.2, 0.25, 0.3, .500, 1.0}; // binning for Tpi vs |t| in GeV 
   std::vector<double> eavtpibins2D = {0.0, 0.025, 0.050, .075, .150, .225, .300, 1.000};
@@ -1022,13 +1253,22 @@ int main(const int argc, const char** argv)
     //new Variable("Emu", "E_{#mu} [GeV]", robsEmuBins, &CVUniverse::GetEmuGeV, &CVUniverse::GetElepTrueGeV),//4
     //new Variable("q3pTdiff","[GeV]", dansPTBins, &CVUniverse::Recoq3pTdiff, &CVUniverse::GetTrueq3pTdiff),//5
     new Variable("Tpi", "Tpi", tpibinsGEV, &CVUniverse::GetDefault, &CVUniverse::GetTrueLowestTpiEventGEV),
-    new Variable("EavMinusTpi", "EavMinusTpi", eavbinsGEV, &CVUniverse::NewEavailGEV, &CVUniverse::GetTrueEAvailGEV), 
+    new Variable("EavMinusTpi", "EavMinusTpi", eavbinsGEV, &CVUniverse::NewEavailGEV, &CVUniverse::GetTrueEavMinusTpiGEV), 
     new Variable("texp", "texp", tbins,  &CVUniverse::GetDefault,  &CVUniverse::GetDefault),
     new Variable("eavbins", "eavbins", eavbin2D, &CVUniverse::NewEavailGEV, &CVUniverse::GetTrueEAvailGEV),
     new Variable("Tpibins", "Tpibins", tpibins2D, &CVUniverse::GetDefault, &CVUniverse::GetTrueLowestTpiEventGEV),
-    new Variable("EavMinTpibins", "EavMinTpibins", eavtpibins2D, &CVUniverse::NewEavailGEV, &CVUniverse::GetTrueEAvailGEV),
+    new Variable("EavMinTpibins", "EavMinTpibins", eavtpibins2D, &CVUniverse::NewEavailGEV, &CVUniverse::GetTrueEavMinusTpiGEV),
 
     new Variable("PionRange", "PionRange", rangebins, &CVUniverse::GetDefault, &CVUniverse::GetDefault), 
+
+    new Variable("Abin", "Abin", tbins,  &CVUniverse::GetDefault,  &CVUniverse::GetDefault),  
+
+    new Variable("Bbin", "Bbin", tbins,  &CVUniverse::GetDefault,  &CVUniverse::GetDefault),
+
+    new Variable("Cbin", "Cbin", tbins,  &CVUniverse::GetDefault,  &CVUniverse::GetDefault),
+
+    new Variable("Dbin", "Dbin", tbins,  &CVUniverse::GetDefault,  &CVUniverse::GetDefault),
+
     //new Variable("AvailableE", "AvailableE", recoilbins2, &CVUniverse::NewEavail, &CVUniverse::GetTrueEAvail),//6 
     //new Variable("Pmu", "pmu", mehreenpmubins, &CVUniverse::GetMuonP, &CVUniverse::GetPmuTrue), //7
     //new Variable("pTmubins", "pTmubins", mehreenQ3Bins, &CVUniverse::GetMuonPT, &CVUniverse::GetMuonPTTrue), //8
@@ -1055,6 +1295,15 @@ int main(const int argc, const char** argv)
  vars2D.push_back(new Variable2D(*vars[8], *vars[9]));//Eavail vs |t| in GeV. Available E is on y axis
  vars2D.push_back(new Variable2D(*vars[8], *vars[10]));//Tpi vs |t| in GeV >>> Tpi on y axis
  vars2D.push_back(new Variable2D(*vars[8], *vars[11]));//Eav - Tpi vs |t| in GeV >>> Eav - Tpi on y axis
+ 
+ vars2D.push_back(new Variable2D(*vars[13], *vars[10]));//Tpi vs |t| in GeV >>> Tpi on y axis - EavMinusTpi < 25 MeV
+ vars2D.push_back(new Variable2D(*vars[14], *vars[10]));//Tpi vs |t| in GeV >>> Tpi on y axis - 25 < EavMinusTpi < 50 MeV
+ vars2D.push_back(new Variable2D(*vars[15], *vars[10]));//Tpi vs |t| in GeV >>> Tpi on y axis - 50 < EavMinusTpi < 75 MeV
+ vars2D.push_back(new Variable2D(*vars[16], *vars[10]));//Tpi vs |t| in GeV >>> Tpi on y axis - 75 < EavMinusTpi < 150 MeV
+ 
+ 
+
+
  //vars2D.push_back(new Variable2D(*vars[7],*vars[12]));// Tpi vs Pion Range: pion range on y axis 
  //vars2D.push_back(new Variable2D(*vars[6], *vars[10]));// Wexp vs Eavail
  //vars2D.push_back(new Variable2D(*vars[11], *vars[10])); // Wexp vs q3
