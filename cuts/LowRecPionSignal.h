@@ -15,10 +15,11 @@ namespace truth
 	private:
 	   bool checkConstraint(const UNIVERSE& univ) const override
 	   {
-		int npi = univ.GetTrueNPionsinEvent(); //univ.GetTrueNPiPlus();  //univ.GetTrueNPionsinEvent();
-      		if (npi > 0) return true;
-      		else return false;	
-	
+
+ 		std::vector<int> pdgs = univ.GetVecInt("mc_FSPartPDG");
+     		int count = std::count(pdgs.begin(), pdgs.end(), 211);
+		if (count >= 1) return true;
+		else return false;	
 	   }
 
   };
@@ -38,7 +39,7 @@ namespace truth
       double fpTMin; // Min pT allowed in GeV/c
       bool checkConstraint(const UNIVERSE& univ) const //override
       {
-        double truepT = univ.GetMuonPTTrue();
+        double truepT = univ.GetMuonPTTrue(); //This should be in GeV/c
         return (truepT > fpTMin && truepT < fpTMax);
       }
   };
@@ -77,7 +78,7 @@ namespace truth
       double fpMin; // Min pmu allowed in GeV/c
       bool checkConstraint(const UNIVERSE& univ) const //override
       { 
-        double truep =  (univ.GetPlepTrue() * cos(univ.GetThetalepTrue())) / 1000.;
+        double truep = univ.GetMuonPzTrue(); //(univ.GetPlepTrue() * cos(univ.GetThetalepTrue())) / 1000.;
         return (truep < fpMin);
       }
   };
@@ -105,7 +106,7 @@ namespace truth
   class EavailCut: public PlotUtils::SignalConstraint<UNIVERSE>
   {
    public:
-      EavailCut(): PlotUtils::SignalConstraint<UNIVERSE>("Available Energy < 1.0 GeV")
+      EavailCut(): PlotUtils::SignalConstraint<UNIVERSE>("Available Energy < 1.2 GeV")
       {
       }
 
@@ -131,7 +132,7 @@ namespace truth
       bool checkConstraint(const UNIVERSE& univ) const //override
       {
         double trueE = univ.GetTrueLowestTpiEvent();
-        if (trueE < 1000.) return true;
+        if (trueE < 500.) return true;
         else return false;
       }
 

@@ -109,7 +109,7 @@ echo "pwd is " `pwd`
 #8: optional naming of the files
 #9: optional switch to turn off neutron cuts when passed a 0.
 
-export MNV101_SKIP_SYST=0 # run without systematics. 
+#export MNV101_SKIP_SYST=0 # run without systematics. 
 
 echo "With playlists:  $1  and  $2 "
 /usr/bin/time -v -o runEventLoopTime.txt twoDEventLoop $LOWREC_PREFIX/playlists/$1 $LOWREC_PREFIX/playlists/$2 > Dump_runEventLoop.txt

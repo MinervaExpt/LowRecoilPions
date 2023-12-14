@@ -1,0 +1,924 @@
+me1B_00
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1B_00_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174134_7e6e9f2c-6ff0-4ba0-8d06-b0c854f21d36/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/7e6e9f2c-6ff0-4ba0-8d06-b0c854f21d36/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174134_7e6e9f2c-6ff0-4ba0-8d06-b0c854f21d36/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/7e6e9f2c-6ff0-4ba0-8d06-b0c854f21d36/simple.sh
+Copying 3661 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174134_7e6e9f2c-6ff0-4ba0-8d06-b0c854f21d36/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/7e6e9f2c-6ff0-4ba0-8d06-b0c854f21d36/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 6655112.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 6655112.0@jobsub04.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1B_01
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1B_01_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174159_27532c95-b116-4e94-b02c-3d1863ac0200/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/27532c95-b116-4e94-b02c-3d1863ac0200/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174159_27532c95-b116-4e94-b02c-3d1863ac0200/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/27532c95-b116-4e94-b02c-3d1863ac0200/simple.sh
+Copying 3661 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174159_27532c95-b116-4e94-b02c-3d1863ac0200/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/27532c95-b116-4e94-b02c-3d1863ac0200/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 6641957.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 6641957.0@jobsub05.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1B_02
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1B_02_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174224_230b836f-13a5-42c1-9341-4f587f90abd2/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/230b836f-13a5-42c1-9341-4f587f90abd2/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174224_230b836f-13a5-42c1-9341-4f587f90abd2/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/230b836f-13a5-42c1-9341-4f587f90abd2/simple.sh
+Copying 3661 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174224_230b836f-13a5-42c1-9341-4f587f90abd2/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/230b836f-13a5-42c1-9341-4f587f90abd2/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 6641958.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 6641958.0@jobsub05.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1B_03
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1B_03_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174250_3e09111f-595e-43ed-87dd-849380827b0c/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/3e09111f-595e-43ed-87dd-849380827b0c/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174250_3e09111f-595e-43ed-87dd-849380827b0c/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/3e09111f-595e-43ed-87dd-849380827b0c/simple.sh
+Copying 3661 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174250_3e09111f-595e-43ed-87dd-849380827b0c/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/3e09111f-595e-43ed-87dd-849380827b0c/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 6655117.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 6655117.0@jobsub04.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1C_00
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1C_00_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174334_bc5e9062-dac8-40b0-bdc8-140df9281659/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/bc5e9062-dac8-40b0-bdc8-140df9281659/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174334_bc5e9062-dac8-40b0-bdc8-140df9281659/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/bc5e9062-dac8-40b0-bdc8-140df9281659/simple.sh
+Copying 3661 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174334_bc5e9062-dac8-40b0-bdc8-140df9281659/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/bc5e9062-dac8-40b0-bdc8-140df9281659/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 50877955.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 50877955.0@jobsub03.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1C_01
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1C_01_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174402_3e18153e-c353-45dd-8c24-d34ad6be9210/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/3e18153e-c353-45dd-8c24-d34ad6be9210/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174402_3e18153e-c353-45dd-8c24-d34ad6be9210/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/3e18153e-c353-45dd-8c24-d34ad6be9210/simple.sh
+Copying 3661 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174402_3e18153e-c353-45dd-8c24-d34ad6be9210/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/3e18153e-c353-45dd-8c24-d34ad6be9210/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 6641967.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 6641967.0@jobsub05.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1C_02
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1C_02_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174431_34d60159-f453-4cb0-b5c1-f15fe419cab4/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/34d60159-f453-4cb0-b5c1-f15fe419cab4/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174431_34d60159-f453-4cb0-b5c1-f15fe419cab4/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/34d60159-f453-4cb0-b5c1-f15fe419cab4/simple.sh
+Copying 3661 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174431_34d60159-f453-4cb0-b5c1-f15fe419cab4/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/34d60159-f453-4cb0-b5c1-f15fe419cab4/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 50877968.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 50877968.0@jobsub03.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1C_03
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1C_03_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174459_c78c4ec8-b3f1-4d3d-b730-d327a6bd0dbf/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/c78c4ec8-b3f1-4d3d-b730-d327a6bd0dbf/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174459_c78c4ec8-b3f1-4d3d-b730-d327a6bd0dbf/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/c78c4ec8-b3f1-4d3d-b730-d327a6bd0dbf/simple.sh
+Copying 3661 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174459_c78c4ec8-b3f1-4d3d-b730-d327a6bd0dbf/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/c78c4ec8-b3f1-4d3d-b730-d327a6bd0dbf/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 6641973.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 6641973.0@jobsub05.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1D_00
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1D_00_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174530_7df49ec6-a4b8-41b5-8c03-3a5f816cfff5/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/7df49ec6-a4b8-41b5-8c03-3a5f816cfff5/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174530_7df49ec6-a4b8-41b5-8c03-3a5f816cfff5/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/7df49ec6-a4b8-41b5-8c03-3a5f816cfff5/simple.sh
+Copying 3661 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174530_7df49ec6-a4b8-41b5-8c03-3a5f816cfff5/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/7df49ec6-a4b8-41b5-8c03-3a5f816cfff5/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 50877974.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 50877974.0@jobsub03.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1D_01
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1D_01_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174553_79b5fbf6-f03b-4ec9-9791-a9ba9e452ac6/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/79b5fbf6-f03b-4ec9-9791-a9ba9e452ac6/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174553_79b5fbf6-f03b-4ec9-9791-a9ba9e452ac6/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/79b5fbf6-f03b-4ec9-9791-a9ba9e452ac6/simple.sh
+Copying 3661 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174553_79b5fbf6-f03b-4ec9-9791-a9ba9e452ac6/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/79b5fbf6-f03b-4ec9-9791-a9ba9e452ac6/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 66179549.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 66179549.0@jobsub01.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1D_02
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1D_02_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174626_cc49d1d6-8839-4a5b-a75a-911d7bfde40c/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/cc49d1d6-8839-4a5b-a75a-911d7bfde40c/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174626_cc49d1d6-8839-4a5b-a75a-911d7bfde40c/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/cc49d1d6-8839-4a5b-a75a-911d7bfde40c/simple.sh
+Copying 3661 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174626_cc49d1d6-8839-4a5b-a75a-911d7bfde40c/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/cc49d1d6-8839-4a5b-a75a-911d7bfde40c/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 6655131.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 6655131.0@jobsub04.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1D_03
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1D_03_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174651_9f4306b3-d71e-47dc-90e8-286a9608cb2d/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/9f4306b3-d71e-47dc-90e8-286a9608cb2d/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174651_9f4306b3-d71e-47dc-90e8-286a9608cb2d/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/9f4306b3-d71e-47dc-90e8-286a9608cb2d/simple.sh
+Copying 3661 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174651_9f4306b3-d71e-47dc-90e8-286a9608cb2d/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/9f4306b3-d71e-47dc-90e8-286a9608cb2d/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 50877977.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 50877977.0@jobsub03.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1E_00
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1E_00_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174716_9812abc6-b51e-467e-b4c9-d22887bbb4cb/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/9812abc6-b51e-467e-b4c9-d22887bbb4cb/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174716_9812abc6-b51e-467e-b4c9-d22887bbb4cb/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/9812abc6-b51e-467e-b4c9-d22887bbb4cb/simple.sh
+Copying 3661 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174716_9812abc6-b51e-467e-b4c9-d22887bbb4cb/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/9812abc6-b51e-467e-b4c9-d22887bbb4cb/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 6655139.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 6655139.0@jobsub04.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1E_01
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1E_01_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174744_272a7951-b4f3-4493-b2db-9f468e182a5a/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/272a7951-b4f3-4493-b2db-9f468e182a5a/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174744_272a7951-b4f3-4493-b2db-9f468e182a5a/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/272a7951-b4f3-4493-b2db-9f468e182a5a/simple.sh
+Copying 3661 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174744_272a7951-b4f3-4493-b2db-9f468e182a5a/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/272a7951-b4f3-4493-b2db-9f468e182a5a/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 50877985.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 50877985.0@jobsub03.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1E_02
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1E_02_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174813_65cd8059-f655-4972-924f-a4bb2bb7b935/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/65cd8059-f655-4972-924f-a4bb2bb7b935/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174813_65cd8059-f655-4972-924f-a4bb2bb7b935/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/65cd8059-f655-4972-924f-a4bb2bb7b935/simple.sh
+Copying 3661 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174813_65cd8059-f655-4972-924f-a4bb2bb7b935/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/65cd8059-f655-4972-924f-a4bb2bb7b935/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 50877989.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 50877989.0@jobsub03.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1E_03
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1E_03_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174837_944c3430-b246-4a26-8eb5-81d31b274bd0/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/944c3430-b246-4a26-8eb5-81d31b274bd0/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174837_944c3430-b246-4a26-8eb5-81d31b274bd0/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/944c3430-b246-4a26-8eb5-81d31b274bd0/simple.sh
+Copying 3661 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174837_944c3430-b246-4a26-8eb5-81d31b274bd0/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/944c3430-b246-4a26-8eb5-81d31b274bd0/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 6655146.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 6655146.0@jobsub04.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1F_00
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1F_00_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174912_c552503e-96cd-46e9-92b6-ee1219e74d02/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/c552503e-96cd-46e9-92b6-ee1219e74d02/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174912_c552503e-96cd-46e9-92b6-ee1219e74d02/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/c552503e-96cd-46e9-92b6-ee1219e74d02/simple.sh
+Copying 3661 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174912_c552503e-96cd-46e9-92b6-ee1219e74d02/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/c552503e-96cd-46e9-92b6-ee1219e74d02/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 6655148.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 6655148.0@jobsub04.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1F_01
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1F_01_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174938_cc39b24a-6f88-4d2d-ac30-1a75236effdd/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/cc39b24a-6f88-4d2d-ac30-1a75236effdd/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174938_cc39b24a-6f88-4d2d-ac30-1a75236effdd/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/cc39b24a-6f88-4d2d-ac30-1a75236effdd/simple.sh
+Copying 3661 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_174938_cc39b24a-6f88-4d2d-ac30-1a75236effdd/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/cc39b24a-6f88-4d2d-ac30-1a75236effdd/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 74769067.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 74769067.0@jobsub02.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1F_02
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1F_02_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175001_b15a897b-635f-4b56-b1f0-e85a9ecc1bad/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/b15a897b-635f-4b56-b1f0-e85a9ecc1bad/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175001_b15a897b-635f-4b56-b1f0-e85a9ecc1bad/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/b15a897b-635f-4b56-b1f0-e85a9ecc1bad/simple.sh
+Copying 3660 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175001_b15a897b-635f-4b56-b1f0-e85a9ecc1bad/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/b15a897b-635f-4b56-b1f0-e85a9ecc1bad/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 50877998.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 50877998.0@jobsub03.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1F_03
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1F_03_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175029_846c0cee-7297-420b-8b0f-2dbb3abf57c0/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/846c0cee-7297-420b-8b0f-2dbb3abf57c0/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175029_846c0cee-7297-420b-8b0f-2dbb3abf57c0/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/846c0cee-7297-420b-8b0f-2dbb3abf57c0/simple.sh
+Copying 3661 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175029_846c0cee-7297-420b-8b0f-2dbb3abf57c0/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/846c0cee-7297-420b-8b0f-2dbb3abf57c0/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 6655151.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 6655151.0@jobsub04.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1G_00
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1G_00_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175053_f6dce6ac-3888-4aed-aa6b-e55bab8368a0/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/f6dce6ac-3888-4aed-aa6b-e55bab8368a0/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175053_f6dce6ac-3888-4aed-aa6b-e55bab8368a0/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/f6dce6ac-3888-4aed-aa6b-e55bab8368a0/simple.sh
+Copying 3661 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175053_f6dce6ac-3888-4aed-aa6b-e55bab8368a0/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/f6dce6ac-3888-4aed-aa6b-e55bab8368a0/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 6641998.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 6641998.0@jobsub05.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1G_01
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1G_01_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175119_7d00997f-55ea-4e02-8f5e-d38650d1d716/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/7d00997f-55ea-4e02-8f5e-d38650d1d716/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175119_7d00997f-55ea-4e02-8f5e-d38650d1d716/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/7d00997f-55ea-4e02-8f5e-d38650d1d716/simple.sh
+Copying 3660 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175119_7d00997f-55ea-4e02-8f5e-d38650d1d716/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/7d00997f-55ea-4e02-8f5e-d38650d1d716/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 6655154.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 6655154.0@jobsub04.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1G_02
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1G_02_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175145_84a93985-35f8-45a8-a953-02f37299f97d/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/84a93985-35f8-45a8-a953-02f37299f97d/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175145_84a93985-35f8-45a8-a953-02f37299f97d/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/84a93985-35f8-45a8-a953-02f37299f97d/simple.sh
+Copying 3660 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175145_84a93985-35f8-45a8-a953-02f37299f97d/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/84a93985-35f8-45a8-a953-02f37299f97d/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 50878006.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 50878006.0@jobsub03.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1G_03
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1G_03_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175226_004f89a5-b434-429c-a979-f9df6f264b71/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/004f89a5-b434-429c-a979-f9df6f264b71/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175226_004f89a5-b434-429c-a979-f9df6f264b71/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/004f89a5-b434-429c-a979-f9df6f264b71/simple.sh
+Copying 3661 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175226_004f89a5-b434-429c-a979-f9df6f264b71/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/004f89a5-b434-429c-a979-f9df6f264b71/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 6642000.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 6642000.0@jobsub05.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1L_00
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1L_00_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175255_5b2dec24-dafb-40ac-a077-a686991590f4/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/5b2dec24-dafb-40ac-a077-a686991590f4/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175255_5b2dec24-dafb-40ac-a077-a686991590f4/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/5b2dec24-dafb-40ac-a077-a686991590f4/simple.sh
+Copying 3661 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175255_5b2dec24-dafb-40ac-a077-a686991590f4/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/5b2dec24-dafb-40ac-a077-a686991590f4/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 50878008.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 50878008.0@jobsub03.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1L_01
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1L_01_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175324_e7e00353-32b7-46f5-a4c1-4a4b781dce02/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/e7e00353-32b7-46f5-a4c1-4a4b781dce02/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175324_e7e00353-32b7-46f5-a4c1-4a4b781dce02/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/e7e00353-32b7-46f5-a4c1-4a4b781dce02/simple.sh
+Copying 3661 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175324_e7e00353-32b7-46f5-a4c1-4a4b781dce02/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/e7e00353-32b7-46f5-a4c1-4a4b781dce02/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 6655161.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 6655161.0@jobsub04.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1L_02
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1L_02_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175358_c90a9cc6-d8e3-45f2-bd62-46b22639abc8/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/c90a9cc6-d8e3-45f2-bd62-46b22639abc8/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175358_c90a9cc6-d8e3-45f2-bd62-46b22639abc8/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/c90a9cc6-d8e3-45f2-bd62-46b22639abc8/simple.sh
+Copying 3661 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175358_c90a9cc6-d8e3-45f2-bd62-46b22639abc8/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/c90a9cc6-d8e3-45f2-bd62-46b22639abc8/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 6642010.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 6642010.0@jobsub05.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1L_03
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1L_03_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175423_e7ffafb3-d05e-42b4-a16f-be1163101b7c/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/e7ffafb3-d05e-42b4-a16f-be1163101b7c/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175423_e7ffafb3-d05e-42b4-a16f-be1163101b7c/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/e7ffafb3-d05e-42b4-a16f-be1163101b7c/simple.sh
+Copying 3661 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175423_e7ffafb3-d05e-42b4-a16f-be1163101b7c/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/e7ffafb3-d05e-42b4-a16f-be1163101b7c/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 66179658.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 66179658.0@jobsub01.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1M_00
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1M_00_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175448_f68a0b7e-aa8c-46a3-a7e3-46f41a63b0fe/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/f68a0b7e-aa8c-46a3-a7e3-46f41a63b0fe/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175448_f68a0b7e-aa8c-46a3-a7e3-46f41a63b0fe/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/f68a0b7e-aa8c-46a3-a7e3-46f41a63b0fe/simple.sh
+Copying 3660 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175448_f68a0b7e-aa8c-46a3-a7e3-46f41a63b0fe/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/f68a0b7e-aa8c-46a3-a7e3-46f41a63b0fe/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 66179664.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 66179664.0@jobsub01.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1M_01
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1M_01_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175515_d443c2a1-c3da-4256-a75f-c77898998527/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/d443c2a1-c3da-4256-a75f-c77898998527/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175515_d443c2a1-c3da-4256-a75f-c77898998527/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/d443c2a1-c3da-4256-a75f-c77898998527/simple.sh
+Copying 3661 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175515_d443c2a1-c3da-4256-a75f-c77898998527/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/d443c2a1-c3da-4256-a75f-c77898998527/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 6642021.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 6642021.0@jobsub05.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1M_02
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1M_02_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175542_6fe81d53-1ef6-4285-9aad-cbed3f96a389/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/6fe81d53-1ef6-4285-9aad-cbed3f96a389/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175542_6fe81d53-1ef6-4285-9aad-cbed3f96a389/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/6fe81d53-1ef6-4285-9aad-cbed3f96a389/simple.sh
+Copying 3659 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175542_6fe81d53-1ef6-4285-9aad-cbed3f96a389/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/6fe81d53-1ef6-4285-9aad-cbed3f96a389/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 74769084.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 74769084.0@jobsub02.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1M_03
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1M_03_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175612_3823669e-2be5-4fd9-954b-435242fa5e51/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/3823669e-2be5-4fd9-954b-435242fa5e51/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175612_3823669e-2be5-4fd9-954b-435242fa5e51/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/3823669e-2be5-4fd9-954b-435242fa5e51/simple.sh
+Copying 3661 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175612_3823669e-2be5-4fd9-954b-435242fa5e51/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/3823669e-2be5-4fd9-954b-435242fa5e51/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 6655172.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 6655172.0@jobsub04.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1N_00
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1N_00_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175649_660cf68e-efbf-44f5-9b3e-8b624a321658/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/660cf68e-efbf-44f5-9b3e-8b624a321658/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175649_660cf68e-efbf-44f5-9b3e-8b624a321658/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/660cf68e-efbf-44f5-9b3e-8b624a321658/simple.sh
+Copying 3661 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175649_660cf68e-efbf-44f5-9b3e-8b624a321658/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/660cf68e-efbf-44f5-9b3e-8b624a321658/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 50878020.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 50878020.0@jobsub03.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1N_01
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1N_01_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175717_a48abcdb-052f-4815-bb30-92f5673e7936/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/a48abcdb-052f-4815-bb30-92f5673e7936/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175717_a48abcdb-052f-4815-bb30-92f5673e7936/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/a48abcdb-052f-4815-bb30-92f5673e7936/simple.sh
+Copying 3661 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175717_a48abcdb-052f-4815-bb30-92f5673e7936/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/a48abcdb-052f-4815-bb30-92f5673e7936/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 6655173.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 6655173.0@jobsub04.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1N_02
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1N_02_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175746_56346f78-d479-423c-a0d0-1972f26ce7b9/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/56346f78-d479-423c-a0d0-1972f26ce7b9/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175746_56346f78-d479-423c-a0d0-1972f26ce7b9/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/56346f78-d479-423c-a0d0-1972f26ce7b9/simple.sh
+Copying 3661 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175746_56346f78-d479-423c-a0d0-1972f26ce7b9/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/56346f78-d479-423c-a0d0-1972f26ce7b9/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 50878024.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 50878024.0@jobsub03.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1N_03
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1N_03_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175815_7b335e16-6e39-43e3-835e-5ce4c48790e3/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/7b335e16-6e39-43e3-835e-5ce4c48790e3/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175815_7b335e16-6e39-43e3-835e-5ce4c48790e3/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/7b335e16-6e39-43e3-835e-5ce4c48790e3/simple.sh
+Copying 3661 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175815_7b335e16-6e39-43e3-835e-5ce4c48790e3/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/7b335e16-6e39-43e3-835e-5ce4c48790e3/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 66179691.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 66179691.0@jobsub01.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1O_00
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1O_00_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175847_170f0bae-bfa2-4897-a02f-7dd7ab6ecad6/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/170f0bae-bfa2-4897-a02f-7dd7ab6ecad6/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175847_170f0bae-bfa2-4897-a02f-7dd7ab6ecad6/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/170f0bae-bfa2-4897-a02f-7dd7ab6ecad6/simple.sh
+Copying 3661 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175847_170f0bae-bfa2-4897-a02f-7dd7ab6ecad6/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/170f0bae-bfa2-4897-a02f-7dd7ab6ecad6/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 74769087.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 74769087.0@jobsub02.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1O_01
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1O_01_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175911_76b1b25c-40c1-48ee-aef0-48b1906bef67/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/76b1b25c-40c1-48ee-aef0-48b1906bef67/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175911_76b1b25c-40c1-48ee-aef0-48b1906bef67/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/76b1b25c-40c1-48ee-aef0-48b1906bef67/simple.sh
+Copying 3661 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_175911_76b1b25c-40c1-48ee-aef0-48b1906bef67/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/76b1b25c-40c1-48ee-aef0-48b1906bef67/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 6642027.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 6642027.0@jobsub05.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1O_02
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1O_02_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_180017_7d1bbbeb-afe9-42c5-b3c0-57555a06eb5e/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/7d1bbbeb-afe9-42c5-b3c0-57555a06eb5e/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_180017_7d1bbbeb-afe9-42c5-b3c0-57555a06eb5e/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/7d1bbbeb-afe9-42c5-b3c0-57555a06eb5e/simple.sh
+Copying 3661 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_180017_7d1bbbeb-afe9-42c5-b3c0-57555a06eb5e/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/7d1bbbeb-afe9-42c5-b3c0-57555a06eb5e/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 74769088.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 74769088.0@jobsub02.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1O_03
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1O_03_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_180049_6056de60-df6e-46d2-89fa-6b2886e1a474/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/6056de60-df6e-46d2-89fa-6b2886e1a474/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_180049_6056de60-df6e-46d2-89fa-6b2886e1a474/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/6056de60-df6e-46d2-89fa-6b2886e1a474/simple.sh
+Copying 3661 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_180049_6056de60-df6e-46d2-89fa-6b2886e1a474/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/6056de60-df6e-46d2-89fa-6b2886e1a474/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 66179716.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 66179716.0@jobsub01.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1P_00
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1P_00_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_180117_c3a766b1-3d37-4716-a677-86fa9dce6120/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/c3a766b1-3d37-4716-a677-86fa9dce6120/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_180117_c3a766b1-3d37-4716-a677-86fa9dce6120/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/c3a766b1-3d37-4716-a677-86fa9dce6120/simple.sh
+Copying 3661 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_180117_c3a766b1-3d37-4716-a677-86fa9dce6120/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/c3a766b1-3d37-4716-a677-86fa9dce6120/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 66179719.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 66179719.0@jobsub01.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1P_01
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1P_01_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_180144_bc0cc2cc-b650-4666-90db-bd3923107e60/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/bc0cc2cc-b650-4666-90db-bd3923107e60/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_180144_bc0cc2cc-b650-4666-90db-bd3923107e60/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/bc0cc2cc-b650-4666-90db-bd3923107e60/simple.sh
+Copying 3661 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_180144_bc0cc2cc-b650-4666-90db-bd3923107e60/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/bc0cc2cc-b650-4666-90db-bd3923107e60/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 66179724.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 66179724.0@jobsub01.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1P_02
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1P_02_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_180214_c84c77ee-08cf-48e0-8aa1-6e6efe7e155c/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/c84c77ee-08cf-48e0-8aa1-6e6efe7e155c/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_180214_c84c77ee-08cf-48e0-8aa1-6e6efe7e155c/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/c84c77ee-08cf-48e0-8aa1-6e6efe7e155c/simple.sh
+Copying 3661 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_180214_c84c77ee-08cf-48e0-8aa1-6e6efe7e155c/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/c84c77ee-08cf-48e0-8aa1-6e6efe7e155c/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 74769089.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 74769089.0@jobsub02.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+me1P_03
+Output will be sent to /pnfs/minerva/scratch/users/sultana/GridJobs/AllPlaylistTest/tReweight/me1P_03_submitted_2023_12_13_17_41_MnvTunev431_Only_Selection_EventLoop_fullSystematics
+Uses minerva/data/users/sultana/tarballs/sultana_Mnv431_NoPionWeight_newTpiEst_Dec2023.tgz for Tarfile
+ 
+Copying 3394 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_180242_85a57ebd-97b0-4c37-920e-e6b49b0dbb6e/runEventLoop_lite.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/85a57ebd-97b0-4c37-920e-e6b49b0dbb6e/runEventLoop_lite.sh
+Copying 11259 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_180242_85a57ebd-97b0-4c37-920e-e6b49b0dbb6e/simple.sh => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/85a57ebd-97b0-4c37-920e-e6b49b0dbb6e/simple.sh
+Copying 3661 bytes file:///nashome/s/sultana/.cache/jobsub_lite/js_2023_12_13_180242_85a57ebd-97b0-4c37-920e-e6b49b0dbb6e/simple.cmd => https://fndcadoor.fnal.gov:2880/fermigrid/jobsub/jobs/2023_12_13/85a57ebd-97b0-4c37-920e-e6b49b0dbb6e/simple.cmd
+WARNING:  You have elected to skip the RCDS tarball publish check. This check ensures that if you are uploading a tarball or directory using RCDS/CVMFS, the uploaded tarball is published on CVMFS before the job is submitted.  Skipping this check may result in jobs running on the worker nodes that cannot find the intended uploaded files.
+
+Publishing hash minerva/12dc19bf9c4e83b44e8ae0cfec2b7997d7badbf93d6ef75adf39f31de31f3a83 to RCDS:
+Using bearer token located at /tmp/bt_token_minerva_Analysis_49107 to authenticate to RCDS
+Transferring files to web sandbox...
+Submitting job(s).
+1 job(s) submitted to cluster 6655174.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Use job id 6655174.0@jobsub04.fnal.gov to retrieve output
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+

@@ -45,7 +45,7 @@ namespace PlotUtils
 	if(univ.GetInt("mc_intType") == 4){
 	  //std::cout << "Printing Scale APplied ot COH events in MnvTuneReweighter: " << 1.4 << std::endl;
           wgt_diff = 1.436;
-     	  wgt_cohm = 3.0; 
+     	  //wgt_cohm = 3.0; 
 	  //std::cout << "Coherent Weight Added by Mehreen is" << wgt_cohm << std::endl;
 	 
         } // This is a correction to COH events Aaron's adds to account for missing diffractive model in our simulation
